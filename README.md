@@ -5,4 +5,4 @@ En este tema vamos a instalar las principales aplicaciones con las que vamos a t
 -**Visual Studio Code**
 -*Git*
 -[Docker] (https://www.docker.com/)
--VirtualBox
+-VirtualBox.
