@@ -6,3 +6,5 @@ En este tema vamos a instalar las principales aplicaciones con las que vamos a t
 - *Git*
 - [Docker](https://www.docker.com/)
 - VirtualBox
+
+Modificado en la rama
