@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+</head>
+<body>
+<h1>Calculadora:</h1>
+<label for="">Número 1:<input type="text" id="numero1"></label><br>
+<label for="">Número 2:<input type="text" id="numero2"></label><br>
+<button onclick="document.getElementById('resultado').innerHTML = sumar()">+</button>
+<button onclick="document.getElementById('resultado').innerHTML = restar()">-</button>
+<button onclick="document.getElementById('resultado').innerHTML = multiplicar()">*</button>
+<button onclick="document.getElementById('resultado').innerHTML = division()">/</button>
+<button onclick="document.getElementById('resultado').innerHTML = potencia()">potencia</button>
+<p id="resultado"></p>
+<script src="funciones.js"></script>
+</body>
+</html>
