@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1</title>
+<style>
+.circulos{
+display: inline-flex
+}
+.botones{
+  display: flex;
+  align-items: center;
+  margin: 50px;
+  padding: 5px;
+}
+.circulo{
+background-color: red;
+width: 100px;
+height: 100px;
+border-radius: 50%;
+}
+.circulo2{
+background-color: green;
+width: 100px;
+height: 100px;
+border-radius: 50%;
+}
+.circulo3{
+background-color: blue;
+width: 100px;
+height: 100px;
+border-radius: 50%;
+}
+</style>
+</head>
+<body>
+<div class="circulos">
+<div class="circulo"></div>
+<div class="circulo2"></div>
+<div class="circulo3"></div>
+</div>
+<div class="botones">
+<button onclick="eli()" id="b1">Ocultar</button>
+<button onclick="document.getElementsByClassName('circulo').innerHTML = eli()">Ocultar</button>
+<button onclick="document.getElementsByClassName('circulo').innerHTML = eli()">Ocultar</button>
+</div>
+
+<script>
+    function eli() {
+var x = document.getElementsByClassName("circulo");
+if (x.style.disply === "none") {x.style.display = "block";}
+else {x.style.display = "hide"};
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="getElementsByClassName">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 2</title>
+</head>
+<body>
+<label for="">Cantidad en Euros:<input type="text" id="dinero"></label><br>
+<label for="">Cantidad en Dólares:<input type="text" id="dinero2"></label><br>
+<button onclick="document.getElementById('resultado').innerHTML = euro()">€</button>
+<button onclick="document.getElementById('resultado').innerHTML = dolar()">$</button>
+<p id="resultado"></p>
+<script>
+    var resultado = 0
+    function euro(){
+        let x = parseFloat(document.getElementById('dinero').value);
+        let y = parseFloat(document.getElementById('dinero2').value);
+        if (x>=0){
+            return x;
+        }
+        if (x>0) {return 'No se pueden incluir cantidades en negativo'};
+        if (y>=0){
+            return (y*(1.075245)).toFixed(2);
+        }
+        if (y<0) {return 'No se pueden incluir cantidades en negativo'}
+    }
+    function dolar(){
+        let x = parseFloat(document.getElementById('dinero').value);
+        let y = parseFloat(document.getElementById('dinero2').value);
+        if (x>=0){
+            return (x*(0.930112)).toFixed(2);
+        }
+        if (x<0) {return 'No se pueden incluir cantidades en negativo'};
+        if (y>=0){
+            return y;
+        }
+        if (y<0) {return 'No se pueden incluir cantidades en negativo'}
+    }
+</script>
+</body>
+</html>
