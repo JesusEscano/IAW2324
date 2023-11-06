@@ -2,22 +2,34 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 3</title>
+    <title>DNI</title>
 </head>
 <body>
-<label for="">Introduzca su número de DNI:<input type="text" id="DNI"></label><br>
-<button onclick="document.getElementById('resultado').innerHTML = letraDNI()">Obtenga su letra de DNI</button>
+<label for="DNI">DNI:</label>
+<input id="DNI" type="mumber" name="DNI" placeholder="000000000">
+<input type="submit" onclick="comprobación()">
 <p id="resultado"></p>
 <script>
-    function letraDNI()
-    {
-        var dni = document.getElementById('DNI').value;
-        var cadena="TRWAGMYFPDXBNJZSQVHLCKET";
-        var posicion = dni%23;
-        var letra = cadena.substring(posicion,posicion+1);
-        return letra;
-    }
-</script>
+function comprobación() {
+let entrada=document.getElementById("DNI").value;
+let numero=8;
+let contador=parseInt(entrada.length);
+let opciones="TRWAGMYFPDXBNJZSQVHLCKET";
+let Com=entrada%23;
+let FIN=opciones.substring(Com,Com+1);
+if (contador!=numero)
+{
+document.getElementById("resultado").innerHTML = "Se ha equivocado";
+}
+else
+{
+document.getElementById("resultado").innerHTML = "Su DNI es " + entrada + FIN;
+}
+}
+
+
+    </script>
 </body>
 </html>
