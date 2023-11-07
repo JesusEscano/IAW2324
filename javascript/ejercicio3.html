@@ -17,9 +17,10 @@ let entrada=document.getElementById("DNI").value;
 let numero=8;
 let contador=parseInt(entrada.length);
 let opciones="TRWAGMYFPDXBNJZSQVHLCKET";
+let valor=/^[0-9]+$/ 
 let Com=entrada%23;
 let FIN=opciones.substring(Com,Com+1);
-if (contador!=numero)
+if (contador!=numero || !entrada.match(valor))
 {
 document.getElementById("resultado").innerHTML = "Se ha equivocado";
 }
