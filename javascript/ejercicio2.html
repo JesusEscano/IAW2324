@@ -20,10 +20,12 @@
             return x;
         }
         if (x>0) {return 'No se pueden incluir cantidades en negativo'};
+        if (x==NaN) {return 'Introduzca un número'};
         if (y>=0){
             return (y*(1.075245)).toFixed(2);
         }
         if (y<0) {return 'No se pueden incluir cantidades en negativo'}
+        if (y==NaN) {return 'Introduzca un número'};
     }
     function dolar(){
         let x = parseFloat(document.getElementById('dinero').value);
@@ -32,10 +34,12 @@
             return (x*(0.930112)).toFixed(2);
         }
         if (x<0) {return 'No se pueden incluir cantidades en negativo'};
+        if (x==NaN) {return 'Introduzca un número'};
         if (y>=0){
             return y;
         }
         if (y<0) {return 'No se pueden incluir cantidades en negativo'}
+        if (y==NaN) {return 'Introduzca un número'};
     }
 </script>
 </body>
