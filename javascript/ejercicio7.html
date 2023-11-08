@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 8</title>
+</head>
+<body>
+<label for="">Introduzca el número en el que estoy pensando entre 0 y 5:<input type="text" id="adi"></label><br>
+<button onclick="comp()">Comprueba</button>
+<p id="resultado"></p>
+<script>
+    var resultado = 0
+    let num = Math.random(6).toFixed(0);
+    function comp(){
+        let x = parseFloat(document.getElementById('adi').value);
+        if (x==num){document.getElementById("resultado").innerHTML = "¡Correcto!";}
+        else {document.getElementById("resultado").innerHTML = "Falló";};
+        }
+</script>
+</body>
+</html>

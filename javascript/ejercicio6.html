@@ -12,10 +12,37 @@
     <label for="">Dirección:<input type="text" id="direccion"></label><br>
     <label for="">Ciudad:<input type="text" id="ciudad"></label><br>
     <label for="">Teléfono:<input type="text" id="tlfn"></label><br>
-    <label for="">DNI:<input type="text" id="dni"></label><label id="dnim"></label><br>
-    <label for="">PIN:<input type="text" id="pin"></label><label id="pinm"></label><br>
-    <label for="">Escriba su PIN de nuevo:<input type="text" id="pin2"></label><label id="pin2m"></label><br>
+    <label for="">DNI:<input type="text" id="dni" placeholder="000000000"></label><label id="dnim"></label><br>
+    <label for="">PIN:<input type="text" id="pin" placeholder="000000000"></label><label id="pinm"></label><br>
+    <label for="">Escriba su PIN de nuevo:<input type="text" id="pin2" placeholder="000000000"></label><label id="pin2m"></label><br>
     <button onclick="document.getElementById('resultado').innerHTML = comp()">Dar de alta</button>
     <p id="resultado"></p>
+<script>
+    var resultado = 0
+    function comp(){
+        let nombre = (document.getElementById('nombre').value);
+        if (nombre === null){document.getElementById("nomm").innerHTML = "El nombre es obligatorio";}
+        let apellido = (document.getElementById('apellido').value);
+        if (apellido === null){document.getElementById("apem").innerHTML = "El apellido es obligatorio";}
+        let mail = (document.getElementById('mail').value);
+        let mailval = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/ ;
+        if (mail === null){document.getElementById("mailm").innerHTML = "La dirección de correo es obligatoria";}
+        if (!mailval.match(mail)){document.getElementById("mailm").innerHTML = "Su correo es erróneo";}
+        let telefon = (document.getElementById('tlfn').value);
+        let dni = (document.getElementById('dni').value);
+        let numero=8;
+        let contador=parseInt(dni.length);
+        let opciones="TRWAGMYFPDXBNJZSQVHLCKET";
+        let dnicom=/^[0-9]+$/ 
+        let Com=dni%23;
+        let FIN=opciones.substring(Com,Com+1);
+        if (contador!=numero || !dni.match(dnicom)){document.getElementById("dnim").innerHTML = "El dni es erróneo";}
+        let PIN = (document.getElementById('pin').value);
+        if (pin.length!=numero || isNaN){document.getElementById("pinm").innerHTML = "El PIN debe ser de 8 dígitos";}
+        let PIN2 = (document.getElementById('pin2').value);
+        if (PIN2!=PIN){document.getElementById("pin2m").innerHTML = "Los PINs deben coincidir";}
+        if (nombre != null && apellido != null && mail != null && mailval.match(mail) && contador==numero && dni.match(dnicom) && pin.length==numero && PIN2==PIN) {document.getElementById('resultado').innerHTML = "Registrado. Su nombre de usuario es "+nombre.substr(0[2])+apellido.substr(0[2])+telefon.slice(0[3])}
+      }
+</script>
 </body>
 </html>
