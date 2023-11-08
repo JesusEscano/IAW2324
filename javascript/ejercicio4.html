@@ -10,5 +10,25 @@
 <label for="">Peso (en kg):<input type="text" id="peso"></label><br>
 <button onclick="document.getElementById('resultado').innerHTML = comp()">Comprueba</button>
 <p id="resultado"></p>
+<script>
+    var resultado = 0
+    function comp(){
+        let x = parseFloat(document.getElementById('altura').value);
+        let y = parseFloat(document.getElementById('peso').value);
+        if (x>0 && y>0){
+            let z = (y/(Math.pow(x/100,2))).toFixed(2);
+            if (z<18.5) {
+            return 'Su índice de masa muscular es '+z+'. Usted tiene un peso inferior al normal.';}
+            if (z>=18.5 && z<=24.9) {
+            return 'Su índice de masa muscular es '+z+'. Usted tiene un peso normal.';}
+            if (z>=25 && z<=29.9) {
+            return 'Su índice de masa muscular es '+z+'. Usted tiene un peso superior al normal.';}
+            if (z>=30) {
+            return 'Su índice de masa muscular es '+z+'. Usted tiene sobrepeso.';}
+        }
+        if (x<=0 || y<=0) {return 'No se pueden incluir cantidades en negativo.'};
+        if (isNaN) {return 'Introduzca un número en ambos cuadros.'};
+        }
+</script>
 </body>
 </html>
