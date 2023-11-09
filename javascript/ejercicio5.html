@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Social</title>
+    <style>
+        #container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .delete-btn {
+            cursor: pointer;
+            color: red;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Red Social</h1>
+        <input type="text" id="messageInput" placeholder="Escribe tu mensaje...">
+        <button onclick="sendMessage()">Enviar</button>
+        <div id="messages"></div>
+    </div>
+
+    <script>
+        var messages = [];
+
+        function sendMessage() {
+            var messageInput = document.getElementById('messageInput');
+            var message = messageInput.value.trim();
+            if (message !== '') {
+                messages.push(message);
+                messages.sort(); // Ordenar alfabéticamente
+                displayMessages();
+                messageInput.value = '';
+            }
+        }
+
+        function deleteMessage(index) {
+            messages.splice(index, 1);
+            displayMessages();
+        }
+
+        function displayMessages() {
+            var messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = '';
+
+            messages.forEach(function (message, index) {
+                var messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                messageDiv.textContent = message;
+
+                var deleteBtn = document.createElement('span');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = 'Eliminar';
+                deleteBtn.onclick = function () {
+                    deleteMessage(index);
+                };
+
+                messageDiv.appendChild(deleteBtn);
+                messagesDiv.appendChild(messageDiv);
+            });
+        }
+    </script>
+</body>
+</html>
