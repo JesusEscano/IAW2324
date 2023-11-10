@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicio 6</title>
     <style>
-        #nomm, #apem, #mailm, #dnim, #pinm, #pin2m {color: red}
+        #nomm, #apem, #mailm, #tlfnm, #dnim, #pinm, #pin2m {color: red}
         /*meter obligatoriedad de telefono*/
     </style>
 </head>
@@ -15,7 +15,7 @@
     <label for="">Email:<input type="text" id="mail"></label><label id="mailm"></label><br>
     <label for="">Dirección:<input type="text" id="direccion"></label><br>
     <label for="">Ciudad:<input type="text" id="ciudad"></label><br>
-    <label for="">Teléfono:<input type="text" id="tlfn"></label><br>
+    <label for="">Teléfono:<input type="text" id="tlfn"></label><label id="tlfnm"></label><br>
     <label for="">DNI:<input type="text" id="dni" placeholder="000000000"></label><label id="dnim"></label><br>
     <label for="">PIN:<input type="text" id="pin" placeholder="000000000"></label><label id="pinm"></label><br>
     <label for="">Escriba su PIN de nuevo:<input type="text" id="pin2" placeholder="000000000"></label><label id="pin2m"></label><br>
@@ -27,6 +27,7 @@
         document.getElementById('nomm').innerHTML='';
         document.getElementById('apem').innerHTML='';
         document.getElementById('mailm').innerHTML='';
+        document.getElementById('tlfnm').innerHTML='';
         document.getElementById('dnim').innerHTML='';
         document.getElementById('pinm').innerHTML='';
         document.getElementById('pin2m').innerHTML='';
@@ -39,6 +40,9 @@
         if (mail.trim() === ''){document.getElementById("mailm").innerHTML = "La dirección de correo es obligatoria";}
         if (!mailval.test(mail)){document.getElementById("mailm").innerHTML = "Su correo es erróneo";}
         let telefon = (document.getElementById('tlfn').value);
+        let telefval = new RegExp("^(\\+34|0034|34)?[6789]\\d{8}$");
+        if (telefon.trim() === ''){document.getElementById("tlfnm").innerHTML = "El número de teléfono es obligatorio";}
+        if (!telefval.test(telefon)){document.getElementById("tlfnm").innerHTML = "Su número de teléfono es erróneo";}
         let dni = (document.getElementById('dni').value);
         let numero=8;
         let contador=parseInt(dni.length);
@@ -51,7 +55,7 @@
         if (PIN.length !== numero || !/^\d+$/.test(PIN)) {document.getElementById("pinm").innerHTML = "El PIN debe ser de 8 dígitos";}
         let PIN2 = (document.getElementById('pin2').value);
         if (PIN2!==PIN){document.getElementById("pin2m").innerHTML = "Los PINs deben coincidir";}
-        if (nombre.trim() != '' && apellido.trim() != '' && mail.trim() != '' && mailval.test(mail) && contador===numero && dni.match(dnicom) && PIN.length===numero && PIN2===PIN) {resultado = "Registrado. Su nombre de usuario es "+nombre.substr(0,2)+apellido.substr(0,2)+telefon.slice(-3);}
+        if (nombre.trim() != '' && apellido.trim() != '' && mail.trim() != '' && mailval.test(mail) && telefon.trim() != '' && telefval.test(telefon) && contador===numero && dni.match(dnicom) && PIN.length===numero && PIN2===PIN) {resultado = "Registrado. Su nombre de usuario es "+nombre.substr(0,2)+apellido.substr(0,2)+telefon.slice(-3);}
         document.getElementById('resultado').innerHTML = resultado;
      }
 </script>
