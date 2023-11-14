@@ -28,7 +28,7 @@
     <div id="forma"></div>
     <script type="text/javascript">
         var inicio = new Date().getTime(); // Alcance global
-        var min = Infinity;
+        var min = localStorage.getItem("record") || Infinity;
         //METERLE UN LOCALSTORAGE PARA GUARDAR EL RÉCORD
         function obtenerColorAleatorio() {
             let letters = '0123456789ABCDEF'.split('');
@@ -77,14 +77,14 @@
             diferencia = (fin-inicio)/1000;
             if (diferencia < min){
                 min=diferencia;
+                localStorage.setItem("record", min);
             }
             document.getElementById("tiempoReaccion").innerHTML = diferencia + "s";
-            if (localStorage.getItem("record")>0){document.getElementById("tiemporecord").innerHTML = localStorage.getItem("record") + "s";}
-            else {document.getElementById("tiemporecord").innerHTML = min + "s"};
-            localStorage.setItem("record", min);
+            document.getElementById("tiemporecord").innerHTML = min + "s";
             aparecerFormaDespuesRetraso();
         }
-        function borra(){localStorage.clear();
-            window.location.reload()}
+        function borra(){localStorage.removeItem("record");
+            min = Infinity;
+            document.getElementById("tiemporecord").innerHTML = ""}
     </script>
 </body>
