@@ -24,7 +24,7 @@
 <body>
     <h1>¡Comprueba tus reflejos!</h1>
     <h2>¡Haz click en los circulos y rectángulos tan rápido como puedas!</h2>
-    <p class="bold">Tiempo de reacción: <span id="tiempoReaccion"></span> Tiempo récord: <span id="tiemporecord"></span></p>
+    <p class="bold">Tiempo de reacción: <span id="tiempoReaccion"></span> Tiempo récord: <span id="tiemporecord"></span> <button onclick="borra()">Borrar récord</button></p>
     <div id="forma"></div>
     <script type="text/javascript">
         var inicio = new Date().getTime(); // Alcance global
@@ -79,8 +79,12 @@
                 min=diferencia;
             }
             document.getElementById("tiempoReaccion").innerHTML = diferencia + "s";
-            document.getElementById("tiemporecord").innerHTML = min + "s";
+            if (localStorage.getItem("record")>0){document.getElementById("tiemporecord").innerHTML = localStorage.getItem("record") + "s";}
+            else {document.getElementById("tiemporecord").innerHTML = min + "s"};
+            localStorage.setItem("record", min);
             aparecerFormaDespuesRetraso();
         }
+        function borra(){localStorage.clear();
+            window.location.reload()}
     </script>
 </body>
