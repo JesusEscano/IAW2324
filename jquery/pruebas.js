@@ -1,17 +1,10 @@
 /*Conjunto de ejercicios de jQuery (escribir jqdoc para encontrar la forma de inciar to rápido) */
 $(document).ready(function () {
-
+    let parrafo;
     $("#esconder").click(function () { 
-        $("#tercero").append("<p>"+contador+"</p>");
+        parrafo = prompt("Dime qué quieres esconder").toLocaleLowerCase
+        if (parrafo == 'todos'){$("p").hide()}
+        else {$('#'+parrafo).hide();}
     });
-    $("#mostrar").click(function () { 
-        $("p").addClass("roja");
-    });
-    $("#alternar").click(function () { 
-      alert($("#campo").val());
-    });
-    $(".roja").mousseenter(function (){
-        alert($("#primero").html());
-    })
 });
 
