@@ -17,6 +17,7 @@
         }
     </style>
     <!-- Incluye aquí jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
     <h1>Las funciones each y append en jQuery</h1>
@@ -31,6 +32,12 @@
 
     <script>
         /* Rellena aquí el código jQuery */
+$(document).ready(function () {
+var icono = 'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/48/arrow-download-icon.png';
+$( "ul li a" ).each(function(){
+$(this).append('<img src="' + icono + '" alt="icono">');
+});
+    });      
      </script>
 </body>
 </html>

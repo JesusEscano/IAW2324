@@ -17,6 +17,7 @@
         }
     </style>
 <!-- Incluye jQuery -->    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
     <h1>Función existe</h1>
@@ -35,6 +36,38 @@
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error eaque sit nemo! Voluptatem expedita hic ipsam minima eligendi id, labore non veritatis <a href="">atque amet ipsum mollitia</a>  dignissimos? Mollitia, fuga ea!</p>
     <script>
         /* Rellena aquí con el código jQuery */
-      </script>
+    $(document).ready(function () {
+var encabezados = $("h1").length > 0;
+if (encabezados) {
+    console.log('Hay encabezados');
+} else {
+    console.log('No hay encabezados');
+}
+var parrafos = $("p").length > 0;
+if (parrafos) {
+    console.log('Hay párrafos');
+} else {
+    console.log('No hay párrafos');
+}
+var imagenes = $("img").length > 0;
+if (imagenes) {
+    console.log('Hay imágenes');
+} else {
+    console.log('No hay imágenes');
+}
+var enlaces = $("a").length > 0;
+if (enlaces) {
+    console.log('Hay enlaces');
+} else {
+    console.log('No hay enlaces');
+}
+var tablas = $("tr").length > 0;
+if (tablas) {
+    console.log('Hay tablas');
+} else {
+    console.log('No hay tablas');
+}
+    });
+    </script>
 </body>
 </html>

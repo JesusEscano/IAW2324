@@ -11,6 +11,7 @@
         }
         table {
             border: 1px solid black;
+            text-align: center;
         }
         img {
             border-radius: 10px;
@@ -19,6 +20,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
         /* Código jQuery */
+        $(document).ready(function () {
+var encabezados = $("h1").length;
+$( "#encabezados" ).text(encabezados);
+var parrafos = $("p").length;
+$( "#parrafos" ).text(parrafos);
+var imagenes = $("img").length;
+$( "#imagenes" ).text(imagenes);
+var enlaces = $("a").length;
+$( "#enlaces" ).text(enlaces);
+    });       
     </script>
 </head>
 <body>

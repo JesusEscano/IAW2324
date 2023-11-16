@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Ejercicio 5</title>
 <!-- Incluye jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <style>
     .contenedor{
         display:flex;
@@ -41,6 +42,20 @@
     </div>
     <script>
         /* Rellena esta parte con el código jQuery */
+        $(document).ready(function () {
+$("#btn-fadeIn").click(function(){
+    $( ".caja.roja" ).fadeIn( "slow" );
+    $( ".caja.verde" ).fadeIn( "slow" );
+    });
+$("#btn-fadeOut").click(function(){
+    $( ".caja.roja" ).fadeOut( "slow" );
+    $( ".caja.verde" ).fadeOut( "slow" );
+    });
+$("#btn-fadeToggle").click(function(){
+    $( ".caja.roja" ).fadeToggle( "slow" );
+    $( ".caja.verde" ).fadeToggle( "slow" );
+    });
+    });
     </script>
 </body>
 </html>

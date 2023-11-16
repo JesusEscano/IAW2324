@@ -24,9 +24,15 @@
     <div>
         Texto
     </div>
-    <button>Vaciar div</button>
+    <button>Mostar/Ocultar texto</button>
     <script>
        /* Incluye aquí el código jQuery */
+$(document).ready(function () {
+$("button").click(function(){
+var texto = $('div');
+if (texto.is(':empty')){texto.html('Texto')}
+else {texto.empty();};
+    })});   
     </script>
 </body>
 </html>
