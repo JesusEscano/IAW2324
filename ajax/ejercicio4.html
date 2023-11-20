@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 4</title>
+</head>
+<body>
+    <h1>Busca usuarios en GitHub</h1>
+    <label>Nombre de usuario: <input id="nombre"><button id="buscar">Buscar</button></label>
+    <p id="rdo"></p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        $('#buscar').click(function () {
+        let nombre = $('#nombre').val();
+        $.ajax({
+            url: 'https://api.github.com/users/'+nombre,
+            success: function(data) {
+                $('#rdo').html(
+                'Nombre: ' + data.login +
+                '<br>Avatar: <img src="' + data.avatar_url +'width="100" height="100"">'+
+                '<br>URL: ' + data.url
+                )
+            }
+        })
+        })
+        })       
+    </script>
+</body>
+</html>
