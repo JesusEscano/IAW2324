@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 3</title>
+</head>
+<body>
+    <h1>Buscar y mostrar información de películas utilizando la API OMDB:</h1>
+    <label><p>Título de la película: <input id="nombre"></p>
+           <p>Año de publicacion: <input id="año"></p>
+            <p><button id="buscar">Buscar</button></p></label>
+    <p id="rdo"></p> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+$(document).ready(function () {
+    $('#buscar').click(function () {
+        let peli = $('#nombre').val();
+        let año = $('#año').val();
+        let apikey = '38dbeb17';
+        if (peli.trim() === '') {
+            $('#rdo').html(
+                'Indique una película.'
+                )
+        }
+        else{
+        let API = `http://www.omdbapi.com/?apikey=${apikey}&t=${peli}&y${año}`;
+        $.ajax({
+        url: API,
+        success: function (data) {
+        $('#rdo').html(`<p>Título: ${(data.Title)}</p><p><img src="${data.Poster}"></p>`);
+        },
+        error: function (error) {
+        $('#rdo').html(`<p>Ha habido un error al solicitar los datos.</p>`);
+        }
+        });
+        }});
+        });
+    </script>
+</body>
+</html>

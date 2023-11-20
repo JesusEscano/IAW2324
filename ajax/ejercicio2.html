@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 2</title>
+</head>
+<body>
+    <h1>Mostrar fotos aleatorias utilizando la API Unsplash:</h1>
+    <button id="buscar">Obtenga una foto aleatoria</button>
+    <p id="rdo"></p> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+$(document).ready(function () {
+    $('#buscar').click(function () {
+        let api_key = "v-4gF3EntdG5Ndh5bovrIaCzKXmSUzRwHNs-7o50fGI";
+          $.ajax({
+            url: "https://api.unsplash.com/photos/random?client_id=" + api_key,
+            success: function (data) {
+              $('#rdo').html(`
+                <img src="${data.urls.small}" alt="${data.alt_description}">
+                <p>Autor: ${data.user.name}</p>
+                <p>Descripción: ${data.alt_description}</p>
+              `);
+            },
+            error: function (error) {
+        $('#rdo').html(`<p>Ha habido un error al solicitar los datos.</p>`);
+        }
+          });
+        });
+      });
+    </script>
+</body>
+</html>

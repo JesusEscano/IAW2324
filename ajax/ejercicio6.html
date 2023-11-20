@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 6</title>
+</head>
+<body>
+    <h1>Mostrar fotos de la API de Flickr:</h1>
+    <label>Tema: <input id="nombre"><button id="buscar">Buscar</button></label>
+    <p id="rdo"></p> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+$(document).ready(function () {
+    $('#buscar').click(function () {
+    let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=";
+    let api_key = "ca31bff59cbb6eff5c162f8cabca6368";
+    let nombre = $("#nombre").val();
+    let url_completa = url + api_key + "&text=" + nombre + "&format=json&nojsoncallback=1";
+    $.get(url_completa).done(function(respuesta) {
+    let resultado_html = '';
+    console.log(respuesta);
+    if (respuesta.photos.photo.length > 0) {
+    respuesta.photos.photo.forEach(function(foto) {
+    let url = 'https://farm' + foto.farm + '.staticflickr.com/' + foto.server + '/' + foto.id + '_' + foto.secret + '.jpg';
+    resultado_html += '<div><img src="' + url + '" alt="' + foto.title + '"></div>';
+    });
+    $('#rdo').html(resultado_html);} 
+    else {$('#rdo').html('No se encontraron fotos para este término de búsqueda.');}
+    }).fail(function(){
+    console.log("Ocurrió un error al conectarnos al servidor");
+    });
+    });
+  });
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 5</title>
+</head>
+<body>
+    <h1>Buscar y mostrar libros utilizando la API de Google Books:</h1>
+    <label>Libro: <input id="nombre"><button id="buscar">Buscar</button></label>
+    <p id="rdo"></p> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+$(document).ready(function () {
+    $('#buscar').click(function () {
+        let libro = $('#nombre').val();
+        let apikey = '&key=AIzaSyBO8eGbhtfXcm1Xc-kupdVNtxJM8fiJ--k';
+        if (libro.trim() === '') {
+            $('#rdo').html(
+                'Indique un libro.'
+                )
+        }
+        let API = `https://www.googleapis.com/books/v1/volumes?q=intitle:${libro}${apikey}`;
+        $.ajax({
+        url: API,
+        success: function (data) {
+        if (data.items && data.items.length > 0) {
+        let libros = data.items[0].volumeInfo;
+        $('#rdo').html(`<p>Título: ${libros.title}</p><p><img src="${libros.imageLinks.thumbnail}"></p>`);}
+        else {$('#rdo').html('<p>No se encontraron resultados.</p>');}
+        },
+        error: function (error) {
+        $('#rdo').html(`<p>Ha habido un error al solicitar los datos.</p>`);
+        }
+        });
+        });
+        });
+    </script>
+</body>
+</html>
