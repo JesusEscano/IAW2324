@@ -7,7 +7,7 @@
 </head>
 <body>
 <?php
-$cadena = '<p>PHP con echo</p>'
+$cadena = '<p>PHP con echo</p>';
 echo '<p>Hola mundo desde </p>' . $cadena;
 /*Esto es un comentario*/
 ?>

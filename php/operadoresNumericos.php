@@ -48,7 +48,7 @@
         echo "<p>El resultado de hacer la raíz $b (cuadrada) de $a es $raiz</p>";
 
         //+=
-        $nose = $a+=$b
+        $nose = $a+=$b;
         echo"<p>Lo que da el másigual es $nose</p>";
     ?>
 </body>
