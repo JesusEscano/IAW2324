@@ -7,8 +7,8 @@
 </head>
 <body>
 <?php
-$cadena = "<p>PHP con echo</p>";
-echo "<p>Hola mundo desde " . $cadena . "</p>";
+$cadena = "PHP con" . " echo";
+echo "<p>Hola mundo desde $cadena</p>";
 /*Esto es un comentario*/
 ?>
 </body>
