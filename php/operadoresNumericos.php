@@ -34,10 +34,18 @@
     // Incremento
     $a++;
     echo "<p>El número siguiente de 5 es $a</p>";
+
+    //+=
+    $nose = $a+=2;
+    echo "<p>Y si le aumentamos el valor en 2 sale $nose</p>";
+
+    //-=
+    $sise = $a-=3;
+    echo "<p>De forma que si le disminuimos el valor en 3 sale $sise</p>";
     
     // Decremento
-    $b--;
-    echo "<p>El número anterior a 3 es $b</p>";
+    $a--;
+    echo "<p>Y su número anterior es $a</p>";
 
     // POTEEEEEENCIA
     $potencia = $a ** $b;
@@ -46,10 +54,6 @@
     //Raíz
     $raiz = pow($a, 1/$b);
     echo "<p>El resultado de hacer la raíz $b-ésima de $a es $raiz</p>";
-
-    //+=
-    $nose = $a+=;
-    echo "<p>Lo que da el másigual es $nose</p>";
     ?>
 </body>
 </html>
