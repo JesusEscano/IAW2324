@@ -46,6 +46,10 @@
         //Raíz
         $raiz = pow($a, 1/$b);
         echo "<p>El resultado de hacer la raíz $b (cuadrada) de $a es $raiz</p>";
+
+        //+=
+        $nose = $a+=$b
+        echo"<p>Lo que da el másigual es $nose</p>";
     ?>
 </body>
 </html>
