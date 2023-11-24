@@ -32,7 +32,7 @@
 
     // Quitar de la cadena
     $sub = substr($mezcla, 2, 6);
-    echo "<p>Al substraer podemos decir: <<Niño, trae $sub>></p>";
+    echo "<p>Al substraer podemos decir: Niño, trae $sub</p>";
 
     // Reemplazo
     $mezcla2 = $c1 . " " . $c2;
