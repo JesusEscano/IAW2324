@@ -33,7 +33,7 @@
     
         // Incremento
         $a++;
-        echo "<p>El siguiente número de 5 es $a</p>";
+        echo "<p>El número siguiente de 5 es $a</p>";
     
         // Decremento
         $b--;
