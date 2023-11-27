@@ -9,6 +9,9 @@
     <h1>Navegador</h1>
 <?php
 $navi = $_SERVER['HTTP_USER_AGENT'];
-echo '<p>Estás navegando con $navi</p>'?>;
+$IP = $_SERVER['REMOTE_ADDR'];
+echo "<p>Estás navegando con $navi</p>";
+echo "<p>Estás accediendo con la ip $IP</p>";
+?>
 </body>
 </html>
