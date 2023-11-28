@@ -4,22 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imagen aleatoria</title>
-    <style>
-    #caja {
-width: 300px;
-height: 300px;
-    }
-    </style>
 </head>
 <body>
-    <h1>Cuadrado de color aleatorio</h1>
+    <h1>Esta imagen es aleatoria</h1>
 <?php
-$rojo = dechex(rand(0,255));
-$verde = dechex(rand(0,255));
-$azul = dechex(rand(0,255));
-$color = "#" . $rojo . $verde . $azul;
-echo "<div id='caja' style='background-color:" . $color . "'</div>";
+$imagenes = 'img'; //ruta
+$lista = glob($imagenes . '/*.jpg'); //obtener lista
+$imgrnd = $lista[array_rand($lista)]; //aplicar azar
+echo "<img src='$imgrnd' alt='Imagen Aleatoria'>";
 ?>
-<div id="caja"></div>
 </body>
 </html>

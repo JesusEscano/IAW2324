@@ -4,22 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emoticono aleatorio</title>
-    <style>
-    #caja {
-width: 300px;
-height: 300px;
-    }
-    </style>
 </head>
 <body>
-    <h1>Emoticono aleatorio</h1>
 <?php
-$rojo = dechex(rand(0,255));
-$verde = dechex(rand(0,255));
-$azul = dechex(rand(0,255));
-$color = "#" . $rojo . $verde . $azul;
-echo "<div id='caja' style='background-color:" . $color . "'</div>";
+$numeros = rand(128512, 128586);
+$emoji = html_entity_decode("&#$numeros;", ENT_COMPAT, 'UTF-8');
+echo "<p>Emoticono Aleatorio: $emoji</p>";
 ?>
-<div id="caja"></div>
 </body>
 </html>
