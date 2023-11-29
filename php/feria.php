@@ -8,7 +8,7 @@
 <body>
     <h1>Días hasta la feria de Sevilla:</h1>
 <?php
-$feria = strtotime("2024-04-20");
+$feria = strtotime("2024-04-14");
 $hoy = time();
 $segundos = $feria - $hoy;
 $dias = ceil($segundos / (60 * 60 * 24));
