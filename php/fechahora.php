@@ -8,7 +8,7 @@
 <body>
     <h1>Fecha y hora actual</h1>
 <?php
-setlocale(LC_TIME, 'es_ES');
+setlocale(LC_TIME, 'es_ES.UTF-8');
 $hechayhora = strftime('%A, %d de %B de %Y %H:%M:%S');
 echo "<p>$hechayhora</p>";
 ?>
