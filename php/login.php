@@ -11,9 +11,10 @@
         <input type="text" id="nombre" name="nombre" required>
         <label for="contraseña">Contraseña:</label>
         <input type="text" id="contraseña" name="contraseña" required>
-        <button>Enviar</button>
+        <input type="submit" name="submit" value="Enviar">
     </form>
 <?php
+if (isset($_POST['submit'])) {
 if (isset($_POST['nombre']) && !empty($_POST['nombre']) 
 && isset($_POST['contraseña']) && !empty($_POST['contraseña'])) {
     $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_STRING);
@@ -21,10 +22,10 @@ if (isset($_POST['nombre']) && !empty($_POST['nombre'])
     if ($nombre=='admin' && $contraseña=='H4CK3R4$1R') {
         echo "<p>Acceso concedido</p>";    
     }
-    else {echo "Acceso denegado";}
+    else {echo "<p>Acceso denegado</p>";}
 } else {
     echo "<p>Por favor, escriba su nombre y contraseña</p>";
-}
+}}
 ?>
 </body>
 </html>

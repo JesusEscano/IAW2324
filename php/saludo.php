@@ -11,14 +11,16 @@
         <input type="text" id="nombre" name="nombre" required>
         <input type="submit" name="submit" value="Enviar">
     </form>
-<?php
-if (isset($_POST['nombre']) && !empty($_POST['nombre'])) {
-    $nombre = $_POST['nombre'];
-    $fecha = date("d/m/y");
-    echo "<p>Hola $nombre, hoy es $fecha</p>";
-} else {
-    echo "<p>No ha indicado ningún nombre</p>";
-}
-?>
+    <?php
+    if (isset($_POST['submit'])) {
+        if (isset($_POST['nombre']) && !empty($_POST['nombre'])) {
+            $nombre = $_POST['nombre'];
+            $fecha = date("d/m/y");
+            echo "<p>Hola $nombre, hoy es $fecha</p>";
+        } else {
+            echo "<p>No ha indicado ningún nombre</p>";
+        }
+    }
+    ?>
 </body>
 </html>
