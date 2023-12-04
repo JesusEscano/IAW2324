@@ -22,7 +22,7 @@ if (isset($_POST['nombre']) && !empty($_POST['nombre'])
     if ($nombre=='admin' && $contraseña=='H4CK3R4$1R') {
         echo "<p>Acceso concedido</p>";    
     }
-    else {echo "<p>Acceso denegado</p>";}
+    else {echo "Acceso denegado";}
 } else {
     echo "<p>Por favor, escriba su nombre y contraseña</p>";
 }}
