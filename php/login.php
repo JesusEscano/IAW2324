@@ -1,3 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loguee usted</title>
+</head>
+<body>
+    <form action="" method="post">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <label for="contraseña">Contraseña:</label>
+        <input type="text" id="contraseña" name="contraseña" required>
+        <button>Enviar</button>
+    </form>
 <?php
 if (isset($_POST['nombre']) && !empty($_POST['nombre']) 
 && isset($_POST['contraseña']) && !empty($_POST['contraseña'])) {
@@ -11,3 +26,5 @@ if (isset($_POST['nombre']) && !empty($_POST['nombre'])
     echo "<p>Por favor, escriba su nombre y contraseña</p>";
 }
 ?>
+</body>
+</html>
