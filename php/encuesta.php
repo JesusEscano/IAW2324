@@ -21,11 +21,11 @@
 <input type="checkbox" name="videojuegos"> Videojuegos
     </p>
     <p>¿Qué usas más?
-<input type="radio" name="uso" value="tv">Televisión
-<input type="radio" name="uso" value="pc">Ordenador
-<input type="radio" name="uso" value="movil">Móvil
+<input type="radio" name="uso" value="televisión">Televisión
+<input type="radio" name="uso" value="PC">Ordenador
+<input type="radio" name="uso" value="móvil">Móvil
     </p>
-    <p><input type="submit" value="Enviar datos"></p>
+    <p><input type="submit" name="submit" value="Enviar datos"></p>
     </form>
     <?php
 if (isset($_POST['submit'])) {
@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
     $checkbox .= isset($_POST['videojuegos']) ? filter_var('Videojuegos', FILTER_SANITIZE_STRING) . ' ' : '';
     $uso = filter_var($_POST['uso'], FILTER_SANITIZE_STRING);
 
-    echo "<p>$nombre, escuchas música en $opciones1, te gusta $checkbox, usas $uso</p>";
+    echo "<p>$nombre, escuchas música en $opciones1, te gustan los $checkbox y usas principalmente $uso</p>";
 }
 ?>
 </body>
