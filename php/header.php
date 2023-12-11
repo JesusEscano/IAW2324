@@ -2,7 +2,7 @@
 header("refresh:3;url=https://myblog-akoycdevr3.live-website.com/php/saludo.php");
 // Esto vale para que podamos incluir redirecciones con una pantalla de carga 
 // para comprobar ciertos elementos antes de permitir seguir, por ejemplo, hay 
-// de Cloudflare contra DDoS
+// de Cloudflare contra DDoS. También vale para evitar mostrar errores de búsqueda.
 ?>
 <!DOCTYPE html>
 <html lang="es">
