@@ -7,7 +7,7 @@
 </head>
 <body>
 <?php
-include 'config.php';
+include_once 'config.php';
 // Esto nos permite guardar variables que vayamos a usar mucho para poder usarlas en todos los lados solo copiando ese include
 echo '<p>Carpeta de imágenes: ' . IMGS . '</p>';
 echo '<p>Carpeta de PDFs: ' . PDFS . '</p>';
