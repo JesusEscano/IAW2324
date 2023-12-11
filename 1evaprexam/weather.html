@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OWM</title>
+</head>
+<body>
+    <h1>Mostrar longitud y latitud utilizando la API OpenWeatherMap:</h1>
+    <label>Nombre de ciudad: <input id="nombre"><button id="buscar">Calcular</button></label>
+    <p id="rdo"></p> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+$(document).ready(function () {
+    $('#buscar').click(function () {
+        let ciudad = $('#nombre').val();
+        let apikey = 'eab4ddda995e75ff6b5b8b67509cb3ad';
+        if (ciudad.trim() === '') {
+            $('#rdo').html(
+                'Indique una ciudad.'
+                )
+        }
+        let API = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apikey}&units=metric`;
+        $.ajax({
+        url: API,
+        success: function (data) {
+        $('#rdo').html(`<p>Latitud: ${data.coord.lat}</p><p>Longuitud: ${data.coord.lon}</p>`);
+        },
+        error: function (error) {
+        $('#rdo').html(`<p>Ha habido un error al solicitar los datos.</p>`);
+        }
+        });
+        });
+        });
+        //He tardado 5 minutos
+    </script>
+</body>
+</html>
