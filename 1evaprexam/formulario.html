@@ -155,6 +155,7 @@ $anex1.addEventListener("change", function () {
         document.getElementById("anex1m").innerHTML = ` El tamaño máximo es ${tamanioEnMb} MB`;
         // Limpiar
         $anex1.value = "";
+        console.log(archivo.size);
     }
 });
 $anex2.addEventListener("change", function () {
@@ -172,7 +173,6 @@ $anex2.addEventListener("change", function () {
         if (!politica){document.getElementById("polim").innerHTML = "Debe aceptar las políticas";}
         //if (nombre.trim() != '' && apellido.trim() != '' && mail.trim() != '' && mailval.test(mail) && telefon.trim() != '' && telefval.test(telefon) && contador===numero && dni.match(dnicom) && PIN.length===numero && PIN2===PIN) {resultado = "Registrado. Su nombre de usuario es "+nombre.substr(0,2)+apellido.substr(0,2)+telefon.slice(-3);}
         document.getElementById('resultado').innerHTML = resultado;
-
 
         //He tardado hora y media, mucho que escribir
      }
