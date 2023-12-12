@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba localstorage</title>
+</head>
+<body>
+    <label>Nombre de ciudad: <input id="nombre"><button onclick="comp()">Enviar</button></label>
+    <p id="rdo"></p> 
+
+<script>
+    var resultado = '';
+    document.getElementById("rdo").innerHTML = localStorage.getItem("rdog")
+    function comp(){
+        let resultado = (document.getElementById('nombre').value);
+        if (resultado.trim() === ''){document.getElementById("rdo").innerHTML = "Indique una ciudad";}
+        else{document.getElementById("rdo").innerHTML = resultado;
+        localStorage.setItem("rdog",resultado);}
+    }
+</script>
+</body>
+</html>
