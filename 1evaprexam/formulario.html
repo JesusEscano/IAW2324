@@ -133,12 +133,13 @@
         document.getElementById('polim').innerHTML='';
 
         if (asunto.trim() === ''){document.getElementById("asum").innerHTML = " El campo Asunto es necesario para completar el formulario";}
-        if (contador!=numero || !dni.match(dnicom)){document.getElementById("dnim").innerHTML = " El campo DNI es necesario para completar el formulario";}
+        if (dni.trim() === ''){document.getElementById("dnim").innerHTML = " El campo DNI es necesario para completar el formulario";}
+        else if (contador!=numero || !dni.match(dnicom)){document.getElementById("dnim").innerHTML = " El DNI es erróneo";}
         if (nombre.trim() === ''){document.getElementById("nombrem").innerHTML = " El campo Nombre es necesario para completar el formulario";}
         if (apellido.trim() === ''){document.getElementById("ape1m").innerHTML = " El campo Primer Apellido es necesario para completar el formulario";}
         if (fecha.trim() === ''){document.getElementById("fecham").innerHTML = " El campo Fecha de Nacimiento es necesario para completar el formulario";}
-        if (telefon.trim() === ''){document.getElementById("tlfnm").innerHTML = " El número de teléfono es obligatorio";}
-        if (!telefval.test(telefon)){document.getElementById("tlfnm").innerHTML = " Su número de teléfono es erróneo";}
+        if (telefon.trim() === ''){document.getElementById("tlfnm").innerHTML = " El campo Teléfono es necesario para completar el formulario";}
+        else if (!telefval.test(telefon)){document.getElementById("tlfnm").innerHTML = " Su número de teléfono es erróneo";}
         if (direccion.trim() === ''){document.getElementById("direccionm").innerHTML = " El campo Domicilio es necesario para completar el formulario";}
         if (CP.trim() === ''){document.getElementById("CPm").innerHTML = " El campo Código Postal es necesario para completar el formulario";}
         if (provincia.trim() === ''){document.getElementById("munim").innerHTML = " El campo Provincia es necesario para completar el formulario";}
@@ -151,7 +152,7 @@ $anex1.addEventListener("change", function () {
     const archivo = this.files[0];
     if (archivo.size > MAXIMO_TAMANIO_BYTES) {
         const tamanioEnMb = MAXIMO_TAMANIO_BYTES / 1000000;
-        document.getElementById("anex1m").innerHTML = `El tamaño máximo es ${tamanioEnMb} MB`;
+        document.getElementById("anex1m").innerHTML = ` El tamaño máximo es ${tamanioEnMb} MB`;
         // Limpiar
         $anex1.value = "";
     }
@@ -163,7 +164,7 @@ $anex2.addEventListener("change", function () {
     const archivo = this.files[0];
     if (archivo.size > MAXIMO_TAMANIO_BYTES) {
         const tamanioEnMb = MAXIMO_TAMANIO_BYTES / 1000000;
-        document.getElementById("anex2m").innerHTML = `El tamaño máximo es ${tamanioEnMb} MB`;
+        document.getElementById("anex2m").innerHTML = ` El tamaño máximo es ${tamanioEnMb} MB`;
         // Limpiar
         $anex2.value = "";
     }
