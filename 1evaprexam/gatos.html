@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gatos</title>
+</head>
+<body>
+    <h1>Mostrar datos de gatos la API Cat-Facts:</h1>
+    <label>Código de error html: <input id="nombre"><button id="buscar">Obtener</button></label>
+    <p id="rdo"></p> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+$(document).ready(function () {
+    $('#buscar').click(function () {
+        let estado = $('#nombre').val();
+        if (estado.trim() === '') {
+            $('#rdo').html(
+                'Indique un estado del html.'
+                )
+        }
+        else {
+            let url = `https://http.cat`;
+        $('#rdo').html(`<p><img src='${url}/${estado}' alt='gato'></p>`);
+        }
+        });});
+    </script>  
+</body>
+</html>
