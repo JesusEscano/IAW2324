@@ -8,7 +8,7 @@
 <body>
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
         <label for="url">URL:</label>
-        <input type="text" id="url" name="url" required>
+        <input type="text" id="url" name="url" placeholder="http://example.com" required>
         <input type="submit" name="submit" value="Obtener correos electrónicos">
     </form>
 
