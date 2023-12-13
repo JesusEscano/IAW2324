@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OWM</title>
+</head>
+<body>
+    <h1>Mostrar la calidad del aire utilizando la API OpenWeatherMap:</h1>
+    <label>Latitud: <input id="lat"></label>
+    <label>Longitud: <input id="lon"></label>
+    <button id="buscar">Comprobar</button>
+    <p id="rdo"></p> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+$(document).ready(function () {
+    $('#buscar').click(function () {
+        let latitud = $('#lat').val();
+        let longitud = $('#lon').val();
+        let apikey = '99781da0f1234ca8f51c903c27ef9c7b';
+        if (latitud.trim() === '' | longitud.trim() === '') {
+            $('#rdo').html(
+                'Debe indicar ambos datos.'
+                )
+        }
+        let API = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${latitud}&lon=${longitud}&appid=${apikey}`;
+        $.ajax({
+        url: API,
+        success: function (data) {
+        let calidad = data.list[0].main.aqi;
+        let cal=0;
+        if (calidad == 1){cal='Buena';}
+        else if (calidad == 2){cal='Aceptable';}
+        else if (calidad == 3){cal='Moderada';}
+        else if (calidad == 4){cal='Mala';}
+        else {cal='Muy mala';}
+        $('#rdo').html(`<p>Calidad del aire: ${cal}</p><p>Cantidad de monoxido de carbono: ${data.list[0].components.co} μg/m3</p>`);
+        console.log(data.list[0])
+        },
+        error: function (error) {
+        $('#rdo').html(`<p>Se ha producido un error al solicitar los datos.</p>`);
+        }
+        });
+        });
+        });
+        //He tardado 5 minutos
+    </script>
+</body>
+</html>
