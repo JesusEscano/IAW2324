@@ -9,10 +9,18 @@ echo "<p>". $_COOKIE['color'] . "</p>";
 // Forzar renovación de cookies
 if (isset($_POST['renueva'])) {
 // Establecer nuevas cookies con una fecha de expiración extendida
-setcookie("user", $_COOKIE["user"], time() + 3600 * 24 * 30, "/");
-setcookie("color", $_COOKIE["color"], time() + 3600 * 24 * 30, "/");
+setcookie("user", $_COOKIE["user"], time() + 3600, "/");
+setcookie("color", $_COOKIE["color"], time() + 3600, "/");
 echo "<p>Las cookies se han renovado.</p>";
 }
+// Forzar borrado de cookies
+//if (isset($_POST['borra'])) {
+    // Establecer nuevas cookies revirtiendo la fecha de expiración
+//    setcookie("user", $_COOKIE["user"], time() - 3600 *24 * 30, "/");
+//    setcookie("color", $_COOKIE["color"], time() - 3600 *24 * 30, "/");
+//    echo "<p>Las cookies se han borrado.</p>";
+//    }
+// poner abajo: <input type="submit" name="borra" value="Borrar cookies">
 ?>
 <!DOCTYPE html>
 <html lang="es">
