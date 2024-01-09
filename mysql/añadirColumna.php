@@ -6,20 +6,20 @@ include_once 'secret.php';
 $conn = new mysqli($servername, $username, $password, $database);
 
 // Verificar la conexión
-//if ($conn->connect_error) {
-//    die("Error de conexión a la base de datos: " . $conn->connect_error);
-//}
+if ($conn->connect_error) {
+    die("Error de conexión a la base de datos: " . $conn->connect_error);
+}
 
-// Consulta SQL para obtener un registro de la tabla usuarios
-$sql = "ALTER TABLE usuarios ADD ";
-//$result = $conn->query($sql);
+// Consulta SQL para añadir nuevas columnas
+$sql = "ALTER TABLE usuarios ADD COLUMN fullname VARCHAR(255), ADD COLUMN email VARCHAR(255)";
 
-// Verificar si hay resultados
-if ($conn->query($sql) == True) {
-    // Mostrar los datos de cada fila
-        echo "Nuevo registro modificado correctamente";
+// Ejecutar la consulta
+if ($conn->query($sql) === TRUE) {
+    // Mostrar mensaje si se añadieron las columnas exitosamente
+    echo "Añadidas nuevas columnas.";
 } else {
-    echo "No se puede insertar.";
+    // Mostrar mensaje de error si no se pudieron añadir las columnas
+    echo "Error al añadir columnas: " . $conn->error;
 }
 
 // Cerrar conexión

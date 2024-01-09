@@ -18,9 +18,9 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // Mostrar los datos de cada fila
     while ($row = $result->fetch_assoc()) {
-        echo "ID: " . $row["id"] . "<br>";
-        echo "Usuario: " . $row["username"] . "<br>";
-        echo "Contraseña: " . $row["password"] . "<br>";
+        foreach ($row as $columna => $valor) {
+            echo "$columna: $valor <br>";
+        }
         echo "<hr>"; // Separador entre registros
     }
 } else {
