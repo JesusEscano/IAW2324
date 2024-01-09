@@ -18,10 +18,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // Mostrar los datos de la primera fila
     $row = $result->fetch_assoc();
-    echo "ID: " . $row["id"] . "<br>";
-    echo "Nombre: " . $row["username"] . "<br>";
-    echo "Contraseña: " . $row["password"] . "<br>";
-    // Agrega más campos según la estructura de tu tabla
+    echo "ID: " . $row["id"]. " - Nombre: " . $row["username"]. " - Contraseña: " . $row["password"]. "<br>";
 } else {
     echo "No se encontraron registros en la tabla usuarios.";
 }
