@@ -1,4 +1,9 @@
 <!-- Footer -->
+<?php session_start()?>
+<?php if($_SESSION['user']){
+}else{
+ header("Location: ../login.php");
+}?>
 <?php include "../header.php"?>
 
 <?php
