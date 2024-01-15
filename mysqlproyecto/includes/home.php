@@ -1,8 +1,15 @@
 <!-- Header -->
+<?php session_start()?>
+<?php if($_SESSION['user']){
+}else{
+ header("Location: ../login.php");
+}?>
 <?php include "../header.php"?>
+<?php include "login.php"?>
 
   <div class="container">
     <h1 class="text-center" >Gestión de incidencias (CRUD)</h1>
+    <h3 class="text-center" >Bienvenido, <?php print_r($_SESSION["user"]);?></h3>
       <a href="create.php" class='btn btn-outline-dark mb-2'> <i class="bi bi-person-plus"></i> Añadir incidencia</a>
         <table class="table table-striped table-bordered table-hover">
           <thead class="table-dark">
@@ -54,6 +61,6 @@
         </table>
   </div>
 <div class="container text-center mt-5">
-      <a href="../index.php" class="btn btn-warning mt-5"> Volver </a>
+      <a href="../login.php" class="btn btn-warning mt-5"> Volver </a>
     <div>
 <?php include "../footer.php" ?>

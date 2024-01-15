@@ -22,8 +22,9 @@ if ($_POST){
             $row = $result->fetch_assoc();
             $hash_contraseña = base64_decode($row['password']);
             if ($hash_contraseña === $contrasena) {
-                echo "<p class='text-center'>Bienvenido " . $usuario . "</p>";
-                echo "<p class='text-center'><a href='http://jesusclase.thsite.top/pmysql/includes/home.php' class='btn btn-success'>A la página de gestión</a></p>";
+                session_start();
+                $_SESSION["user"] = $usuario;
+                header("location: includes/home.php");
             } else {
                 echo "<p class='text-center'>Acceso denegado, contraseña incorrecta</p>";
             }
