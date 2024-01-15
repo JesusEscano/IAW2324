@@ -26,20 +26,26 @@
     <h1 class="text-center" >Gestión de incidencias (CRUD)</h1>
     <h3 class="text-center" >Bienvenido, <?php print_r($_SESSION["user"]);?></h3>
       <a href="create.php" class='btn btn-outline-dark mb-2'> <i class="bi bi-person-plus"></i> Añadir incidencia</a>
-      <div class="mb-3">
-    <table class="table">
-        <tr class="table-dark">
-            <th>Total de incidencias</th>
-            <th>Incidencias resueltas</th>
-            <th>Incidencias pendientes</th>
-        </tr>
-        <tr>
-            <td class="celdasinfo celdatotal"><?php echo $total; ?></td>
-            <td class="celdasinfo celdartas"><?php echo $resueltas; ?></td>
-            <td class="celdasinfo celdaptes"><?php echo $pendientes; ?></td>
-        </tr>
-    </table>
-</div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item" style="margin-right: 5px;">
+                    <a class="nav-link btn btn-success" href="resueltas.php" style="font-size: 18px; color: #fff;">Incidencias resueltas (<?php echo $resueltas; ?>)</a>
+                </li>
+                <li class="nav-item" style="margin-right: 5px;">
+                    <a class="nav-link btn btn-danger" href="pendientes.php" style="font-size: 18px; color: #fff;">Incidencias pendientes (<?php echo $pendientes; ?>)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary" href="home.php" style="font-size: 18px; color: #fff;">Ver todas (<?php echo $total; ?>)</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
         <table class="table table-striped table-bordered table-hover">
           <thead class="table-dark">
             <tr>
