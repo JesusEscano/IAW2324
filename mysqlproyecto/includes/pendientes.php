@@ -25,7 +25,6 @@
 
     <h1 class="text-center" >Gestión de incidencias (CRUD)</h1>
     <h3 class="text-center" >Bienvenido, <?php print_r($_SESSION["user"]);?></h3>
-      <a href="create.php" class='btn btn-outline-dark mb-2'> <i class="bi bi-person-plus"></i> Añadir incidencia</a>
       <div class="mb-3">
     <table class="table">
         <tr class="table-dark">
@@ -58,7 +57,7 @@
               <tr>
  
           <?php
-            $query="SELECT * FROM incidencias";               
+            $query="SELECT * FROM incidencias WHERE fecha_sol IS NULL";               
             $vista_incidencias= mysqli_query($conn,$query);
 
             while($row= mysqli_fetch_assoc($vista_incidencias)){

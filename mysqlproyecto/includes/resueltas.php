@@ -25,7 +25,6 @@
 
     <h1 class="text-center" >Gestión de incidencias (CRUD)</h1>
     <h3 class="text-center" >Bienvenido, <?php print_r($_SESSION["user"]);?></h3>
-      <a href="create.php" class='btn btn-outline-dark mb-2'> <i class="bi bi-person-plus"></i> Añadir incidencia</a>
       <div class="mb-3">
     <table class="table">
         <tr class="table-dark">
@@ -58,7 +57,7 @@
               <tr>
  
           <?php
-            $query="SELECT * FROM incidencias";               
+            $query="SELECT * FROM incidencias WHERE fecha_sol IS NOT NULL AND fecha_sol <> '0000-00-00'";               
             $vista_incidencias= mysqli_query($conn,$query);
 
             while($row= mysqli_fetch_assoc($vista_incidencias)){
@@ -80,7 +79,6 @@
               echo " <td >{$fecha_sol} </td>";
               echo " <td >{$comentario} </td>";
               echo " <td class='text-center'> <a href='view.php?incidencia_id={$id}' class='btn btn-primary'> <i class='bi bi-eye'></i> Ver</a> </td>";
-              echo " <td class='text-center' > <a href='update.php?editar&incidencia_id={$id}' class='btn btn-secondary'><i class='bi bi-pencil'></i> Editar</a> </td>";
               echo " <td class='text-center'>  <a href='delete.php?eliminar={$id}' class='btn btn-danger'> <i class='bi bi-trash'></i> Eliminar</a> </td>";
               echo " </tr> ";
                   }  
