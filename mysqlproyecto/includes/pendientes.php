@@ -33,13 +33,16 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item" style="margin-right: 5px;">
-                    <a class="nav-link btn btn-success" href="resueltas.php" style="font-size: 18px; color: #fff;">Incidencias resueltas (<?php echo $resueltas; ?>)</a>
+                    <a class='nav-link btn btn-outline-dark' href="create.php" style="font-size: 18px; color: #000;">Añadir incidencia</a>
                 </li>
                 <li class="nav-item" style="margin-right: 5px;">
-                    <a class="nav-link btn btn-danger" href="pendientes.php" style="font-size: 18px; color: #fff;">Incidencias pendientes (<?php echo $pendientes; ?>)</a>
+                    <a class="nav-link btn btn-outline-dark" href="home.php" style="font-size: 18px; color: #000;">Ver todas (<?php echo $total; ?>)</a>
+                </li>
+                <li class="nav-item" style="margin-right: 5px;">
+                    <a class="nav-link btn btn-outline-success" href="resueltas.php" style="font-size: 18px; color: #000;">Incidencias resueltas (<?php echo $resueltas; ?>)</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-primary" href="home.php" style="font-size: 18px; color: #fff;">Ver todas (<?php echo $total; ?>)</a>
+                    <a class="nav-link btn btn-outline-danger" href="pendientes.php" style="font-size: 18px; color: #000;">Incidencias pendientes (<?php echo $pendientes; ?>)</a>
                 </li>
             </ul>
         </div>
