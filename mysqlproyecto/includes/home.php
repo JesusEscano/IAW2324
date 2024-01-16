@@ -34,6 +34,9 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item" style="margin-right: 5px;">
+                    <a class="nav-link btn btn-primary" href="create.php" style="font-size: 18px; color: #fff;">Añadir incidencia</a>
+                </li>
+                <li class="nav-item" style="margin-right: 5px;">
                     <a class="nav-link btn btn-success" href="resueltas.php" style="font-size: 18px; color: #fff;">Incidencias resueltas (<?php echo $resueltas; ?>)</a>
                 </li>
                 <li class="nav-item" style="margin-right: 5px;">
