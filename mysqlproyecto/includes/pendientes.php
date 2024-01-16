@@ -32,18 +32,10 @@
         </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item" style="margin-right: 5px;">
-                    <a class='nav-link btn btn-outline-dark' href="create.php" style="font-size: 18px; color: #000;">Añadir incidencia</a>
-                </li>
-                <li class="nav-item" style="margin-right: 5px;">
-                    <a class="nav-link btn btn-outline-dark" href="home.php" style="font-size: 18px; color: #000;">Ver todas (<?php echo $total; ?>)</a>
-                </li>
-                <li class="nav-item" style="margin-right: 5px;">
-                    <a class="nav-link btn btn-outline-success" href="resueltas.php" style="font-size: 18px; color: #000;">Incidencias resueltas (<?php echo $resueltas; ?>)</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link btn btn-outline-danger" href="pendientes.php" style="font-size: 18px; color: #000;">Incidencias pendientes (<?php echo $pendientes; ?>)</a>
-                </li>
+                <a class="btn btn-outline-yellow mb-2" href="create.php" style="font-size: 18px; color: #000;"><i class="bi bi-person-plus"></i> Añadir incidencia</a>
+                <a class="btn btn-outline-blue mb-2" href="home.php" style="font-size: 18px; color: #000;"><i class="bi bi-house-door"></i> Ver todas (<?php echo $total; ?>)</a>
+                <a class="btn btn-outline-green mb-2" href="resueltas.php" style="font-size: 18px; color: #000;"><i class="bi bi-check"></i> Incidencias resueltas (<?php echo $resueltas; ?>)</a>
+                <a class="btn btn-outline-red mb-2" href="pendientes.php" style="font-size: 18px; color: #000;"><i class="bi bi-exclamation"></i> Incidencias pendientes (<?php echo $pendientes; ?>)</a>
             </ul>
         </div>
     </div>
