@@ -51,9 +51,9 @@
     $(document).ready(function () {
         // Definir un objeto con las aulas correspondientes a cada planta
         var aulasPorPlanta = {
-            baja: ["Aula 101", "Aula 102", "Aula 103"],
-            primera: ["Aula 201", "Aula 202", "Aula 203"],
-            segunda: ["Aula 301", "Aula 302", "Aula 303"]
+            Baja: ["Aula 101", "Aula 102", "Aula 103"],
+            Primera: ["Aula 201", "Aula 202", "Aula 203"],
+            Segunda: ["Aula 301", "Aula 302", "Aula 303"]
         };
 
         // Función para actualizar las opciones del desplegable de Aula
@@ -109,15 +109,15 @@
         </div>
         <div class="d-flex justify-content-center">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_baja" value="baja" onclick="seleccionarPlanta('baja')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_baja" value="Baja" onclick="seleccionarPlanta('baja')">
                 <label class="form-check-label" for="planta_baja">Baja</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_primera" value="primera" onclick="seleccionarPlanta('primera')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_primera" value="Primera" onclick="seleccionarPlanta('primera')">
                 <label class="form-check-label" for="planta_primera">Primera</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_segunda" value="segunda" onclick="seleccionarPlanta('segunda')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_segunda" value="Segunda" onclick="seleccionarPlanta('segunda')">
                 <label class="form-check-label" for="planta_segunda">Segunda</label>
             </div>
         </div>

@@ -23,9 +23,8 @@
         $pendientes = mysqli_fetch_assoc($rcpendientes)['pendientes'];
     ?>
 
-    <h1 class="text-center" >Gestión de incidencias (CRUD)</h1>
+    <h1 class="text-center" >INCIDENCIAS TOTALES (<?php echo $total; ?>)</h1>
     <h3 class="text-center" >Bienvenido, <?php print_r($_SESSION["user"]);?></h3>
-      <a href="create.php" class='btn btn-outline-dark mb-2'> <i class="bi bi-person-plus"></i> Añadir incidencia</a>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,16 +33,16 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item" style="margin-right: 5px;">
-                    <a class="nav-link btn btn-primary" href="create.php" style="font-size: 18px; color: #fff;">Añadir incidencia</a>
+                <a class="nav-link btn btn-primary" href="create.php" style="font-size: 18px; color: #fff;"><i class="bi bi-plus-circle"></i> Añadir incidencia</a>
                 </li>
                 <li class="nav-item" style="margin-right: 5px;">
-                    <a class="nav-link btn btn-success" href="resueltas.php" style="font-size: 18px; color: #fff;">Incidencias resueltas (<?php echo $resueltas; ?>)</a>
+                    <a class="nav-link btn btn-success" href="resueltas.php" style="font-size: 18px; color: #fff;"><i class="bi bi-check-circle"></i> Incidencias resueltas (<?php echo $resueltas; ?>)</a>
                 </li>
                 <li class="nav-item" style="margin-right: 5px;">
-                    <a class="nav-link btn btn-danger" href="pendientes.php" style="font-size: 18px; color: #fff;">Incidencias pendientes (<?php echo $pendientes; ?>)</a>
+                    <a class="nav-link btn btn-danger" href="pendientes.php" style="font-size: 18px; color: #fff;"><i class="bi bi-exclamation-circle"></i> Incidencias pendientes (<?php echo $pendientes; ?>)</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-primary" href="home.php" style="font-size: 18px; color: #fff;">Ver todas (<?php echo $total; ?>)</a>
+                    <a class="nav-link btn btn-primary" href="home.php" style="font-size: 18px; color: #fff;"><i class="bi bi-house-door"></i> Ver todas (<?php echo $total; ?>)</a>
                 </li>
             </ul>
         </div>
