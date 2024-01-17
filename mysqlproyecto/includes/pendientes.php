@@ -23,7 +23,7 @@
         $pendientes = mysqli_fetch_assoc($rcpendientes)['pendientes'];
     ?>
 
-    <h1 class="text-center" >Gestión de incidencias (CRUD)</h1>
+    <h1 class="text-center" >INCIDENCIAS PENDIENTES (<?php echo $pendientes; ?>)</h1>
     <h3 class="text-center" >Bienvenido, <?php print_r($_SESSION["user"]);?></h3>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
@@ -32,10 +32,15 @@
         </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
-                <a class="btn btn-outline-yellow mb-2" href="create.php" style="font-size: 18px; color: #000;"><i class="bi bi-person-plus"></i> Añadir incidencia</a>
-                <a class="btn btn-outline-blue mb-2" href="home.php" style="font-size: 18px; color: #000;"><i class="bi bi-house-door"></i> Ver todas (<?php echo $total; ?>)</a>
-                <a class="btn btn-outline-green mb-2" href="resueltas.php" style="font-size: 18px; color: #000;"><i class="bi bi-check"></i> Incidencias resueltas (<?php echo $resueltas; ?>)</a>
-                <a class="btn btn-outline-red mb-2" href="pendientes.php" style="font-size: 18px; color: #000;"><i class="bi bi-exclamation"></i> Incidencias pendientes (<?php echo $pendientes; ?>)</a>
+                <li class="nav-item" style="margin-right: 5px;">
+                <a class="nav-link btn btn-primary" href="create.php" style="font-size: 18px; color: #fff;"><i class="bi bi-plus-circle"></i> Añadir incidencia</a>
+                </li>
+                <li class="nav-item" style="margin-right: 5px;">
+                    <a class="nav-link btn btn-success" href="resueltas.php" style="font-size: 18px; color: #fff;"><i class="bi bi-check-circle"></i> Incidencias resueltas (<?php echo $resueltas; ?>)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary" href="home.php" style="font-size: 18px; color: #fff;"><i class="bi bi-house-door"></i> Ver todas (<?php echo $total; ?>)</a>
+                </li>
             </ul>
         </div>
     </div>
