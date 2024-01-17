@@ -29,47 +29,51 @@
 ?>
 
 <script>
-    // Función para seleccionar la planta
-    function seleccionarPlanta(planta) {
+    // Seleccionar planta
+    function splanta(planta) {
         document.getElementById('planta').value = planta;
-        actualizarAulas();
+        mostraraula();
     }
 
-    // Función para establecer la fecha actual en el campo de Fecha Alta
-    function establecerFechaActual() {
-        var fechaActual = new Date().toISOString().split('T')[0];
-        document.getElementById('fecha_alta').value = fechaActual;
-    }
+    // Saber qué día es hoy
+    function hoy() {
+        var hoy = new Date();
+        var dd = String(hoy.getDate()).padStart(2, '0');
+        var mm = String(hoy.getMonth() + 1).padStart(2, '0'); // El mes está indexado desde 0
+        var yyyy = hoy.getFullYear();
 
-    // Función para establecer la fecha actual en el campo de Fecha Revisión y Fecha Solución
-    function establecerFechaActualEnCampos() {
-        var fechaActual = new Date().toISOString().split('T')[0];
-        document.getElementById('fecha_rev').value = fechaActual;
-        document.getElementById('fecha_sol').value = fechaActual;
+        var fechahoy = dd + '-' + mm + '-' + yyyy;
+        document.getElementById('fecha_alta').value = fechahoy;
+        document.getElementById('fecha_rev').value = fechahoy;
+        document.getElementById('fecha_sol').value = fechahoy;
     }
-
+      
+// Fijar hoy en fecha alta
+$(document).ready(function () {
+    $("#fecha_alta").datepicker({
+        dateFormat: 'dd-mm-yy',
+});})
+    // Poner en ready, marca aulas x planta
     $(document).ready(function () {
-        // Definir un objeto con las aulas correspondientes a cada planta
-        var aulasPorPlanta = {
-            baja: ["Aula 101", "Aula 102", "Aula 103"],
-            primera: ["Aula 201", "Aula 202", "Aula 203"],
-            segunda: ["Aula 301", "Aula 302", "Aula 303"]
+        var aulaxplanta = {
+            baja: ["Aula 1", "Aula 2", "Aula 3"],
+            primera: ["Aula 101", "Aula 102", "Aula 103"],
+            segunda: ["Aula 201", "Aula 202", "Aula 203"]
         };
 
         // Función para actualizar las opciones del desplegable de Aula
-        function actualizarAulas() {
+        function mostraraula() {
             // Obtener el valor seleccionado de Planta
-            var plantaSeleccionada = $("input[name='planta']:checked").val();
+            var haelegidoplanta = $("input[name='planta']:checked").val();
 
             // Obtener las aulas correspondientes a la planta seleccionada
-            var aulas = aulasPorPlanta[plantaSeleccionada] || [];
+            var aulas = aulaxplanta[haelegidoplanta] || [];
 
-            // Limpiar el desplegable actual
+            // Limpiar el desplegable
             $("#aula").empty();
 
-            // Si hay una planta seleccionada
-            if (plantaSeleccionada) {
-                // Añadir las nuevas opciones al desplegable de Aula
+            // Si hay una planta seleccionada, añade las aluadas posibles
+            if (haelegidoplanta) {
                 $.each(aulas, function (index, aula) {
                     $("#aula").append('<option value="' + aula + '">' + aula + '</option>');
                 });
@@ -77,26 +81,23 @@
                 // Activar el desplegable
                 $("#aula").prop("disabled", false);
             } else {
-                // Si no hay planta seleccionada, agregar la opción de placeholder y desactivar el desplegable
+                // Placeholder si no ha elegido
                 $("#aula").append('<option disabled selected value="" style="text-align:center;">Por favor, seleccione la planta</option>');
                 $("#aula").prop("disabled", true);
             }
         }
 
-        // Vincular la función a los cambios en el desplegable de Planta
+        // Cambiar las aulas
         $("input[name='planta']").change(function () {
-            actualizarAulas();
+          mostraraula();
         });
 
-        // Llamar a la función una vez para inicializar las opciones
-        actualizarAulas();
-
-        // Establecer la fecha actual en el campo de Fecha Alta al cargar la página
-        establecerFechaActual();
+        // Llamar a la función para que se aplique por si caso no lo ha hecho antes
+        mostraraula();
 
         // Vincular la función para establecer la fecha actual en el clic de Fecha Revisión y Fecha Solución
         $("#fecha_rev, #fecha_sol").click(function () {
-        establecerFechaActualEnCampos();
+        ponerhoy();
 });
     });
 </script>
@@ -109,15 +110,15 @@
         </div>
         <div class="d-flex justify-content-center">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_baja" value="baja" onclick="seleccionarPlanta('baja')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_baja" value="baja" onclick="splanta('baja')">
                 <label class="form-check-label" for="planta_baja">Baja</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_primera" value="primera" onclick="seleccionarPlanta('primera')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_primera" value="primera" onclick="splanta('primera')">
                 <label class="form-check-label" for="planta_primera">Primera</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_segunda" value="segunda" onclick="seleccionarPlanta('segunda')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_segunda" value="segunda" onclick="splanta('segunda')">
                 <label class="form-check-label" for="planta_segunda">Segunda</label>
             </div>
         </div>
@@ -132,7 +133,7 @@
       </div>
       <div class="form-group text-center">
       <h4><label for="fecha_alta" class="form-label">Fecha Alta</label></h4>
-        <input type="date" name="fecha_alta"  class="form-control">
+        <input type="text" name="fecha_alta"  class="form-control" id="fecha_alta" value="<?php echo date('d-m-y') ?>" readonly>
       </div>
       <div class="form-group text-center">
       <h4><label for="fecha_rev" class="form-label">Fecha Revisión</label></h4>
