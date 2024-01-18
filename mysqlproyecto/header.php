@@ -35,6 +35,11 @@ color: white;
 background-color: #3498DB !important;
 color: white;
 }
+
+.fondo {
+            background-image: url('entrada.jpg');
+            min-height: 90vh;
+}
     </style>
     <title>Gestión de incidencias (CRUD)</title>
 </head>
