@@ -13,7 +13,6 @@
         $comentario = htmlspecialchars($_POST['comentario']);
         $fecha_alta = htmlspecialchars($_POST['fecha_alta']);
         $fecha_rev = htmlspecialchars($_POST['fecha_rev']);
-        if 
         $fecha_sol = htmlspecialchars($_POST['fecha_sol']);
       
         $query= "INSERT INTO incidencias(planta, aula, descripcion, fecha_alta, fecha_rev, fecha_sol, comentario) VALUES('{$planta}','{$aula}','{$descripcion}','{$fecha_alta}','{$fecha_rev}','{$fecha_sol}','{$comentario}')";
@@ -48,12 +47,21 @@
         document.getElementById('fecha_rev').value = fechahoy;
         document.getElementById('fecha_sol').value = fechahoy;
     }
-      
-// Fijar hoy en fecha alta
-$(document).ready(function () {
-    $("#fecha_alta").datepicker({
-        dateFormat: 'dd-mm-yy',
-});})
+
+    // Poner las fechas en null si son 0s
+    function ponerhoy() {
+        var fecha_rev = document.getElementById('fecha_rev').value;
+        var fecha_sol = document.getElementById('fecha_sol').value;
+
+        if (fecha_rev === '0000-00-00') {
+            document.getElementById('fecha_rev').value = null;
+        }
+
+        if (fecha_sol === '0000-00-00') {
+            document.getElementById('fecha_sol').value = null;
+        }
+    }
+
     // Poner en ready, marca aulas x planta
     $(document).ready(function () {
         var aulaxplanta = {
@@ -90,16 +98,19 @@ $(document).ready(function () {
 
         // Cambiar las aulas
         $("input[name='planta']").change(function () {
-          mostraraula();
+            mostraraula();
+        });
+
+        // Vincular la función para establecer la fecha actual en el clic de Fecha Revisión y Fecha Solución
+        $("#fecha_rev, #fecha_sol").click(function () {
+            ponerhoy();
         });
 
         // Llamar a la función para que se aplique por si caso no lo ha hecho antes
         mostraraula();
 
-        // Vincular la función para establecer la fecha actual en el clic de Fecha Revisión y Fecha Solución
-        $("#fecha_rev, #fecha_sol").click(function () {
-        ponerhoy();
-});
+        // Seleccionar planta por defecto
+        splanta('baja');
     });
 </script>
 
@@ -111,15 +122,15 @@ $(document).ready(function () {
         </div>
         <div class="d-flex justify-content-center">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_baja" value="baja" onclick="splanta('baja')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_baja" value="Baja" onclick="splanta('baja')">
                 <label class="form-check-label" for="planta_baja">Baja</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_primera" value="primera" onclick="splanta('primera')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_primera" value="Primera" onclick="splanta('primera')">
                 <label class="form-check-label" for="planta_primera">Primera</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_segunda" value="segunda" onclick="splanta('segunda')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_segunda" value="Segunda" onclick="splanta('segunda')">
                 <label class="form-check-label" for="planta_segunda">Segunda</label>
             </div>
         </div>
