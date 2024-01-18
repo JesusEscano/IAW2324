@@ -15,8 +15,9 @@
     <input type="text" id="nombre" name="nombre" placeholder="Usuario" class="form-control my-4 py-2" style="text-align: center" required></p>
     <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" class="form-control my-4 py-2" style="text-align: center"  required></p>
     <div class="text-center mt-3">
-    <input type="submit" class="btn btn-primary mt-2" name="submit" value="Iniciar sesión"></p>
+    <input type="submit" class="btn btn-primary mt-2" name="submit" value="Iniciar sesión">
 </form>
+<div class="text-center mt-3" id="error"></div>
 </div>
 </div> 
 </div>
@@ -45,10 +46,14 @@ if ($_POST){
                 $_SESSION["user"] = $usuario;
                 header("location: includes/home.php");
             } else {
-                echo "<p class='text-center'>Acceso denegado, contraseña incorrecta</p>";
+                $mensajecontra = "Acceso denegado, contraseña incorrecta";
+                $mensajecontra = htmlspecialchars($mensajecontra, ENT_QUOTES, 'UTF-8');
+                echo "<script>document.getElementById('error').innerHTML = '<p class=\"text-center\">$mensajecontra</p>';</script>";
             }
         } else {
-            echo "<p class='text-center'>Acceso denegado, el usuario no está en la base de datos</p>";
+            $mensajeUsu = "Acceso denegado, el usuario no está en la base de datos";
+            $mensajeUsu = htmlspecialchars($mensajeUsu, ENT_QUOTES, 'UTF-8');
+            echo "<script>document.getElementById('error').innerHTML = '<p class=\"text-center\">$mensajeUsu</p>';</script>";
         }
         
         $stmt->close();

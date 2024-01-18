@@ -13,6 +13,7 @@
         $comentario = htmlspecialchars($_POST['comentario']);
         $fecha_alta = htmlspecialchars($_POST['fecha_alta']);
         $fecha_rev = htmlspecialchars($_POST['fecha_rev']);
+        if 
         $fecha_sol = htmlspecialchars($_POST['fecha_sol']);
       
         $query= "INSERT INTO incidencias(planta, aula, descripcion, fecha_alta, fecha_rev, fecha_sol, comentario) VALUES('{$planta}','{$aula}','{$descripcion}','{$fecha_alta}','{$fecha_rev}','{$fecha_sol}','{$comentario}')";
