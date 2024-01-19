@@ -39,10 +39,10 @@
     function hoy() {
         var hoy = new Date();
         var dd = String(hoy.getDate()).padStart(2, '0');
-        var mm = String(hoy.getMonth() + 1).padStart(2, '0'); // El mes está indexado desde 0
+        var mm = String(hoy.getMonth() + 1).padStart(2, '0');
         var yyyy = hoy.getFullYear();
 
-        var fechahoy = dd + '-' + mm + '-' + yyyy;
+        var fechahoy = yyyy + '-' + mm + '-' + dd;
         document.getElementById('fecha_alta').value = fechahoy;
         document.getElementById('fecha_rev').value = fechahoy;
         document.getElementById('fecha_sol').value = fechahoy;
@@ -65,9 +65,9 @@
     // Poner en ready, marca aulas x planta
     $(document).ready(function () {
         var aulaxplanta = {
-            baja: ["Aula 1", "Aula 2", "Aula 3"],
-            primera: ["Aula 101", "Aula 102", "Aula 103"],
-            segunda: ["Aula 201", "Aula 202", "Aula 203"]
+            Baja: ["Aula 1", "Aula 2", "Aula 3"],
+            Primera: ["Aula 101", "Aula 102", "Aula 103"],
+            Segunda: ["Aula 201", "Aula 202", "Aula 203"]
         };
 
         // Función para actualizar las opciones del desplegable de Aula
@@ -81,7 +81,7 @@
             // Limpiar el desplegable
             $("#aula").empty();
 
-            // Si hay una planta seleccionada, añade las aluadas posibles
+            // Si hay una planta seleccionada, añade las aulas posibles
             if (haelegidoplanta) {
                 $.each(aulas, function (index, aula) {
                     $("#aula").append('<option value="' + aula + '">' + aula + '</option>');
@@ -122,15 +122,15 @@
         </div>
         <div class="d-flex justify-content-center">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_baja" value="Baja" onclick="splanta('baja')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_baja" value="Baja" onclick="splanta('Baja')">
                 <label class="form-check-label" for="planta_baja">Baja</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_primera" value="Primera" onclick="splanta('primera')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_primera" value="Primera" onclick="splanta('Primera')">
                 <label class="form-check-label" for="planta_primera">Primera</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="planta" id="planta_segunda" value="Segunda" onclick="splanta('segunda')">
+                <input class="form-check-input" type="radio" name="planta" id="planta_segunda" value="Segunda" onclick="splanta('Segunda')">
                 <label class="form-check-label" for="planta_segunda">Segunda</label>
             </div>
         </div>
