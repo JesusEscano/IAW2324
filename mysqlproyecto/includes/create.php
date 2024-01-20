@@ -1,21 +1,36 @@
-<?php session_start()?>
-<?php if($_SESSION['user']){
-}else{
- header("Location: ../login.php");
-}?>
-<?php  include "../header.php" ?>
+<?php
+session_start();
+
+if (!isset($_SESSION['user'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+include "../header.php"; // Agrega un punto y coma aquí
+
+$usuario_activo = $_SESSION['user'];
+$query_usuario = "SELECT id FROM usuarios WHERE usuario = '$usuario_activo'";
+$resultado_usuario = mysqli_query($conn, $query_usuario);
+
+if ($resultado_usuario) {
+    $fila_usuario = mysqli_fetch_assoc($resultado_usuario);
+    $usuario_id = $fila_usuario['id'];
+} else {
+    die("Error al obtener el ID del usuario: " . mysqli_error($conn));
+}
+
+?>
 <?php 
   if(isset($_POST['crear'])) 
     {
         $planta = htmlspecialchars($_POST['planta']);
         $aula = htmlspecialchars($_POST['aula']);
         $descripcion = htmlspecialchars($_POST['descripcion']);
+        $fecha_alta = USA(htmlspecialchars($_POST['fecha_alta']));
+        $fecha_rev = USA(htmlspecialchars($_POST['fecha_rev']));
+        $fecha_sol = USA(htmlspecialchars($_POST['fecha_sol']));
         $comentario = htmlspecialchars($_POST['comentario']);
-        $fecha_alta = htmlspecialchars($_POST['fecha_alta']);
-        $fecha_rev = htmlspecialchars($_POST['fecha_rev']);
-        $fecha_sol = htmlspecialchars($_POST['fecha_sol']);
-      
-        $query= "INSERT INTO incidencias(planta, aula, descripcion, fecha_alta, fecha_rev, fecha_sol, comentario) VALUES('{$planta}','{$aula}','{$descripcion}','{$fecha_alta}','{$fecha_rev}','{$fecha_sol}','{$comentario}')";
+        $query = "INSERT INTO incidencias(planta, aula, descripcion, fecha_alta, fecha_rev, fecha_sol, comentario, usuario_id) VALUES('{$planta}','{$aula}','{$descripcion}','{$fecha_alta}','{$fecha_rev}','{$fecha_sol}','{$comentario}','{$usuario_id}')";
         $resultado = mysqli_query($conn,$query);
     
           if (!$resultado) {
@@ -26,40 +41,53 @@
             echo "<script type='text/javascript'>alert('¡Incidencia añadida con éxito!')</script>";
           }         
     }
+    function USA($fecha)
+{
+    // Convierte la fecha de formato europeo (dd-mm-yyyy) a formato americano (yyyy-mm-dd)
+    $partes = explode('-', $fecha);
+    if (count($partes) == 3) {
+        $fecha_americano = $partes[2] . '-' . $partes[1] . '-' . $partes[0];
+        return $fecha_americano;
+    }
+    return $fecha;
+}
 ?>
 
 <script>
+    function hoy() {
+    var hoy = new Date();
+    var yyyy = hoy.getFullYear();
+    var mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    var dd = String(hoy.getDate()).padStart(2, '0');
+
+    var fechahoy = dd + '-' + mm + '-' + yyyy;
+    document.getElementById('fecha_alta').value = fechahoy;
+    document.getElementById('fecha_rev').value = fechahoy;
+    document.getElementById('fecha_sol').value = fechahoy;
+}
+
+// Poner las fechas en null si son 0s
+function ponerhoy() {
+    var fecha_rev = document.getElementById('fecha_rev').value;
+    var fecha_sol = document.getElementById('fecha_sol').value;
+
+    if (fecha_rev === '00-00-0000' || fecha_rev === '') {
+        document.getElementById('fecha_rev').value = null;
+    }
+
+    if (fecha_sol === '00-00-0000' || fecha_sol === '') {
+        document.getElementById('fecha_sol').value = null;
+    }
+}
+
+ // Vincular la función para establecer la fecha actual en el clic de Fecha Revisión y Fecha Solución
+$("#fecha_rev, #fecha_sol").click(function () {
+   ponerhoy();
+});
     // Seleccionar planta
     function splanta(planta) {
         document.getElementById('planta').value = planta;
         mostraraula();
-    }
-
-    // Saber qué día es hoy
-    function hoy() {
-        var hoy = new Date();
-        var dd = String(hoy.getDate()).padStart(2, '0');
-        var mm = String(hoy.getMonth() + 1).padStart(2, '0');
-        var yyyy = hoy.getFullYear();
-
-        var fechahoy = yyyy + '-' + mm + '-' + dd;
-        document.getElementById('fecha_alta').value = fechahoy;
-        document.getElementById('fecha_rev').value = fechahoy;
-        document.getElementById('fecha_sol').value = fechahoy;
-    }
-
-    // Poner las fechas en null si son 0s
-    function ponerhoy() {
-        var fecha_rev = document.getElementById('fecha_rev').value;
-        var fecha_sol = document.getElementById('fecha_sol').value;
-
-        if (fecha_rev === '0000-00-00') {
-            document.getElementById('fecha_rev').value = null;
-        }
-
-        if (fecha_sol === '0000-00-00') {
-            document.getElementById('fecha_sol').value = null;
-        }
     }
 
     // Poner en ready, marca aulas x planta
@@ -99,11 +127,6 @@
         // Cambiar las aulas
         $("input[name='planta']").change(function () {
             mostraraula();
-        });
-
-        // Vincular la función para establecer la fecha actual en el clic de Fecha Revisión y Fecha Solución
-        $("#fecha_rev, #fecha_sol").click(function () {
-            ponerhoy();
         });
 
         // Llamar a la función para que se aplique por si caso no lo ha hecho antes
