@@ -64,6 +64,7 @@
               <th  scope="col" style="width: 120px;">Fecha revisión</th>
               <th  scope="col" style="width: 120px;">Fecha solución</th>
               <th  scope="col">Comentario</th>
+              <th  scope="col" style="width: 180px;" colspan="3" class="text-center">Operaciones</th>
             </tr>  
           </thead>
             <tbody>
@@ -78,8 +79,7 @@
                   {
                     $id = $row['id'];                
                     $planta = $row['planta'];        
-                    $aula = $row['aula']; 
-                    $descripcion = $row['descripcion'];        
+                    $aula = $row['aula'];         
                     $usuario_id = $row['usuario_id'];
                     $usuario_nombre = obtener_usuario($usuario_id);         
                     $fecha_alta = formatoFecha($row['fecha_alta']);        
@@ -132,3 +132,4 @@ function formatoFecha($fecha)
 }
 ?>
 <div class="text-center mt-3"><?php include "../footer.php" ?></div>
+

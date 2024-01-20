@@ -1,4 +1,3 @@
-<!-- Footer -->
 <?php session_start()?>
 <?php if($_SESSION['user']){
 }else{
@@ -40,8 +39,10 @@
       $incidencia_actualizada = mysqli_query($conn, $query);
       if (!$incidencia_actualizada)
         echo "Se ha producido un error al actualizar la incidencia.";
-      else
-        echo "<script type='text/javascript'>alert('¡Datos de la incidencia actualizados!')</script>";
+      else {
+        echo "<script type='text/javascript'>alert('¡Datos de la incidencia actualizados!'); window.location.href = 'home.php';</script>";
+         exit;
+      }
     }             
 ?>
 
@@ -62,15 +63,15 @@
       </div>
       <div class="form-group">
         <label for="fecha_alta" >Fecha alta</label>
-        <input type="date" name="fecha_alta" class="form-control" value="<?php echo $fecha_alta  ?>">
+        <input type="date" name="fecha_alta" class="form-control" value="<?php echo $fecha_alta ?>" min="<?php echo date('Y-m-d'); ?>">
       </div>
       <div class="form-group">
         <label for="fecha_rev" >Fecha revisión</label>
-        <input type="date" name="fecha_rev" class="form-control" value="<?php echo $fecha_rev  ?>">
+        <input type="date" name="fecha_rev" class="form-control" value="<?php echo $fecha_rev  ?>" min="<?php echo date('Y-m-d'); ?>" id="noTangar">
       </div>
       <div class="form-group">
         <label for="fecha_sol" >Fecha solución</label>
-        <input type="date" name="fecha_sol" class="form-control" value="<?php echo $fecha_sol  ?>">
+        <input type="date" name="fecha_sol" class="form-control" value="<?php echo $fecha_sol  ?>" min="<?php echo date('Y-m-d'); ?>" id="fechaLimitada">
       </div>
       <div class="form-group">
         <label for="comentario" >Comentario</label>
@@ -81,7 +82,29 @@
       </div>
     </form>    
   </div>
+<script>
+// Evitar poner fecha de revisión posterior a fecha de solución
+var LoDeRevision = document.getElementById('noTangar');
+var LoDeSolucion = document.getElementById('fechaLimitada');
 
+// Evento al cambiar la fecha de revisión
+LoDeRevision.addEventListener('change', function() {
+    var fechaRev = LoDeRevision.value;
+    LoDeSolucion.min = fechaRev;
+});
+
+// Evento al cambiar la fecha de solución
+LoDeSolucion.addEventListener('change', function() {
+    var fechaSol = LoDeSolucion.value;
+    var fechaRev = LoDeRevision.value;
+
+    // Verificar y ajustar la fecha de revisión si es necesario
+    if (fechaRev !== '' && fechaSol < fechaRev) {
+      LoDeRevision.value = fechaSol;
+      LoDeRevision.min = fechaSol;
+    }
+});
+</script>
     <div class="container text-center mt-5">
       <a href="home.php" class="btn btn-warning mt-5"> Volver </a>
     <div>

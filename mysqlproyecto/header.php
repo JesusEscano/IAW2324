@@ -19,7 +19,7 @@ text-align: center;
 vertical-align: middle;
 }
 
-
+/* Dropdown menú copiado de internet */
 .dropbtn {
   color: white;
   border: none;
