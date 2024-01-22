@@ -42,14 +42,17 @@ if ($_POST){
             $row = $result->fetch_assoc();
             $hash_contraseña = base64_decode($row['password']);
             $perfil = $row['perfil'];
+            $id = $row['id'];
             if ($hash_contraseña === $contrasena) {
                 if ($perfil === 'administrador') {
                     session_start();
                     $_SESSION["user"] = $usuario;
+                    $_SESSION["id"] = $id;
                     header("location: includes/home.php");
                 } else {
                     session_start();
                     $_SESSION["user"] = $usuario;
+                    $_SESSION["id"] = $id;
                     header("location: includes/incidenciasabiertas.php");
                 }
             } else {

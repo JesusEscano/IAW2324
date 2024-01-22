@@ -21,23 +21,8 @@
         } else {
             return "Usuario no encontrado";
         }
-    }
-    function obtener_id($id_id)
-    {
-        global $conn;
-        
-        $query_id = "SELECT id FROM usuarios WHERE usuario = '$usuario_id'";
-        $resultado_id = mysqli_query($conn, $query_id);
-    
-        if ($resultado_id) {
-            $fila_id = mysqli_fetch_assoc($resultado_id);
-            return $fila_id['id'];
-        } else {
-            return "Usuario no encontrado";
-        }
-    }
-        $id_id = $row['usuario_id'];    
-        $id_wena = obtener_id($id_id);    
+    } 
+        $id_id = $_SESSION["id"];
         $totalc = "SELECT COUNT(*) as total FROM incidencias WHERE usuario_id = (SELECT id FROM usuarios WHERE id = '$id_id')";
         $resueltasc = "SELECT COUNT(*) as resueltas FROM incidencias WHERE fecha_sol IS NOT NULL AND fecha_sol <> '0000-00-00' AND usuario_id = (SELECT id FROM usuarios WHERE id = '$id_id')";
         $pendientesc = "SELECT COUNT(*) as pendientes FROM incidencias WHERE fecha_sol IS NULL AND usuario_id = (SELECT id FROM usuarios WHERE id = '$id_id')";
@@ -63,10 +48,7 @@
                 <a class="nav-link btn btn-warning" href="create.php" style="font-size: 18px; color: black;"><i class="bi bi-plus-circle"></i> Añadir incidencia</a>
                 </li>
                 <li class="nav-item" style="margin-right: 1px;">
-                    <a class="nav-link btn btn-success" href="resueltas.php" style="font-size: 18px; color: #fff;"><i class="bi bi-check-circle"></i> Incidencias resueltas (<?php echo $resueltas; ?>)</a>
-                </li>
-                <li class="nav-item" style="margin-right: 1px;">
-                    <a class="nav-link btn btn-primary" href="home.php" style="font-size: 18px; color: #fff;"><i class="bi bi-house-door"></i> Ver todas (<?php echo $total; ?>)</a>
+                    <a class="nav-link btn btn-success" href="incidencias.php" style="font-size: 18px; color: #fff;"><i class="bi bi-check-circle"></i> Incidencias resueltas (<?php echo $resueltas; ?>)</a>
                 </li>
                 <li class="nav-item"><div class="dropdown"><button class="dropbtn"><a class="nav-link btn btn btn-light" style="font-size: 18px; color: black;"><i class="bi bi-person"></i> <?php print_r($_SESSION["user"]);?></a></button><div class="dropdown-content">
     <a href="../logout.php"><i class="bi bi-box-arrow-left"></i> Desconectar</a>

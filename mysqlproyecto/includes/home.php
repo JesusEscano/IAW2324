@@ -46,6 +46,14 @@
                 </li>
                 <li class="nav-item"><div class="dropdown"><button class="dropbtn"><a class="nav-link btn btn btn-light" style="font-size: 18px; color: black;"><i class="bi bi-person"></i> <?php print_r($_SESSION["user"]);?></a></button><div class="dropdown-content">
     <a href="../logout.php"><i class="bi bi-box-arrow-left"></i> Desconectar</a>
+    <a href="admin.php"><i class="bi bi-gear-fill"></i> Administrar</a>
+    <script>
+    if ($perfil === 'administrador') {
+    <a href="admin.php"><i class="bi bi-database-fill-gear"></i> Administrar</a>
+                } else {
+    
+                }
+      </script>
   </div>
 </div>
 </li>
