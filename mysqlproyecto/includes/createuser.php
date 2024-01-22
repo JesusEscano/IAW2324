@@ -38,10 +38,34 @@ if (isset($_POST['crear'])) {
 
         $comentario = htmlspecialchars($_POST['comentario']);
 
-        $query = "INSERT INTO incidencias (planta, aula, descripcion, fecha_alta, fecha_rev, fecha_sol, comentario, usuario_id) VALUES ('$planta', '$aula', '$descripcion', '$fecha_alta', '$fecha_rev', '$fecha_sol', '$comentario', '$usuario_id')";
-        $resultado = mysqli_query($conn, $query);
+        // Insertar en la tabla plantas
+        $queryPlanta = "INSERT INTO plantas (planta) VALUES ('$planta')";
+        $resultadoPlanta = mysqli_query($conn, $queryPlanta);
 
-        if (!$resultado) {
+        if (!$resultadoPlanta) {
+        echo "Error al insertar en la tabla plantas: " . mysqli_error($conn);
+        }
+
+        // Obtener el ID de la planta recién insertada
+        $planta_id = mysqli_insert_id($conn);
+        
+        // Insertar en la tabla aulas
+        $queryAula = "INSERT INTO aulas (aula) VALUES ('$aula')";
+        $resultadoAula = mysqli_query($conn, $queryAula);
+
+        if (!$resultadoAula) {
+        echo "Error al insertar en la tabla aulas: " . mysqli_error($conn);
+        }
+
+        // Obtener el ID del aula recién insertada
+        $aula_id = mysqli_insert_id($conn);
+
+        // Insertar en la tabla incidencias utilizando los IDs de planta y aula
+        $queryIncidencias = "INSERT INTO incidencias (planta, aula, descripcion, fecha_alta, fecha_rev, fecha_sol, comentario, usuario_id) VALUES ('$planta_id', '$aula_id', '$descripcion', '$fecha_alta', '$fecha_rev', '$fecha_sol', '$comentario', '$usuario_id')";
+
+        $resultIncidencias = mysqli_query($conn, $queryIncidencias);
+
+        if (!$resultIncidencias) {
             echo "Algo ha ido mal añadiendo la incidencia: " . mysqli_error($conn);
         } else {
             echo "<script type='text/javascript'>alert('¡Incidencia añadida con éxito!')</script>";

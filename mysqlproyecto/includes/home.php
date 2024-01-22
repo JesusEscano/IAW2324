@@ -11,6 +11,48 @@ include "login.php";
   <div class="container">
 
   <?php
+  function obtener_usuario($usuario_id)
+  {
+      global $conn;
+      
+      $query_usuario = "SELECT usuario FROM usuarios WHERE id = '$usuario_id'";
+      $resultado_usuario = mysqli_query($conn, $query_usuario);
+  
+      if ($resultado_usuario) {
+          $fila_usuario = mysqli_fetch_assoc($resultado_usuario);
+          return $fila_usuario['usuario'];
+      } else {
+          return "Usuario no encontrado";
+      }
+  }
+  function obtener_aula($aula_id)
+  {
+      global $conn;
+      
+      $query_aula = "SELECT aula FROM aulas WHERE id = '$aula_id'";
+      $resultado_aula = mysqli_query($conn, $query_aula);
+  
+      if ($resultado_aula) {
+          $fila_aula = mysqli_fetch_assoc($resultado_aula);
+          return $fila_aula['aula'];
+      } else {
+          return "Aula no encontrada";
+      }
+  } 
+  function obtener_planta($planta_id)
+  {
+      global $conn;
+      
+      $query_planta = "SELECT planta FROM plantas WHERE id = '$planta_id'";
+      $resultado_planta = mysqli_query($conn, $query_planta);
+  
+      if ($resultado_planta) {
+          $fila_planta = mysqli_fetch_assoc($resultado_planta);
+          return $fila_planta['planta'];
+      } else {
+          return "Planta no encontrada";
+      }
+  } 
         $totalc = "SELECT COUNT(*) as total FROM incidencias";
         $resueltasc = "SELECT COUNT(*) as resueltas FROM incidencias WHERE fecha_sol IS NOT NULL AND fecha_sol <> '0000-00-00'";
         $pendientesc = "SELECT COUNT(*) as pendientes FROM incidencias WHERE fecha_sol IS NULL";
@@ -86,8 +128,10 @@ include "login.php";
 
             while($row= mysqli_fetch_assoc($vista_incidencias)){
               $id = $row['id'];                
-              $planta = $row['planta'];        
-              $aula = $row['aula'];         
+              $planta_id = $row['planta'];
+              $planta_nombre = obtener_planta($planta_id);          
+              $aula_id = $row['aula'];
+              $aula_nombre = obtener_aula($aula_id);      
               $descripcion = $row['descripcion'];
               $usuario_id = $row['usuario_id'];
               $usuario_nombre = obtener_usuario($usuario_id);         
@@ -97,8 +141,8 @@ include "login.php";
               $comentario = $row['comentario']; 
               echo "<tr >";
               echo " <th scope='row' >{$id}</th>";
-              echo " <td > {$planta}</td>";
-              echo " <td > {$aula}</td>";
+              echo " <td > {$planta_nombre}</td>";
+              echo " <td > {$aula_nombre}</td>";
               echo " <td >{$descripcion} </td>";
               echo " <td >{$usuario_nombre} </td>";
               echo " <td >{$fecha_alta} </td>";
@@ -116,22 +160,6 @@ include "login.php";
         </table>
   </div>
   <?php
-
-function obtener_usuario($usuario_id)
-{
-    global $conn;
-    
-    $query_usuario = "SELECT usuario FROM usuarios WHERE id = '$usuario_id'";
-    $resultado_usuario = mysqli_query($conn, $query_usuario);
-
-    if ($resultado_usuario) {
-        $fila_usuario = mysqli_fetch_assoc($resultado_usuario);
-        return $fila_usuario['usuario'];
-    } else {
-        return "Usuario no encontrado";
-    }
-}
-
 function formatoFecha($fecha)
 {
     // Convierte la fecha de formato americano (yyyy-mm-dd) a formato europeo (dd-mm-yyyy)
