@@ -1,12 +1,13 @@
-<!-- Header -->
-<?php session_start()?>
-<?php if($_SESSION['user']){
-}else{
- header("Location: ../login.php");
-}?>
-<?php include "../header.php"?>
-<?php include "login.php"?>
+<?php
+session_start();
+if (!isset($_SESSION['user']) || $_SESSION['perfil'] !== 'administrador') {
+    header("Location: ../login.php");
+    exit();
+}
 
+include "../header.php";
+include "login.php";
+?>
   <div class="container">
 
   <?php
@@ -80,7 +81,7 @@
               <tr>
  
           <?php
-            $query="SELECT * FROM incidencias";               
+            $query="SELECT * FROM incidencias ORDER BY id ASC";               
             $vista_incidencias= mysqli_query($conn,$query);
 
             while($row= mysqli_fetch_assoc($vista_incidencias)){

@@ -1,12 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['user']) || $_SESSION['perfil'] !== 'administrador') {
+
+if (!isset($_SESSION['user'])) {
     header("Location: ../login.php");
     exit();
 }
 
 include "../header.php";
-include "login.php";
 
 $usuario_activo = $_SESSION['user'];
 $query_usuario = "SELECT id FROM usuarios WHERE usuario = '$usuario_activo'";
@@ -278,6 +278,6 @@ $("#fecha_rev, #fecha_sol").click(function () {
 </div>
   </div>
   <div class="container text-center mt-5">
-   <a href="home.php" class="btn btn-warning mt-5"> Volver </a>
+   <a href="incidenciasabiertas.php" class="btn btn-warning mt-5"> Volver </a>
   <div>
 <?php include "../footer.php" ?>

@@ -45,7 +45,7 @@
             <ul class="navbar-nav">
             <a class="navbar-brand"><img src="../IESlogo.jpg" width="30" height="30" class="d-inline-block align-top" alt="Logo Machado"> INCIDENCIAS PENDIENTES (<?php echo $pendientes; ?>)</a>
                 <li class="nav-item" style="margin-right: 1px;">
-                <a class="nav-link btn btn-warning" href="create.php" style="font-size: 18px; color: black;"><i class="bi bi-plus-circle"></i> Añadir incidencia</a>
+                <a class="nav-link btn btn-warning" href="createuser.php" style="font-size: 18px; color: black;"><i class="bi bi-plus-circle"></i> Añadir incidencia</a>
                 </li>
                 <li class="nav-item" style="margin-right: 1px;">
                     <a class="nav-link btn btn-success" href="incidencias.php" style="font-size: 18px; color: #fff;"><i class="bi bi-check-circle"></i> Incidencias resueltas (<?php echo $resueltas; ?>)</a>
@@ -66,19 +66,18 @@
               <th  scope="col">Planta</th>
               <th  scope="col">Aula</th>
               <th  scope="col">Descripción</th>
-              <th  scope="col">Usuario</th>
               <th  scope="col" style="width: 120px;">Fecha alta</th>
               <th  scope="col" style="width: 120px;">Fecha revisión</th>
               <th  scope="col" style="width: 120px;">Fecha solución</th>
               <th  scope="col">Comentario</th>
-              <th  scope="col" style="width: 180px;" colspan="3" class="text-center">Operaciones</th>
+              <th  scope="col" colspan="1" style="width: 80px">Operaciones</th>
             </tr>  
           </thead>
             <tbody>
               <tr>
  
           <?php
-            $query="SELECT * FROM incidencias WHERE fecha_sol IS NULL AND usuario_id = (SELECT id FROM usuarios WHERE id = '$id_id')";               
+            $query="SELECT * FROM incidencias WHERE fecha_sol IS NULL AND usuario_id = (SELECT id FROM usuarios WHERE id = '$id_id') ORDER BY id ASC";               
             $vista_incidencias= mysqli_query($conn,$query);
 
             while($row= mysqli_fetch_assoc($vista_incidencias)){
@@ -98,14 +97,11 @@
               echo " <td > {$planta}</td>";
               echo " <td > {$aula}</td>";
               echo " <td >{$descripcion} </td>";
-              echo " <td >{$usuario_nombre} </td>";
               echo " <td >{$fecha_alta} </td>";
               echo " <td >{$fecha_rev} </td>";
               echo " <td >{$fecha_sol} </td>";
               echo " <td >{$comentario} </td>";
               echo " <td class='text-center'> <a href='view.php?incidencia_id={$id}' class='btn btn-primary'> <i class='bi bi-eye'></i> Ver</a> </td>";
-              echo " <td class='text-center' > <a href='update.php?editar&incidencia_id={$id}' class='btn btn-secondary'><i class='bi bi-pencil'></i> Editar</a> </td>";
-              echo " <td class='text-center'>  <a href='delete.php?eliminar={$id}' class='btn btn-danger'> <i class='bi bi-trash'></i> Eliminar</a> </td>";
               echo " </tr> ";
                   }  
                 ?>

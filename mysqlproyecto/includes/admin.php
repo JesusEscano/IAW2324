@@ -1,12 +1,12 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']) || $_SESSION['perfil'] !== 'administrador') {
     header("Location: ../login.php");
     exit();
 }
 
 include "../header.php";
+include "login.php";
 
 $usuario_activo = $_SESSION['user'];
 $query_usuario = "SELECT id FROM usuarios WHERE usuario = '$usuario_activo'";

@@ -1,12 +1,12 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']) || $_SESSION['perfil'] !== 'administrador') {
     header("Location: ../login.php");
-    exit(); // Asegura que el script se detenga después de redirigir
+    exit();
 }
 
 include "../header.php";
+include "login.php";
 
 if (isset($_GET['eliminar'])) {
     $id = htmlspecialchars($_GET['eliminar']);

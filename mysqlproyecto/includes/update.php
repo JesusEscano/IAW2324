@@ -1,9 +1,13 @@
-<?php session_start()?>
-<?php if($_SESSION['user']){
-}else{
- header("Location: ../login.php");
-}?>
-<?php include "../header.php"?>
+<?php
+session_start();
+if (!isset($_SESSION['user']) || $_SESSION['perfil'] !== 'administrador') {
+    header("Location: ../login.php");
+    exit();
+}
+
+include "../header.php";
+include "login.php";
+?>
 
 <?php
    if(isset($_GET['incidencia_id']))
