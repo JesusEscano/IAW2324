@@ -278,6 +278,6 @@ $("#fecha_rev, #fecha_sol").click(function () {
 </div>
   </div>
   <div class="container text-center mt-5">
-    <a href="home.php" class="btn btn-warning mt-5"> Volver </a>
+   <a href="incidenciasabiertas.php" class="btn btn-warning mt-5"> Volver </a>
   <div>
 <?php include "../footer.php" ?>

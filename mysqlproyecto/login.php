@@ -41,10 +41,17 @@ if ($_POST){
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
             $hash_contraseña = base64_decode($row['password']);
+            $perfil = $row['perfil'];
             if ($hash_contraseña === $contrasena) {
-                session_start();
-                $_SESSION["user"] = $usuario;
-                header("location: includes/home.php");
+                if ($perfil === 'administrador') {
+                    session_start();
+                    $_SESSION["user"] = $usuario;
+                    header("location: includes/home.php");
+                } else {
+                    session_start();
+                    $_SESSION["user"] = $usuario;
+                    header("location: includes/incidenciasabiertas.php");
+                }
             } else {
                 $mensajecontra = "Acceso denegado, contraseña incorrecta";
                 $mensajecontra = htmlspecialchars($mensajecontra, ENT_QUOTES, 'UTF-8');
