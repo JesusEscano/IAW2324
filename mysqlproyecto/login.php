@@ -14,6 +14,7 @@
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
     <input type="text" id="nombre" name="nombre" placeholder="Usuario" class="form-control my-4 py-2" style="text-align: center" required></p>
     <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" class="form-control my-4 py-2" style="text-align: center"  required></p>
+    <input type="hidden" name="token" value="<?php echo bin2hex(random_bytes(32)); ?>">
     <div class="text-center mt-3">
     <input type="submit" class="btn btn-primary mt-2" name="submit" value="Iniciar sesión">
 </form>
@@ -30,6 +31,7 @@
 if ($_POST){
     $usuario = htmlspecialchars($_POST["nombre"]);
     $contrasena = htmlspecialchars($_POST["contraseña"]);
+    $token = htmlspecialchars($_POST["token"]);
     include_once 'db.php';
     if ($conn){
         $query = "SELECT * FROM usuarios WHERE usuario=?";
@@ -49,12 +51,14 @@ if ($_POST){
                     $_SESSION["user"] = $usuario;
                     $_SESSION["id"] = $id;
                     $_SESSION["perfil"] = $perfil;
+                    $_SESSION['token'] = bin2hex(random_bytes(32));
                     header("location: includes/home.php");
                 } else {
                     session_start();
                     $_SESSION["user"] = $usuario;
                     $_SESSION["id"] = $id;
                     $_SESSION["perfil"] = $perfil;
+                    $_SESSION['token'] = bin2hex(random_bytes(32));
                     header("location: includes/incidenciasabiertas.php");
                 }
             } else {

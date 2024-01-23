@@ -1,10 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['user']) || $_SESSION['perfil'] !== 'administrador') {
-    header("Location: ../login.php");
-    exit();
+if (!isset($_SESSION['user']) || $_SESSION['perfil'] !== 'administrador' || !isset($_SESSION['token'])) {
+  header("Location: ../login.php");
+  exit();
 }
-
 include "../header.php";
 include "login.php";
 ?>

@@ -1,7 +1,7 @@
 <?php session_start()?>
-<?php if($_SESSION['user']){
-}else{
- header("Location: ../login.php");
+<?php if (!isset($_SESSION['user']) || !isset($_SESSION['token'])) {
+    header("Location: ../login.php");
+    exit();
 }?>
 <?php include "../header.php"?>
 <?php include "login.php"?>
