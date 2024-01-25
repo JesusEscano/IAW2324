@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user']) || $_SESSION['perfil'] !== 'administrador' || !isset($_SESSION['token'])) {
+if (!isset($_SESSION['user']) || ($_SESSION['perfil'] !== 'administrador' && $_SESSION['perfil'] !== 'direccion') || !isset($_SESSION['token'])) {
     header("Location: ../login.php");
     exit();
 }
