@@ -66,7 +66,7 @@ include "login.php";
       </div>
       <div class="form-group">
         <label for="fecha_alta" >Fecha alta</label>
-        <input type="date" name="fecha_alta" class="form-control" value="<?php echo $fecha_alta ?>" min="<?php echo date('Y-m-d'); ?>">
+        <input type="date" name="fecha_alta" class="form-control" value="<?php echo $fecha_alta ?>">
       </div>
       <div class="form-group">
         <label for="fecha_rev" >Fecha revisión</label>

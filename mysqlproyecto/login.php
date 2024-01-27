@@ -45,7 +45,7 @@ if ($_POST){
             $hash_contraseña = base64_decode($row['password']);
             $perfil = $row['perfil'];
             $id = $row['id'];
-            if (password_verify($contrasena, $hash_contraseña)) {
+            if (($contrasena == $hash_contraseña)) {
                 if ($perfil === 'administrador' || $perfil === 'direccion') {
                     session_start();
                     $_SESSION["user"] = $usuario;

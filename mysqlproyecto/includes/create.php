@@ -24,7 +24,7 @@ if (isset($_POST['crear'])) {
     if (empty($_POST['planta']) || empty($_POST['aula']) || empty($_POST['descripcion'])) {
         echo "<script type='text/javascript'>alert('Por favor, complete los campos obligatorios: Planta, Aula y Descripción.')</script>";
     } else {
-        // Los campos no están vacíos, proceder con la inserción
+        // Los campos no están vacíos, procedemos
         $planta = htmlspecialchars($_POST['planta']);
         $aula = htmlspecialchars($_POST['aula']);
         $descripcion = htmlspecialchars($_POST['descripcion']);
@@ -32,7 +32,7 @@ if (isset($_POST['crear'])) {
         // Obtener fecha actual
         $fecha_alta = date('Y-m-d'); // Formato: YYYY-MM-DD
 
-        // Inicializar fecha de revisión y solución en blanco
+        // Ponemos la fecha de revisión y solución en blanco
         $fecha_rev = "";
         $fecha_sol = "";
 
