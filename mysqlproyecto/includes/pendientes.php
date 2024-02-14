@@ -43,13 +43,9 @@ include "login.php";
                 </li>
                 <li class="nav-item"><div class="dropdown"><button class="dropbtn"><a class="nav-link btn btn btn-light" style="font-size: 18px; color: black;"><i class="bi bi-person"></i> <?php print_r($_SESSION["user"]);?></a></button><div class="dropdown-content">
     <a href="../logout.php"><i class="bi bi-box-arrow-left"></i> Desconectar</a>
-    <script>
-    if ($perfil === 'administrador') {
-    <a href="admin.php"><i class="bi bi-database-fill-gear"></i> Administrar</a>
-                } else {
-    
-                }
-      </script>
+    <?php if ($_SESSION['perfil'] === 'administrador'): ?>
+                                <a href="admin.php"><i class="bi bi-database-fill-gear"></i> Administrar</a>
+                            <?php endif; ?>
   </div>
 </div>
 </li>
@@ -76,22 +72,19 @@ include "login.php";
               <tr>
  
           <?php
-            $query="SELECT * FROM incidencias WHERE fecha_sol IS NULL ORDER BY id ASC";               
+            $query="SELECT incidencias.*, plantas.planta, aulas.aula FROM incidencias INNER JOIN plantas ON incidencias.planta_id = plantas.id INNER JOIN aulas ON incidencias.aula_id = aulas.id WHERE incidencias.fecha_sol IS NULL ORDER BY incidencias.id ASC";               
             $vista_incidencias= mysqli_query($conn,$query);
 
             while($row= mysqli_fetch_assoc($vista_incidencias)){
               $id = $row['id'];                
-              $planta_id = $row['planta'];
-              $planta_nombre = obtener_planta($planta_id);          
-              $aula_id = $row['aula'];
-              $aula_nombre = obtener_aula($aula_id);   
+              $planta_nombre = $row['planta'];
+              $aula_nombre = $row['aula'];   
               $descripcion = $row['descripcion'];
-              $usuario_id = $row['usuario_id'];    
-              $usuario_nombre = obtener_usuario($usuario_id);      
-              $descripcion = $row['descripcion'];          
+              $usuario_id = $row['usuario_id'];
+              $usuario_nombre = obtener_usuario($usuario_id);         
               $fecha_alta = formatoFecha($row['fecha_alta']);        
               $fecha_rev = formatoFecha($row['fecha_rev']);        
-              $fecha_sol = formatoFecha($row['fecha_sol']);       
+              $fecha_sol = formatoFecha($row['fecha_sol']);        
               $comentario = $row['comentario']; 
               echo "<tr >";
               echo " <th scope='row' >{$id}</th>";
@@ -127,34 +120,6 @@ function obtener_usuario($usuario_id)
         return "Usuario no encontrado";
     }
 }
-function obtener_aula($aula_id)
-{
-    global $conn;
-    
-    $query_aula = "SELECT aula FROM aulas WHERE id = '$aula_id'";
-    $resultado_aula = mysqli_query($conn, $query_aula);
-
-    if ($resultado_aula) {
-        $fila_aula = mysqli_fetch_assoc($resultado_aula);
-        return $fila_aula['aula'];
-    } else {
-        return "Aula no encontrada";
-    }
-} 
-function obtener_planta($planta_id)
-{
-    global $conn;
-    
-    $query_planta = "SELECT planta FROM plantas WHERE id = '$planta_id'";
-    $resultado_planta = mysqli_query($conn, $query_planta);
-
-    if ($resultado_planta) {
-        $fila_planta = mysqli_fetch_assoc($resultado_planta);
-        return $fila_planta['planta'];
-    } else {
-        return "Planta no encontrada";
-    }
-} 
 function formatoFecha($fecha)
 {
     // Convierte la fecha de formato americano (yyyy-mm-dd) a formato europeo (dd-mm-yyyy)

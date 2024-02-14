@@ -22,9 +22,9 @@ if ($resultado_usuario) {
 
 // Array para las plantas y aulas
 $aulayplanta = array(
-    'Baja' => array("Aula 1", "Aula 2", "Aula 3"),
-    'Primera' => array("Aula 101", "Aula 102", "Aula 103"),
-    'Segunda' => array("Aula 201", "Aula 202", "Aula 203")
+    'Baja' => array("1", "2", "3"),
+    'Primera' => array("101", "102", "103"),
+    'Segunda' => array("201", "202", "203")
 );
 
 // Función para mostrar las aulas según la planta seleccionada
@@ -46,6 +46,26 @@ if (isset($_POST['crear'])) {
         $aula = htmlspecialchars($_POST['aula']);
         $descripcion = htmlspecialchars($_POST['descripcion']);
 
+        // Verificar si la planta existe
+        $queryPlanta = "SELECT id FROM plantas WHERE planta = '$planta'";
+        $resultadoPlanta = mysqli_query($conn, $queryPlanta);
+        if (!$resultadoPlanta || mysqli_num_rows($resultadoPlanta) == 0) {
+            echo "<script type='text/javascript'>alert('La planta seleccionada no existe.')</script>";
+            exit;
+        }
+        $filaPlanta = mysqli_fetch_assoc($resultadoPlanta);
+        $planta_id = $filaPlanta['id'];
+
+        // Verificar si el aula existe
+        $queryAula = "SELECT id FROM aulas WHERE aula = '$aula'";
+        $resultadoAula = mysqli_query($conn, $queryAula);
+        if (!$resultadoAula || mysqli_num_rows($resultadoAula) == 0) {
+            echo "<script type='text/javascript'>alert('El aula seleccionada no existe.')</script>";
+            exit;
+        }
+        $filaAula = mysqli_fetch_assoc($resultadoAula);
+        $aula_id = $filaAula['id'];
+
         // Obtener fecha actual
         $fecha_alta = date('Y-m-d'); // Formato: YYYY-MM-DD
 
@@ -55,30 +75,8 @@ if (isset($_POST['crear'])) {
 
         $comentario = htmlspecialchars($_POST['comentario']);
 
-        // Insertar en la tabla plantas
-        $queryPlanta = "INSERT INTO plantas (planta) VALUES ('$planta')";
-        $resultadoPlanta = mysqli_query($conn, $queryPlanta);
-        
-        if (!$resultadoPlanta) {
-            echo "Error al insertar en la tabla plantas: " . mysqli_error($conn);
-        }
-        
-        // Obtener el ID de la planta recién insertada
-        $planta_id = mysqli_insert_id($conn);
-                
-        // Insertar en la tabla aulas
-        $queryAula = "INSERT INTO aulas (aula) VALUES ('$aula')";
-        $resultadoAula = mysqli_query($conn, $queryAula);
-        
-        if (!$resultadoAula) {
-            echo "Error al insertar en la tabla aulas: " . mysqli_error($conn);
-        }
-        
-        // Obtener el ID del aula recién insertada
-        $aula_id = mysqli_insert_id($conn);
-        
         // Insertar en la tabla incidencias utilizando los IDs de planta y aula
-        $queryIncidencias = "INSERT INTO incidencias (planta, aula, descripcion, fecha_alta, fecha_rev, fecha_sol, comentario, usuario_id) VALUES ('$planta_id', '$aula_id', '$descripcion', '$fecha_alta', '$fecha_rev', '$fecha_sol', '$comentario', '$usuario_id')";
+        $queryIncidencias = "INSERT INTO incidencias (planta_id, aula_id, descripcion, fecha_alta, fecha_rev, fecha_sol, comentario, usuario_id) VALUES ('$planta_id', '$aula_id', '$descripcion', '$fecha_alta', '$fecha_rev', '$fecha_sol', '$comentario', '$usuario_id')";
         
         $resultIncidencias = mysqli_query($conn, $queryIncidencias);
         
@@ -165,7 +163,7 @@ $(document).ready(function () {
 </section>
 </div>
 <div class="container text-center mt-5">
-    <a href="incidenciaspendientes.php" class="btn btn-warning mt-5"> Volver </a>
+    <a href="incidenciasabiertas.php" class="btn btn-warning mt-5"> Volver </a>
 <div>
 
 <?php include "../footer.php" ?>

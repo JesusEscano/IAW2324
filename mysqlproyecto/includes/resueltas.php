@@ -43,13 +43,10 @@ include "login.php";
                 </li>
                 <li class="nav-item"><div class="dropdown"><button class="dropbtn"><a class="nav-link btn btn btn-light" style="font-size: 18px; color: black;"><i class="bi bi-person"></i> <?php print_r($_SESSION["user"]);?></a></button><div class="dropdown-content">
     <a href="../logout.php"><i class="bi bi-box-arrow-left"></i> Desconectar</a>
-    <script>
-    if ($perfil === 'administrador') {
-    <a href="admin.php"><i class="bi bi-database-fill-gear"></i> Administrar</a>
-                } else {
-    
-                }
-      </script>
+    <?php
+     if ($_SESSION['perfil'] === 'administrador'): ?>
+                                <a href="admin.php"><i class="bi bi-database-fill-gear"></i> Administrar</a>
+                            <?php endif; ?>
   </div>
 </div>
 </li>
@@ -81,9 +78,9 @@ include "login.php";
 
             while($row= mysqli_fetch_assoc($vista_incidencias)){
               $id = $row['id'];                
-              $planta_id = $row['planta'];
+              $planta_id = $row['planta_id']; // Cambio aquí          
               $planta_nombre = obtener_planta($planta_id);          
-              $aula_id = $row['aula'];
+              $aula_id = $row['aula_id']; // Cambio aquí
               $aula_nombre = obtener_aula($aula_id);      
               $descripcion = $row['descripcion'];    
               $descripcion = $row['descripcion'];
