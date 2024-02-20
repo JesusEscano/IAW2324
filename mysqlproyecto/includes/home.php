@@ -8,6 +8,17 @@ if (!isset($_SESSION['user']) || ($_SESSION['perfil'] !== 'administrador' && $_S
 include "../header.php";
 include "login.php";
 ?>
+<?php
+// Consulta para ver la fecha de inicio de sesión
+$loginquery = "SELECT login FROM usuarios WHERE id = ?";
+$stmt_loginquery = $conn->prepare($loginquery);
+$stmt_loginquery->bind_param("i", $_SESSION['id']);
+$stmt_loginquery->execute();
+$resultado_login = $stmt_loginquery->get_result();
+$row_login = $resultado_login->fetch_assoc();
+$loginsito = $row_login['login'];
+$loginsito_eu = date('d/m/Y H:i:s', strtotime($loginsito . '+6 hours'));
+?>
 <div class="container">
     <?php
     $totalc = "SELECT COUNT(*) as total FROM incidencias";
@@ -86,13 +97,15 @@ include "login.php";
             </thead>
             <tbody>
                 <?php
-                $query = "SELECT incidencias.*, plantas.nombre AS planta, aulas.nombre AS aula FROM incidencias INNER JOIN plantas ON incidencias.planta_id = plantas.id INNER JOIN aulas ON incidencias.aula_id = aulas.id ORDER BY incidencias.id ASC";
+                $query="SELECT * FROM incidencias ORDER BY id ASC";    
                 $vista_incidencias = mysqli_query($conn, $query);
 
                 while ($row = mysqli_fetch_assoc($vista_incidencias)) {
                     $id = $row['id'];
-                    $planta_nombre = $row['planta'];
-                    $aula_nombre = $row['aula'];
+                    $planta_id = $row['planta_id']; // Cambio aquí          
+                    $planta_nombre = obtener_planta($planta_id);          
+                    $aula_id = $row['aula_id']; // Cambio aquí
+                    $aula_nombre = obtener_aula($aula_id);   
                     $descripcion = $row['descripcion'];
                     $usuario_id = $row['usuario_id'];
                     $usuario_nombre = obtener_usuario($usuario_id);
@@ -119,6 +132,7 @@ include "login.php";
             </tbody>
         </table>
     </div>
+    <div class="text-center mt-2">Última vez que te has logueado: <?php echo $loginsito_eu; ?></div>
     <?php
     function obtener_usuario($usuario_id)
     {
@@ -134,7 +148,34 @@ include "login.php";
             return "Usuario no encontrado";
         }
     }
-
+    function obtener_aula($aula_id)
+    {
+        global $conn;
+        
+        $query_aula = "SELECT aula FROM aulas WHERE id = '$aula_id'";
+        $resultado_aula = mysqli_query($conn, $query_aula);
+    
+        if ($resultado_aula) {
+            $fila_aula = mysqli_fetch_assoc($resultado_aula);
+            return $fila_aula['aula'];
+        } else {
+            return "Aula no encontrada";
+        }
+    } 
+    function obtener_planta($planta_id)
+    {
+        global $conn;
+        
+        $query_planta = "SELECT planta FROM plantas WHERE id = '$planta_id'";
+        $resultado_planta = mysqli_query($conn, $query_planta);
+    
+        if ($resultado_planta) {
+            $fila_planta = mysqli_fetch_assoc($resultado_planta);
+            return $fila_planta['planta'];
+        } else {
+            return "Planta no encontrada";
+        }
+    } 
     function formatoFecha($fecha)
     {
         // Convierte la fecha de formato americano (yyyy-mm-dd) a formato europeo (dd-mm-yyyy)

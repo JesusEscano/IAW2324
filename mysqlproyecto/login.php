@@ -52,6 +52,11 @@ if ($_POST){
                     $_SESSION["id"] = $id;
                     $_SESSION["perfil"] = $perfil;
                     $_SESSION['token'] = bin2hex(random_bytes(32));
+                    // Actualizar el último login
+                    $query_update = "UPDATE usuarios SET login = NOW() WHERE id = ?";
+                    $stmt_update = $conn->prepare($query_update);
+                    $stmt_update->bind_param("i", $id);
+                    $stmt_update->execute();
                     header("location: includes/home.php");
                 } else {
                     session_start();
@@ -59,6 +64,11 @@ if ($_POST){
                     $_SESSION["id"] = $id;
                     $_SESSION["perfil"] = $perfil;
                     $_SESSION['token'] = bin2hex(random_bytes(32));
+                    // Actualizar el último login
+                    $query_update = "UPDATE usuarios SET login = NOW() WHERE id = ?";
+                    $stmt_update = $conn->prepare($query_update);
+                    $stmt_update->bind_param("i", $id);
+                    $stmt_update->execute();
                     header("location: includes/incidenciasabiertas.php");
                 }
             } else {
