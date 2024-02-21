@@ -81,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="form-group">
         <h4 class="mb-0"><label for="perfil" class="form-label">Perfil:</label></h4>
         <select class="form-control" id="perfil" name="perfil" required>
-            <option value="administrador">Administrador/a</option>
             <option value="direccion">Dirección</option>
             <option value="profesor">Profesor/a</option>
         </select>
