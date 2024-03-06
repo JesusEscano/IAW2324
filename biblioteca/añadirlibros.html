@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de la biblioteca del IES Antonio Machado</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="administración.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- JS de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <!-- Js -->
+    <script src="administración.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Biblioteca IES Antonio Machado</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-house-door"></i>
+                            Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="añadirlibros.html"><i class="bi bi-book"></i>
+                            Añadir libros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="añadirestantería.html"><i class="bi bi-bookshelf"></i>
+                            Añadir estantería</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-bookmark-plus"></i>
+                            Añadir libro a estantería</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-people"></i>
+                            Gestionar usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-ui-checks"></i>
+                            Gestionar peticiones</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <form id="libros">
+            <div class="form-group mb-3">
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" class="form-control" placeholder="Título" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="autor">Autor(es)</label>
+                <input type="text" id="autor" class="form-control" placeholder="Autor" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="editorial">Editorial</label>
+                <input type="text" id="editorial" class="form-control" placeholder="Editorial" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="añop">Año de publicación</label>
+                <input type="number" id="añop" class="form-control" placeholder="Año de publicación (AAAA)" pattern="[0-9]{4}" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="paginas">Número de páginas</label>
+                <input type="number" id="paginas" class="form-control" placeholder="Nº páginas" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="cdu">Clasificación Decimal Universal (CDU)</label>
+                <select id="cdu" class="form-select" required>
+                    <option value="" disabled selected>Selecciona una opción</option>
+                    <option value="0">0 - GENERALIDADES (DICCIONARIOS Y ENCICLOPEDIAS)</option>
+                    <option value="1">1 - FILOSOFÍA Y PSICOLOGÍA</option>
+                    <option value="2">2 - RELIGIÓN Y TEOLOGÍA</option>
+                    <option value="3">3 - CIENCIAS SOCIALES Y EDUCACIÓN</option>
+                    <option value="4">4 - SIN CATEGORÍA</option>
+                    <option value="5">5 - CIENCIAS EXACTAS Y NATURALES</option>
+                    <option value="6">6 - CIENCIAS APLICADAS, MEDICINA Y TECNICA</option>
+                    <option value="7">7 - ARTE, MÚSICA, JUEGOS, DEPORTE Y ESPECTÁCULOS</option>
+                    <option value="8">8 - LINGÜÍSTICA Y LITERATURA</option>
+                    <option value="9">9 - GEOGRAFÍA, BIOGRAFÍAS E HISTORIA</option>
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="unidades">Unidades totales</label>
+                <input type="number" id="unidades" class="form-control" placeholder="Nº unidades" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="sinopsis">Sinopsis</label>
+                <textarea id="sinopsis" class="form-control" rows="4" placeholder="Ingrese la sinopsis" required></textarea>
+            </div>
+            <button class="btn btn-success" type="submit" id="librobtn">Añadir libro</button>
+            <button class="btn btn-warning ml-2" type="button" id="limpiabtn">Limpiar formulario</button>
+        </form>
+        <table class="table mt-4" id="tablalibro">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Autor(es)</th>
+                    <th>Editorial</th>
+                    <th>Año</th>
+                    <th>Páginas</th>
+                    <th>CDU</th>
+                    <th>Ud. Totales</th>
+                    <th>Sinopsis</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editar</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="editForm">
+                        <div class="form-group mb-3">
+                            <label for="tituloEditar">Título</label>
+                            <input type="text" id="tituloEditar" class="form-control" placeholder="Título" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="autorEditar">Autor(es)</label>
+                            <input type="text" id="autorEditar" class="form-control" placeholder="Autor" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="editorialEditar">Editorial</label>
+                            <input type="text" id="editorialEditar" class="form-control" placeholder="Editorial" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="añopEditar">Año de publicación</label>
+                            <input type="number" id="añopEditar" class="form-control" placeholder="Año de publicación (AAAA)" pattern="[0-9]{4}" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="paginasEditar">Número de páginas</label>
+                            <input type="number" id="paginasEditar" class="form-control" placeholder="Nº páginas" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="cduEditar">Clasificación Decimal Universal (CDU)</label>
+                            <select id="cduEditar" class="form-select" required>
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                <option value="0">0 - GENERALIDADES (DICCIONARIOS Y ENCICLOPEDIAS)</option>
+                                <option value="1">1 - FILOSOFÍA Y PSICOLOGÍA</option>
+                                <option value="2">2 - RELIGIÓN Y TEOLOGÍA</option>
+                                <option value="3">3 - CIENCIAS SOCIALES Y EDUCACIÓN</option>
+                                <option value="4">4 - SIN CATEGORÍA</option>
+                                <option value="5">5 - CIENCIAS EXACTAS Y NATURALES</option>
+                                <option value="6">6 - CIENCIAS APLICADAS, MEDICINA Y TECNICA</option>
+                                <option value="7">7 - ARTE, MÚSICA, JUEGOS, DEPORTE Y ESPECTÁCULOS</option>
+                                <option value="8">8 - LINGÜÍSTICA Y LITERATURA</option>
+                                <option value="9">9 - GEOGRAFÍA, BIOGRAFÍAS E HISTORIA</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="unidadesEditar">Unidades totales</label>
+                            <input type="number" id="unidadesEditar" class="form-control" placeholder="Nº unidades" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="sinopsisEditar">Sinopsis</label>
+                            <textarea id="sinopsisEditar" class="form-control" rows="4" placeholder="Ingrese la sinopsis" required></textarea>
+                        </div>
+                        <input type="hidden" id="editarLibroId">
+                        <button class="btn btn-success" type="submit" id="editbtn">Guardar cambios</button>
+                        <button class="btn btn-danger ml-2" type="button" id="clsbtn" data-dismiss="modal">Cerrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
