@@ -8,6 +8,7 @@ function añadirlibro(libro){
     <td>${libro.editorial}</td>
     <td>${libro.año}</td>
     <td>${libro.paginas}</td>
+    <td>${libro.cdu}</td>
     <td>${libro.unidades}</td>
     <td>${libro.sinopsis}</td>
     <td>
@@ -43,6 +44,7 @@ $(document).ready(function() {
             editorial: $("#editorial").val(),
             año: $("#añop").val(),
             paginas: $("#paginas").val(),
+            cdu: $("#cdu").val(),
             unidades: $("#unidades").val(),
             sinopsis: $("#sinopsis").val(),
         }
@@ -59,31 +61,32 @@ $(document).ready(function() {
 
     $("#editForm").submit(function(e){
         e.preventDefault();
-
+    
         let libroId = $("#editarLibroId").val();
         let libroIndex = libros.findIndex((libro)=>libro.id == libroId);
         let libro = libros[libroIndex];
-
+    
         libro.titulo = $("#tituloEditar").val();
         libro.autor = $("#autorEditar").val();
         libro.año = $("#añopEditar").val();
         libro.editorial = $("#editorialEditar").val();
         libro.paginas = $("#paginasEditar").val();
+        libro.cdu = $("#cduEditar").val();
         libro.unidades = $("#unidadesEditar").val();
         libro.sinopsis = $("#sinopsisEditar").val();
-
+    
         let row = $(`#${libro.id}`);
         row.find("td:eq(0)").text(libro.titulo);
         row.find("td:eq(1)").text(libro.autor);
         row.find("td:eq(2)").text(libro.editorial);
         row.find("td:eq(3)").text(libro.año);
         row.find("td:eq(4)").text(libro.paginas);
-        row.find("td:eq(5)").text(libro.unidades);
-        row.find("td:eq(6)").text(libro.sinopsis);
-
+        row.find("td:eq(5)").text(libro.cdu); 
+        row.find("td:eq(6)").text(libro.unidades); 
+        row.find("td:eq(7)").text(libro.sinopsis); 
+    
         $("#editModal").modal("hide");
     });
-
     $(document).on("click", ".editbtn", function(){
         let libroId = $(this).data("id");
 
@@ -95,6 +98,7 @@ $(document).ready(function() {
         $("#añopEditar").val(libro.año);
         $("#editorialEditar").val(libro.editorial);
         $("#paginasEditar").val(libro.paginas);
+        $("#cduEditar").val(libro.cdu);
         $("#unidadesEditar").val(libro.unidades);
         $("#sinopsisEditar").val(libro.sinopsis);
         $("#editarLibroId").val(libro.id);
