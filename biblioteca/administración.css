@@ -14,3 +14,25 @@ body {
 .modal {
     color: #000;
 }
+
+/* Cambiar el fondo del editor de texto a blanco */
+.ql-editor {
+    background-color: #FFFFFF;
+    color: #000000; /* Cambiar el color del texto a negro */
+}
+
+/* Cambiar el color de los botones del editor de texto */
+.ql-toolbar .ql-snow {
+    color: #000000; /* Cambiar el color del texto de los botones a negro */
+    background-color: #FFFFE0; /* Cambiar el color de fondo de los botones a un blanco-amarillento */
+}
+
+.ql-toolbar {
+    background-color: #f8f895; /* Cambiar el color de fondo de la barra de herramientas a un blanco-amarillento */
+}
+
+/* Cambiar el color del texto de los botones cuando están activos */
+.ql-toolbar .ql-snow .ql-active {
+    color: #FFFFFF; /* Cambiar el color del texto de los botones activos a blanco */
+    background-color: #000000; /* Cambiar el color de fondo de los botones activos a negro */
+}
