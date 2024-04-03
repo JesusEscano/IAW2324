@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juego del modelo OSI</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style>
+    #contenedor {
+        width: 600px;
+        margin: 50px auto;
+        text-align: center;
+    }
+    h1, h3 {
+        text-align: center;
+    }
+    #numeros, #capas {
+        display: inline-block;
+        vertical-align: top;
+    }
+    #numeros li, #capas li {
+        list-style: none;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        padding: 10px;
+        margin: 5px;
+        width: 100px; 
+        height: 30px; 
+    }
+    #numeros {
+        width: 130px; 
+    }
+    #resultado {
+        margin-top: 20px;
+    }
+    .correcto {
+        color: green;
+    }
+    .incorrecto {
+        color: red;
+    }
+    .capa-correcta {
+        background-color: lightgreen !important;
+    }
+    .capa-incorrecta {
+        background-color: lightcoral !important;
+    }
+</style>
+</head>
+<body>
+<h1>Coloca cada cada del modelo OSI sobre su número correspondiente</h1>
+<h3>Los aciertos se marcarán en verde y los errores en rojo. Pulsa "Comprobar" para contabilizar tus puntos.</h3>
+<div id="contenedor">
+    <ul id="numeros">
+        <li data-capa="Física">1</li>
+        <li data-capa="Enlace de datos">2</li>
+        <li data-capa="Red">3</li>
+        <li data-capa="Transporte">4</li>
+        <li data-capa="Sesión">5</li>
+        <li data-capa="Presentación">6</li>
+        <li data-capa="Aplicación">7</li>
+    </ul>
+    <ul id="capas">
+        <!-- Las capas se generarán aleatoriamente al cargar la página -->
+    </ul>
+    <br>
+    <button id="comprobar">Comprobar</button>
+    <div id="resultado"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function() {
+        // algoritmo de Fisher-Yates
+        function shuffleArray(array) {
+            for (var i = array.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+            return array;
+        }
+
+        // Array de nombres de capas
+        var capasArray = [
+            "Aplicación",
+            "Presentación",
+            "Sesión",
+            "Transporte",
+            "Red",
+            "Enlace de datos",
+            "Física"
+        ];
+
+        // Mezclar aleatoriamente el array de nombres de capas
+        capasArray = shuffleArray(capasArray);
+
+        // Generar las capas aleatorias en el HTML
+        var capasHtml = "";
+        for (var i = 0; i < capasArray.length; i++) {
+            capasHtml += '<li class="capa" data-capa="' + capasArray[i] + '">' + capasArray[i] + '</li>';
+        }
+        $("#capas").html(capasHtml);
+
+        // Hacer las capas arrastrables
+        $(".capa").draggable({
+            revert: "invalid",
+            cursor: "move",
+            start: function(event, ui) {
+                $(this).removeClass("capa-correcta capa-incorrecta");
+            }
+        });
+
+        // Hacer los números droppables
+        $("#numeros li").droppable({
+            accept: ".capa",
+            drop: function(event, ui) {
+                var capaNumero = $(this).data("capa");
+                var capaArrastrada = ui.draggable.data("capa");
+                if (capaNumero === capaArrastrada) {
+                    $(this).addClass("correcto");
+                    ui.draggable.addClass("capa-correcta");
+                } else {
+                    $(this).addClass("incorrecto");
+                    ui.draggable.addClass("capa-incorrecta");
+                }
+            }
+        });
+
+        // Comprobar los aciertos
+        $("#comprobar").click(function() {
+            var aciertos = $(".capa-correcta").length;
+            var puntos = Math.round((aciertos / 7) * 100);
+            $("#resultado").text("Puntos obtenidos: " + puntos );
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -63,10 +63,18 @@
         </div>
     </nav>
     <div class="container mt-5">
-  <!-- Contenedor del editor -->
-  <div id="editor">
-    <p>Escribe aquí tu texto...</p>
-  </div>
+        <!-- Contenedor del editor -->
+        <div id="editor">
+            <p>Escribe aquí tu texto...</p>
+        </div>
+<!-- Vista Previa -->
+<div id="preview" class="mt-3">
+    <h4>Vista Previa</h4>
+    <div class="preview-content"></div>
+</div>
+        <!-- Botón para editar la noticia -->
+        <button id="editar-noticia" class="btn btn-primary mt-3">Editar Noticia</button>
+    </div>
 
   <!-- Enlace al JS de Quill -->
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -79,12 +87,39 @@
     toolbar: [
       [{ 'header': [1, 2, 3, false] }],
       ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       [{ 'align': [] }],  
       ['link', 'image', 'video']
     ]
   }
 });
-  </script>
-    </div>
+        // Función para actualizar la vista previa
+        function actualizarVistaPrevia() {
+            var contenido = editor.root.innerHTML;
+            $('#noticia-preview').html(contenido);
+        }
+
+        // Actualizar vista previa cuando se escriba en el editor
+        editor.on('text-change', function () {
+            actualizarVistaPrevia();
+        });
+
+        // Botón para editar la noticia
+        $('#editar-noticia').click(function () {
+            // Scroll al editor
+            $('html, body').animate({
+                scrollTop: $("#editor").offset().top
+            }, 500);
+            // Enfocar el editor
+            editor.focus();
+        });
+
+        // Actualización de la vista previa al cambiar el contenido del editor
+            editor.on('text-change', function() {
+                var previewContent = document.querySelector('.preview-content');
+                previewContent.innerHTML = editor.root.innerHTML;
+            });
+    </script>
 </body>
+
 </html>

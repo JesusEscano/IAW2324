@@ -1,0 +1,93 @@
+body {
+    background-color: black;
+    color: aliceblue;
+    text-align: center;
+    font-family: 'Luminari', sans-serif;
+    padding-top: 10px;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); 
+    grid-template-rows: 3vh 10vh 17vh 3vh 10vh 10vh 10vh 10vh 10vh 3vh; 
+    gap: 10px; /* Espacio entre las celdas */
+}
+
+.tienda {
+    grid-column: 1 / span 8; 
+    grid-row: 1 / span 4; 
+    background-color: blue;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; 
+    position: relative;
+}
+
+.tienda img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tienda .nombre_tienda {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    color: black;
+    text-shadow: 0 0 5px white;
+    font-size: 10em;
+    font-weight: bold; 
+}
+
+.cristal {
+    grid-column: 9 / span 2;
+    grid-row: 1 / span 1; 
+    background-color: #c99694;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cristal img {
+    max-width: 100%; 
+    max-height: 100%; 
+    margin-right: 0.5vw;
+    margin-left: 1vw;
+}
+
+.user {
+    grid-column: 9 / span 2;
+    grid-row: 2 / span 2; 
+    background-color: green;
+}
+
+.logout {
+    grid-column: 9 / span 2; 
+    grid-row: 4;
+    background-color: greenyellow;
+}
+
+.batalla1 {
+    grid-column: 1 / span 5; 
+    grid-row: 5 / span 4; 
+    background-color: purple;
+}
+
+.batalla2 {
+    grid-column: 6 / span 5; 
+    grid-row: 5 / span 4; 
+    background-color: pink;
+}
+
+.stats {
+    grid-column: 1 / span 5; /* Desde la columna 2, ocupa 2 columnas */
+    grid-row: 9; /* Cuarta fila */
+    background-color: cyan;
+}
+
+.option {
+    grid-column: 6 / span 5; /* Desde la columna 5, ocupa 6 columnas */
+    grid-row: 9; /* Cuarta fila */
+    background-color: orangered;
+}

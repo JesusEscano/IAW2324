@@ -1,0 +1,72 @@
+/* Estilos generales */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+#game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Estilos para las cartas */
+
+.card {
+    width: 100px; /* Ancho de las cartas */
+    height: 150px; /* Altura de las cartas */
+    margin: 0 10px; /* Margen entre las cartas */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Estilos para los jugadores */
+
+.player {
+    margin: 20px;
+}
+
+.player-name {
+    font-weight: bold;
+}
+
+/* Estilos para el campo de juego */
+
+#game-field {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#game-field h2 {
+    margin-bottom: 10px;
+}
+
+/* Cambia el cursor cuando se arrastran las cartas */
+.card {
+    cursor: pointer;
+}

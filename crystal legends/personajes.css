@@ -1,0 +1,289 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 20px;
+    min-height: 100vh;
+    width: 100%;
+    background-image: url('imagenes/CL background.png');
+    background-size: cover; 
+    background-position: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: black;
+    font-family: 'Reactor7', Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    color: black;
+    text-shadow: 0 0 5px white;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    position: relative;
+    width: 270px;
+    margin: 2em;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 180px 1fr auto;
+    box-shadow: 0 15px 30px -10px #000;
+    cursor: pointer;
+    background-color: wheat;
+    border-radius: 17px;
+}
+
+.card-body, .card-footer {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-image {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(imagenes/);
+    background-size: cover;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+.card-image-ase {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(imagenes/patronase.jpg);
+    background-size: cover;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.card-image-ase img {
+    max-width: 95%;
+    max-height: 95%;
+    transition: max-width 0.4s, max-height 0.4s;
+}
+
+.card:hover .card-image-ase img {
+    max-width: 120%;
+    max-height: 120%;
+}
+
+.card-image-arq {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(imagenes/fondoarq.jpg);
+    background-size: cover;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.card-image-arq img {
+    max-width: 95%;
+    max-height: 95%;
+    transition: max-width 0.4s, max-height 0.4s;
+}
+
+.card:hover .card-image-arq img {
+    max-width: 120%;
+    max-height: 120%;
+}
+.card:nth-child(2) .card-image-arq {
+    background-color: darkolivegreen;
+}
+
+.card-image-drag {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(imagenes/dragon.jpg);
+    background-size: cover;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.card-image-drag img {
+    max-width: 95%;
+    max-height: 95%;
+    transition: max-width 0.4s, max-height 0.4s;
+}
+
+.card:hover .card-image-drag img {
+    max-width: 120%;
+    max-height: 120%;
+}
+.card:nth-child(2) .card-image-drag {
+    background-color: skyblue;
+}
+
+.card-image-berser {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(imagenes/berser.jpg);
+    background-size: cover;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.card-image-berser img {
+    max-width: 95%;
+    max-height: 95%;
+    transition: max-width 0.4s, max-height 0.4s;
+}
+
+.card:hover .card-image-berser img {
+    max-width: 120%;
+    max-height: 120%;
+}
+.card:nth-child(2) .card-image-berser {
+    background-color: skyblue;
+}
+
+.card-image-gue {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(imagenes/castillo.jpg);
+    background-size: cover;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.card-image-gue img {
+    max-width: 95%;
+    max-height: 95%;
+    transition: max-width 0.4s, max-height 0.4s;
+}
+
+.card:hover .card-image-gue img {
+    max-width: 120%;
+    max-height: 120%;
+}
+.card:nth-child(2) .card-image-gue {
+    background-color: skyblue;
+}
+
+.card-image-mb {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(imagenes/mblancor.jpg);
+    background-size: cover;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.card-image-mb img {
+    max-width: 95%;
+    max-height: 95%;
+    transition: max-width 0.4s, max-height 0.4s;
+}
+
+.card:hover .card-image-mb img {
+    max-width: 120%;
+    max-height: 120%;
+}
+.card:nth-child(2) .card-image-mb {
+    background-color: skyblue;
+}
+
+.card-image-mn {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(imagenes/mnegror.jpg);
+    background-size: cover;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.card-image-mn img {
+    max-width: 95%;
+    max-height: 95%;
+    transition: max-width 0.4s, max-height 0.4s;
+}
+
+.card:hover .card-image-mn img {
+    max-width: 120%;
+    max-height: 120%;
+}
+.card:nth-child(2) .card-image-mn {
+    background-color: skyblue;
+}
+
+.card-image-ilu {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(imagenes/ilu.jpg);
+    background-size: cover;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.card-image-ilu img {
+    max-width: 95%;
+    max-height: 95%;
+    transition: max-width 0.4s, max-height 0.4s;
+}
+
+.card:hover .card-image-ilu img {
+    max-width: 120%;
+    max-height: 120%;
+}
+.card:nth-child(2) .card-image-ilu {
+    background-color: skyblue;
+}
+
+.card-image img {
+    max-width: 95%;
+    max-height: 95%;
+    transition: max-width 0.4s, max-height 0.4s;
+}
+
+.card:hover .card-image img {
+    max-width: 120%;
+    max-height: 120%;
+}
+
+.card:hover {
+    box-shadow: 4px 4px 25px rgba(0, 0, 0, 0.2);
+}
+
+.card:nth-child(2) .card-image-ase {
+    background-color: darkgrey;
+}

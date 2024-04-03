@@ -1,6 +1,6 @@
 <?php
-$servername = "database-5014818324.webspace-host.com";
-$username = "dbu2458655";
-$password = "Adell83IES";
-$database = "dbs12312372";
+$servername = "sql305.thsite.top";
+$username = "thsi_35757315";
+$password = "3bdDUYsw";
+$database = "thsi_35757315_bdpruebas";
 ?>
