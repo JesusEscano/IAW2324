@@ -112,41 +112,48 @@
 </script>
 
 <?php
+include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos
+
 // Verificar si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recibir los datos del formulario
-    $titulo = $_POST['titulo'];
-    $fecha_publicacion = $_POST['fecha_publicacion'];
-    $contenido = $_POST['contenido'];
+    // Recibir y escapar los datos del formulario
+    $titulo = mysqli_real_escape_string($conn, $_POST['titulo']);
+    $fecha_publicacion = mysqli_real_escape_string($conn, $_POST['fecha_publicacion']);
+    $contenido = mysqli_real_escape_string($conn, $_POST['contenido']);
 
     // Validar los datos recibidos (puedes agregar más validaciones aquí)
     if (empty($titulo) || empty($fecha_publicacion) || empty($contenido)) {
         $error_message = "Por favor, completa todos los campos.";
     } else {
-        // Insertar la noticia en la tabla 'noticias'
-        $sql = "INSERT INTO noticias (titulo, fecha_pub, contenido) VALUES ('$titulo', '$fecha_publicacion', '$contenido')";
+        // Insertar la noticia en la tabla 'noticias' usando una consulta preparada
+        $sql = "INSERT INTO noticias (titulo, fecha_pub, contenido) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "sss", $titulo, $fecha_publicacion, $contenido);
 
-        if (mysqli_query($conn, $sql)) {
+        if (mysqli_stmt_execute($stmt)) {
             // Obtener el ID de la noticia recién insertada
             $id_noticia = mysqli_insert_id($conn);
 
             // Recorrer y guardar las imágenes asociadas a la noticia
             foreach ($_FILES['imagenes']['tmp_name'] as $key => $tmp_name) {
-                $nombre_archivo = $_FILES['imagenes']['name'][$key];
-                $ruta_imagen = "imagenes/" . $nombre_archivo; // Ruta donde se guardará la imagen en el servidor
-                $ruta_bd = "media/" . $nombre_archivo; // Ruta relativa para almacenar en la base de datos
+                $nombre_archivo = mysqli_real_escape_string($conn, $_FILES['imagenes']['name'][$key]);
+                $extension = pathinfo($nombre_archivo, PATHINFO_EXTENSION);
+                $nombre_imagen = "imagen" . $id_noticia . "." . $extension;
+                $ruta_imagen = "media/" . $nombre_imagen; // Ruta donde se guardará la imagen en el servidor
 
                 // Mover la imagen al directorio de imágenes en el servidor
                 move_uploaded_file($_FILES['imagenes']['tmp_name'][$key], $ruta_imagen);
 
-                // Insertar la ruta de la imagen en la tabla 'imagenes_noticias'
-                $sql_imagen = "INSERT INTO imagenes_noticias (id_noticia, ruta_imagen) VALUES ('$id_noticia', '$ruta_bd')";
-                mysqli_query($conn, $sql_imagen);
+                // Actualizar la noticia para incluir la ruta de la imagen
+                $sql_update = "UPDATE noticias SET imagen_noticia = ? WHERE id_noticia = ?";
+                $stmt_update = mysqli_prepare($conn, $sql_update);
+                mysqli_stmt_bind_param($stmt_update, "si", $nombre_imagen, $id_noticia);
+                mysqli_stmt_execute($stmt_update);
             }
             // Mensaje de éxito
             echo "Noticia insertada correctamente en la base de datos.";
             // Redireccionar a la página de inicio u otra página
-            header("Location: home.php");
+            // header("Location: noticiasadmin.php");
             exit();
         } else {
             $error_message = "Error al añadir la noticia: " . mysqli_error($conn);

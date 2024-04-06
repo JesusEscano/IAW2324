@@ -54,11 +54,6 @@ main {
     margin: 0 0.3rem;
 }
 
-/* Si queremos algo del navbar en la otra esquina
-.nav-item: last-child {
-margin-top: auto;
-}*/
-
 .nav-link {
     display: flex;
     align-items: center;
@@ -79,7 +74,6 @@ margin-top: auto;
     transition: var(--transition-speed);
 }
 
-
 .nav-link:hover {
     filter: grayscale(0%) opacity(1);
     background: var(--bg-secondary);
@@ -90,17 +84,6 @@ margin-top: auto;
     display: none;
     margin-left: 1rem;
 }
-
-/* Si queremos expandir la navbar en hover
-.navbar:hover {
-    width: 16rem;
-}
-
-.navbar:hover .link-text {
-    display: block;
-}
-
-}*/
 
 .logo {
     font-weight: bold;
@@ -118,7 +101,6 @@ margin-top: auto;
     transform: rotate(0deg);
     transition: transform var(--transition-speed);
 }
-
 
 .navbar-top {
     background-color: var(--bg-secondary); 
@@ -144,7 +126,6 @@ margin-top: auto;
     width: 100%;
     margin-left: 6rem;
 }
-
 
 .card {
     width: calc(98vw - 6.3rem);
@@ -189,15 +170,37 @@ margin-top: auto;
     width: calc(98vw - 6.3rem);
 }
 
-.noticia-image {
-    flex: 1;
+.fecha-publicacion {
+    color: #666;
+    margin-bottom: 10px;
 }
 
 .noticia-image img {
-    width: 100%;
+    max-width: 100%;
     height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-right: 5px;
+    border: 1px solid #007bff;
+    border-radius: 3px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: #fff;
 }
 
 .noticia-content {
@@ -230,66 +233,62 @@ margin-top: auto;
     margin-bottom: 10px;
 }
 
-
-
 @media only screen and (max-width: 600px) {
-body {
-    color: #000;
-    background-color: #FFF;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-}
+    body {
+        color: #000;
+        background-color: #FFF;
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+    }
 
-.card {
-    width: 100%;
-}
+    .card {
+        width: 100%;
+    }
 
-.noticia {
-    width: 97vw;
-}
-
+    .noticia {
+        width: 97vw;
+    }
 
     .navbar {
-    bottom: 0;
-    width: 100vw;
-    height: 5rem;
-}
+        bottom: 0;
+        width: 100vw;
+        height: 5rem;
+    }
 
-.logo {
-    display: none;
-}
+    .logo {
+        display: none;
+    }
 
-.navbar-nav {
-    flex-direction: row;
-    justify-content: space-between;
-}
+    .navbar-nav {
+        flex-direction: row;
+        justify-content: space-between;
+    }
 
-.nav-link {
-    justify-content: center;
-}
+    .nav-link {
+        justify-content: center;
+    }
 
-main {
-    margin: 0;
-}
+    main {
+        margin: 0;
+    }
 
-.navbar-top-nav {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 5rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: var(--text-secondary);
-    background: var(--bg-secondary);
-    font-size: 0.5rem;
-}
-
+    .navbar-top-nav {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: var(--text-secondary);
+        background: var(--bg-secondary);
+        font-size: 0.5rem;
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 960px) {
@@ -333,5 +332,4 @@ main {
         height: 100vh;
     }
 }
-
 

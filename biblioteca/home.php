@@ -1,3 +1,30 @@
+<?php
+include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos
+
+// Configuración para paginación
+$noticias_por_pagina = 2; // Número de noticias por página
+
+// Obtener el número total de noticias
+$sql_total_noticias = "SELECT COUNT(*) AS total FROM noticias";
+$resultado_total_noticias = mysqli_query($conn, $sql_total_noticias);
+$fila_total_noticias = mysqli_fetch_assoc($resultado_total_noticias);
+$total_noticias = $fila_total_noticias['total'];
+
+// Calcular el número total de páginas
+$total_paginas = ceil($total_noticias / $noticias_por_pagina);
+
+// Obtener el número de página actual
+$pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+$pagina_actual = min($pagina_actual, $total_paginas); // Asegurar que la página actual no supere el número total de páginas
+
+// Calcular el offset para la consulta SQL
+$offset = ($pagina_actual - 1) * $noticias_por_pagina;
+
+// Consulta para obtener las noticias de la página actual
+$sql_noticias = "SELECT * FROM noticias ORDER BY fecha_pub DESC LIMIT $noticias_por_pagina OFFSET $offset";
+$resultado_noticias = mysqli_query($conn, $sql_noticias);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,36 +35,8 @@
     <link rel="stylesheet" href="home.css">
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
-    <!-- Estilos adicionales -->
-    <style>
-        .noticia-image {
-            text-align: center;
-        }
-        .noticia-image img {
-            max-width: 100%;
-            height: auto;
-        }
-        .pagination {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .pagination a {
-            display: inline-block;
-            padding: 5px 10px;
-            margin: 0 5px;
-            background-color: #f2f2f2;
-            color: #333;
-            text-decoration: none;
-            border-radius: 3px;
-        }
-        .pagination a.active {
-            background-color: #007bff;
-            color: #fff;
-        }
-    </style>
 </head>
 <body>
-<?php include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos ?>
     <nav class="navbar-top">
         <ul class="navbar-top-nav">
             <li class="nav-item">
@@ -52,7 +51,6 @@
                     <img src="media/machadologocontorno.png" alt="logomachado">
                 </a>
             </li>
-        </div>
             <li class="nav-item">
                 <a href="home.html" class="nav-link-active" aria-current="page">
                     <img src="media/home.png" alt="casa">
@@ -87,71 +85,44 @@
     </nav>
     <main>
         <div class="container">
-            <div class="card">
-              <div class="card-image">
-                <img src="media/warning.png" alt="Warning">
-              </div>
-              <div class="card-content">
-                <h2>ATENCIÓN</h2>
-                <p>Has sido sancionado por incumplir alguna de las normas de la biblioteca. No podrás reservar un nuevo libro hasta el X/Y/Z.</p>
-              </div>
-            </div>
-            <div class="noticia">
-                <div class="noticia-content">
-                    <?php
-                    // Definir el número de noticias por página
-                    $noticias_por_pagina = 2;
-
-                    // Calcular el total de noticias y páginas
-                    $sql_total = "SELECT COUNT(*) AS total FROM noticias";
-                    $result_total = mysqli_query($conn, $sql_total);
-                    $row_total = mysqli_fetch_assoc($result_total);
-                    $total_noticias = $row_total['total'];
-                    $total_paginas = ceil($total_noticias / $noticias_por_pagina);
-
-                    // Obtener el número de página actual
-                    $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-
-                    // Calcular el desplazamiento
-                    $offset = ($pagina_actual - 1) * $noticias_por_pagina;
-
-                    // Consulta SQL con LIMIT y OFFSET para la paginación
-                    $sql = "SELECT n.*, i.ruta_imagen FROM noticias n LEFT JOIN imagenes_noticias i ON n.id_noticia = i.id_noticia ORDER BY n.fecha_pub DESC LIMIT $noticias_por_pagina OFFSET $offset";
-                    $result = mysqli_query($conn, $sql);
-
-                    // Verificar si hay noticias
-                    if (mysqli_num_rows($result) > 0) {
-                        // Iterar sobre cada noticia y mostrarla
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo '<div class="noticia">';
-                            echo '<div class="noticia-content">';
-                            echo '<h2>' . $row['titulo'] . '</h2>';
-                            echo '<p class="fecha-publicacion">Publicado el ' . date('d-m-Y', strtotime($row['fecha_pub'])) . '</p>';
-                            // Mostrar la imagen asociada si hay una
-                            if (!empty($row['ruta_imagen'])) {
-                                echo '<div class="noticia-image">';
-                                echo '<img src="' . $row['ruta_imagen'] . '" alt="Imagen de la noticia">';
-                                echo '</div>';
-                            }
-                            echo '<p>' . $row['contenido'] . '</p>';
-                            echo '<p>Autor: ' . $row['autor'] . '</p>'; // Ajusta esto según el nombre del campo en tu tabla de noticias
-                            echo '</div>';
-                            echo '</div>';
-                        }
-                    } else {
-                        echo '<p>No hay noticias publicadas.</p>';
-                    }
-
-                    // Mostrar controles de paginación
-                    echo '<div class="pagination">';
-                    for ($i = 1; $i <= $total_paginas; $i++) {
-                        echo '<a href="?pagina=' . $i . '" class="' . ($pagina_actual == $i ? 'active' : '') . '">' . $i . '</a>';
-                    }
-                    echo '</div>';
-                    ?>
+            <!-- Contenido de noticias -->
+            <?php while ($fila = mysqli_fetch_assoc($resultado_noticias)): ?>
+                <div class="card">
+                    <div class="card-content">
+                        <h2><?php echo $fila['titulo']; ?></h2>
+                        <p class="fecha-publicacion">Publicado el <?php echo $fila['fecha_pub']; ?></p>
+                        <?php if ($fila['imagen_noticia']): ?>
+                            <div class="noticia-image">
+                                <img src="media/<?php echo $fila['imagen_noticia']; ?>" alt="Imagen de la noticia">
+                            </div>
+                        <?php endif; ?>
+                        <p><?php echo $fila['contenido']; ?></p>
+                    </div>
                 </div>
+            <?php endwhile; ?>
+
+            <!-- Controles de paginación -->
+            <div class="pagination">
+                <?php if ($total_paginas > 1): ?>
+                    <?php if ($pagina_actual > 1): ?>
+                        <a href="?pagina=<?php echo $pagina_actual - 1; ?>">Anterior</a>
+                    <?php endif; ?>
+                    <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                        <a <?php echo ($i == $pagina_actual) ? 'class="active"' : ''; ?> href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    <?php endfor; ?>
+                    <?php if ($pagina_actual < $total_paginas): ?>
+                        <a href="?pagina=<?php echo $pagina_actual + 1; ?>">Siguiente</a>
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
-          </div>
+        </div>
     </main>
 </body>
 </html>
+
+<?php
+// Liberar resultados y cerrar la conexión
+mysqli_free_result($resultado_total_noticias);
+mysqli_free_result($resultado_noticias);
+mysqli_close($conn);
+?>
