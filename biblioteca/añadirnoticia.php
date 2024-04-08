@@ -48,7 +48,7 @@
                             Escribir noticia</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="borrarnoticia.php"><i class="bi bi-eye"></i>
+                        <a class="nav-link" href="vernoticia.php"><i class="bi bi-eye"></i>
                             Ver noticia</a>
                     </li>
                     <li class="nav-item">
