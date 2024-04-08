@@ -18,7 +18,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </head>
 <body>
-<?php include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos ?>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -27,41 +26,37 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-house-door"></i>
-                        Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="añadirlibros.html"><i class="bi bi-book"></i>
-                        Añadir libros</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="añadirestantería.html"><i class="bi bi-bookshelf"></i>
-                        Añadir estantería</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-bookmark-plus"></i>
-                        Añadir libro a estantería</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-people"></i>
-                        Gestionar usuarios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-ui-checks"></i>
-                        Gestionar peticiones</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="añadirnoticia.html"><i class="bi bi-newspaper"></i>
-                        Escribir noticia</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-info-square"></i>
-                        Enviar aviso</a>
-                </li>
-            </ul>
-        </div>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-house-door"></i>
+                            Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="añadirlibros.html"><i class="bi bi-book"></i>
+                            Añadir libros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-people"></i>
+                            Gestionar usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-ui-checks"></i>
+                            Gestionar peticiones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="añadirnoticia.php"><i class="bi bi-newspaper"></i>
+                            Escribir noticia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="borrarnoticia.php"><i class="bi bi-eye"></i>
+                            Ver noticia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-info-square"></i>
+                            Enviar aviso</a>
+                    </li>
+                </ul>
+            </div>
     </div>
 </nav>
 
@@ -112,31 +107,34 @@
 </script>
 
 <?php
-include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos
+include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
 
 // Verificar si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recibir y escapar los datos del formulario
-    $titulo = mysqli_real_escape_string($conn, $_POST['titulo']);
-    $fecha_publicacion = mysqli_real_escape_string($conn, $_POST['fecha_publicacion']);
-    $contenido = mysqli_real_escape_string($conn, $_POST['contenido']);
+    // Recibir los datos del formulario
+    $titulo = $_POST['titulo'];
+    $fecha_publicacion = $_POST['fecha_publicacion'];
+    $contenido = $_POST['contenido'];
 
-    // Validar los datos recibidos (puedes agregar más validaciones aquí)
+    // Validar los datos recibidos 
     if (empty($titulo) || empty($fecha_publicacion) || empty($contenido)) {
         $error_message = "Por favor, completa todos los campos.";
     } else {
-        // Insertar la noticia en la tabla 'noticias' usando una consulta preparada
+        // Preparar la consulta para insertar la noticia en la tabla 'noticias'
         $sql = "INSERT INTO noticias (titulo, fecha_pub, contenido) VALUES (?, ?, ?)";
         $stmt = mysqli_prepare($conn, $sql);
+
+        // Vincular los parámetros a la consulta preparada
         mysqli_stmt_bind_param($stmt, "sss", $titulo, $fecha_publicacion, $contenido);
 
+        // Ejecutar la consulta preparada
         if (mysqli_stmt_execute($stmt)) {
             // Obtener el ID de la noticia recién insertada
             $id_noticia = mysqli_insert_id($conn);
 
             // Recorrer y guardar las imágenes asociadas a la noticia
             foreach ($_FILES['imagenes']['tmp_name'] as $key => $tmp_name) {
-                $nombre_archivo = mysqli_real_escape_string($conn, $_FILES['imagenes']['name'][$key]);
+                $nombre_archivo = $_FILES['imagenes']['name'][$key];
                 $extension = pathinfo($nombre_archivo, PATHINFO_EXTENSION);
                 $nombre_imagen = "imagen" . $id_noticia . "." . $extension;
                 $ruta_imagen = "media/" . $nombre_imagen; // Ruta donde se guardará la imagen en el servidor
@@ -144,16 +142,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Mover la imagen al directorio de imágenes en el servidor
                 move_uploaded_file($_FILES['imagenes']['tmp_name'][$key], $ruta_imagen);
 
-                // Actualizar la noticia para incluir la ruta de la imagen
+                // Preparar la consulta para actualizar la noticia con la ruta de la imagen
                 $sql_update = "UPDATE noticias SET imagen_noticia = ? WHERE id_noticia = ?";
                 $stmt_update = mysqli_prepare($conn, $sql_update);
+
+                // Vincular los parámetros a la consulta preparada
                 mysqli_stmt_bind_param($stmt_update, "si", $nombre_imagen, $id_noticia);
                 mysqli_stmt_execute($stmt_update);
             }
             // Mensaje de éxito
             echo "Noticia insertada correctamente en la base de datos.";
             // Redireccionar a la página de inicio u otra página
-            // header("Location: noticiasadmin.php");
+            // header("Location: borrarnoticia.php");
             exit();
         } else {
             $error_message = "Error al añadir la noticia: " . mysqli_error($conn);

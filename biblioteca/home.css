@@ -150,7 +150,6 @@ main {
 
 .card-content {
     padding: 5px;
-    text-align: center;
 }
 
 .card-content h2 {
@@ -162,6 +161,7 @@ main {
 .card-content p {
     margin-bottom: 0;
     font-size: 18px;
+    text-align: left;
 }
 
 .noticia {

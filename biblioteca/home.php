@@ -86,6 +86,16 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
     <main>
         <div class="container">
             <!-- Contenido de noticias -->
+<style>
+.card-content p {
+    margin-bottom: 0;
+    text-align: left;
+}
+.card-content li {
+    margin-bottom: 0;
+    text-align: left;
+}
+</style>
             <?php while ($fila = mysqli_fetch_assoc($resultado_noticias)): ?>
                 <div class="card">
                     <div class="card-content">
@@ -100,21 +110,51 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
                     </div>
                 </div>
             <?php endwhile; ?>
+                <!-- Controles de paginación -->
+<style>
 
-            <!-- Controles de paginación -->
-            <div class="pagination">
-                <?php if ($total_paginas > 1): ?>
-                    <?php if ($pagina_actual > 1): ?>
-                        <a href="?pagina=<?php echo $pagina_actual - 1; ?>">Anterior</a>
-                    <?php endif; ?>
-                    <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-                        <a <?php echo ($i == $pagina_actual) ? 'class="active"' : ''; ?> href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    <?php endfor; ?>
-                    <?php if ($pagina_actual < $total_paginas): ?>
-                        <a href="?pagina=<?php echo $pagina_actual + 1; ?>">Siguiente</a>
-                    <?php endif; ?>
-                <?php endif; ?>
-            </div>
+            .pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-right: 5px;
+    border: 1px solid #007bff;
+    border-radius: 3px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination a.anterior, .pagination a.siguiente {
+    width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
+    padding-left: 5px;
+    padding-right: 5px;
+}
+</style>
+<div class="pagination">
+    <?php if ($total_paginas > 1): ?>
+        <?php if ($pagina_actual > 1): ?>
+            <a href="?pagina=<?php echo $pagina_actual - 1; ?>" class="anterior">Anterior</a>
+        <?php endif; ?>
+        <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+            <a <?php echo ($i == $pagina_actual) ? 'class="active"' : ''; ?> href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+        <?php endfor; ?>
+        <?php if ($pagina_actual < $total_paginas): ?>
+            <a href="?pagina=<?php echo $pagina_actual + 1; ?>" class="siguiente">Siguiente</a>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>
         </div>
     </main>
 </body>
