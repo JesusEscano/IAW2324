@@ -26,7 +26,7 @@
                         Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="añadirlibros.html"><i class="bi bi-book"></i>
+                    <a class="nav-link" href="añadirlibro.php"><i class="bi bi-book"></i>
                         Añadir libros</a>
                 </li>
                 <li class="nav-item">
