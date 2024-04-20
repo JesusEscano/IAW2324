@@ -6,91 +6,84 @@ session_start();
 
 // Verificar si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recibir los datos del formulario
-    $nombre_libro = $_POST['nombre_libro']; 
-    $editorial = $_POST['editorial'];
-    $tema = $_POST['tema'];
-    $sinopsis = $_POST['sinopsis'];
-    $paginas = $_POST['paginas'];
-    $anio_publicacion = $_POST['año_publicacion'];
-    $autores = $_POST['autores']; // Array de autores
-    $num_ejemplares = $_POST['num_ejemplares'];
+    // Recibir y limpiar los datos del formulario
+    $nombre_libro = htmlspecialchars(trim($_POST['nombre_libro'])); 
+    $editorial = htmlspecialchars(trim($_POST['editorial']));
+    $tema = htmlspecialchars(trim($_POST['tema']));
+    $sinopsis = htmlspecialchars(trim($_POST['sinopsis']));
+    $paginas = intval($_POST['paginas']);
+    $anio_publicacion = intval($_POST['año_publicacion']);
+    $autores = isset($_POST['autores']) ? $_POST['autores'] : array();
+    $num_ejemplares = intval($_POST['num_ejemplares']);
 
-    // Ruta donde se guardará la imagen en el servidor
-    $ruta_imagen = "media/";
-    $nombre_imagen = uniqid() . '_' . $_FILES['imagen_libro']['name'];
-    $ruta_imagen_completa = $ruta_imagen . $nombre_imagen;
+    // Validar y mover la imagen del libro subida
+    if (isset($_FILES['imagen_libro']) && $_FILES['imagen_libro']['size'] > 0) {
+        $ruta_imagen = "media/";
+        $nombre_imagen = uniqid() . '_' . basename($_FILES['imagen_libro']['name']);
+        $ruta_imagen_completa = $ruta_imagen . $nombre_imagen;
 
-    // Validar si se subió correctamente la imagen
-    if (move_uploaded_file($_FILES['imagen_libro']['tmp_name'], $ruta_imagen_completa)) {
-        // Preparar la consulta para insertar el libro en la tabla 'libros'
-        $sql_insert_libro = "INSERT INTO libros (paginas, editorial, tema, ano_publicacion, sinopsis, imagen_libro, nombre_libro) VALUES (?, ?, ?, ?, ?, ?, ?);";
-        $stmt_insert_libro = mysqli_prepare($conn, $sql_insert_libro);
+        // Validar tipo de archivo
+        $permitidos = array("image/jpeg", "image/png", "image/gif");
+        if (in_array($_FILES['imagen_libro']['type'], $permitidos) && $_FILES['imagen_libro']['size'] <= 5000000) { // 5MB
+            if (move_uploaded_file($_FILES['imagen_libro']['tmp_name'], $ruta_imagen_completa)) {
+                // Consulta para insertar el libro
+                $sql_insert_libro = "INSERT INTO libros (paginas, editorial, tema, ano_publicacion, sinopsis, imagen_libro, nombre_libro) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $stmt_insert_libro = mysqli_prepare($conn, $sql_insert_libro);
+                mysqli_stmt_bind_param($stmt_insert_libro, "sssssss", $paginas, $editorial, $tema, $anio_publicacion, $sinopsis, $nombre_imagen, $nombre_libro);
 
-        // Vincular los parámetros a la consulta preparada
-        mysqli_stmt_bind_param($stmt_insert_libro, "sssssss", $paginas, $editorial, $tema, $anio_publicacion, $sinopsis, $nombre_imagen, $nombre_libro);
+                if (mysqli_stmt_execute($stmt_insert_libro)) {
+                    $id_libro = mysqli_insert_id($conn); // Obtener el ID del libro insertado
 
-        // Ejecutar la consulta preparada
-        if (mysqli_stmt_execute($stmt_insert_libro)) {
-            // Obtener el ID del libro insertado
-            $id_libro = mysqli_insert_id($conn);
+                    // Insertar autores
+                    foreach ($autores as $nombre_autor) {
+                        $nombre_autor = htmlspecialchars(trim($nombre_autor));
+                        $sql_insert_autor = "INSERT INTO autores (nombre_autor) VALUES (?)";
+                        $stmt_insert_autor = mysqli_prepare($conn, $sql_insert_autor);
+                        mysqli_stmt_bind_param($stmt_insert_autor, "s", $nombre_autor);
+                        mysqli_stmt_execute($stmt_insert_autor);
 
-            // Insertar los autores en la tabla de autores y la relación en la tabla autor_libro
-            foreach ($autores as $nombre_autor) {
-                // Verificar si el autor ya existe en la tabla de autores
-                $sql_autor_existente = "SELECT id_autor FROM autores WHERE nombre_autor = ?";
-                $stmt_autor_existente = mysqli_prepare($conn, $sql_autor_existente);
-                mysqli_stmt_bind_param($stmt_autor_existente, "s", $nombre_autor);
-                mysqli_stmt_execute($stmt_autor_existente);
-                mysqli_stmt_store_result($stmt_autor_existente);
+                        $id_autor = mysqli_insert_id($conn); // Obtener el ID del autor insertado
 
-                if (mysqli_stmt_num_rows($stmt_autor_existente) > 0) {
-                    // Si el autor ya existe, obtener su ID
-                    mysqli_stmt_bind_result($stmt_autor_existente, $id_autor);
-                    mysqli_stmt_fetch($stmt_autor_existente);
+                        // Relacionar autor con libro
+                        $sql_insert_autor_libro = "INSERT INTO autor_libro (id_autor, id_libro) VALUES (?, ?)";
+                        $stmt_insert_autor_libro = mysqli_prepare($conn, $sql_insert_autor_libro);
+                        mysqli_stmt_bind_param($stmt_insert_autor_libro, "ii", $id_autor, $id_libro);
+                        mysqli_stmt_execute($stmt_insert_autor_libro);
+                    }
+
+                    // Insertar ejemplares
+                    for ($i = 0; $i < $num_ejemplares; $i++) {
+                        $sql_insert_ejemplar = "INSERT INTO ejemplares (id_libro) VALUES (?)";
+                        $stmt_insert_ejemplar = mysqli_prepare($conn, $sql_insert_ejemplar);
+                        mysqli_stmt_bind_param($stmt_insert_ejemplar, "i", $id_libro);
+                        mysqli_stmt_execute($stmt_insert_ejemplar);
+                    }
+
+                    $_SESSION['success_message'] = "Libro añadido correctamente.";
+                    header("Location: añadirlibro.php");
+                    exit();
                 } else {
-                    // Si el autor no existe, insertarlo en la tabla de autores y obtener su ID
-                    $sql_insert_autor = "INSERT INTO autores (nombre_autor) VALUES (?)";
-                    $stmt_insert_autor = mysqli_prepare($conn, $sql_insert_autor);
-                    mysqli_stmt_bind_param($stmt_insert_autor, "s", $nombre_autor);
-                    mysqli_stmt_execute($stmt_insert_autor);
-                    $id_autor = mysqli_insert_id($conn); // Obtener el ID del autor insertado
+                    $error_message = "Error al añadir el libro: " . mysqli_error($conn);
                 }
-
-                // Insertar la relación entre el autor y el libro en la tabla 'autor_libro'
-                $sql_insert_autor_libro = "INSERT INTO autor_libro (id_autor, id_libro) VALUES (?, ?)";
-                $stmt_insert_autor_libro = mysqli_prepare($conn, $sql_insert_autor_libro);
-                mysqli_stmt_bind_param($stmt_insert_autor_libro, "ii", $id_autor, $id_libro);
-                mysqli_stmt_execute($stmt_insert_autor_libro);
+            } else {
+                $error_message = "Error al mover la imagen.";
             }
-
-            // Insertar ejemplares
-            for ($i = 0; $i < $num_ejemplares; $i++) {
-                $sql_insert_ejemplar = "INSERT INTO ejemplares (id_libro) VALUES (?)";
-                $stmt_insert_ejemplar = mysqli_prepare($conn, $sql_insert_ejemplar);
-                mysqli_stmt_bind_param($stmt_insert_ejemplar, "i", $id_libro);
-                mysqli_stmt_execute($stmt_insert_ejemplar);
-            }
-
-            // Guardar mensaje de éxito en la variable de sesión
-            $_SESSION['success_message'] = "Libro insertado correctamente en la base de datos.";
-
-            // Redireccionar a la página de inicio u otra página
-            header("Location: añadirlibro.php");
-            exit();
         } else {
-            $error_message = "Error al añadir el libro: " . mysqli_error($conn);
+            $error_message = "Formato de imagen no válido o archivo demasiado grande.";
         }
     } else {
-        $error_message = "Error al subir la imagen.";
+        $error_message = "Por favor, sube una imagen.";
     }
 }
 
-// Comprobar si hay un mensaje de éxito en la variable de sesión y mostrarlo
+// Mostrar mensaje de éxito o error
 if (isset($_SESSION['success_message'])) {
     echo "<div class='alert alert-success'>" . $_SESSION['success_message'] . "</div>";
-    // Limpiar la variable de sesión después de mostrar el mensaje
     unset($_SESSION['success_message']);
+}
+
+if (isset($error_message)) {
+    echo "<div class='alert alert-danger'>" . $error_message . "</div>";
 }
 ?>
 <!DOCTYPE html>
@@ -123,6 +116,10 @@ if (isset($_SESSION['success_message'])) {
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="añadirlibro.php"><i class="bi bi-book"></i>
                             Añadir libros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="verlibros.php"><i class="bi bi-book-fill"></i>
+                            Ver libros</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-people"></i>
