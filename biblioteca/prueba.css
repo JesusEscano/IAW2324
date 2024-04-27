@@ -144,8 +144,9 @@ main {
 }
 
 .card-image img {
-    width: 50px; /* Ajusta el tamaño de la imagen de advertencia */
-    height: auto; /* Permite que la altura se ajuste automáticamente */
+    max-width: 100%;
+    max-height: 150px; /* Altura máxima de la imagen */
+    object-fit: contain;
 }
 
 .card-content {
@@ -179,9 +180,9 @@ main {
 
 .noticia-image img {
     max-width: 100%;
-    height: auto;
+    max-height: 150px; /* Altura máxima de la imagen */
+    object-fit: contain;
 }
-
 .noticia-content h2 {
     font-size: 24px;
     color: #000;

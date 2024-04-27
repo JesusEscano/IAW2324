@@ -1,218 +1,174 @@
 <?php
-include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
+include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos
 
-// Verificar si se envió el formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recibir los datos del formulario
-    $nombre_libro = $_POST['nombre_libro']; 
-    $editorial = $_POST['editorial'];
-    $tema = $_POST['tema'];
-    $sinopsis = $_POST['sinopsis'];
-    $paginas = $_POST['paginas'];
-    $anio_publicacion = $_POST['año_publicacion'];
-    $autores = $_POST['autores']; // Array de autores
-    $num_ejemplares = $_POST['num_ejemplares'];
+// Configuración para paginación
+$noticias_por_pagina = 2; // Número de noticias por página
 
-    // Imprimir el título para verificar si se captura correctamente
-    echo "Título del libro recibido: " . $nombre_libro . "<br>";
+// Obtener el número total de noticias
+$sql_total_noticias = "SELECT COUNT(*) AS total FROM noticias";
+$resultado_total_noticias = mysqli_query($conn, $sql_total_noticias);
+$fila_total_noticias = mysqli_fetch_assoc($resultado_total_noticias);
+$total_noticias = $fila_total_noticias['total'];
 
-    // Verificar si el nombre del libro está llegando correctamente
-    if ($nombre_libro) {
-        echo "El nombre del libro se recibió correctamente.<br>";
-    } else {
-        echo "Error: no se recibió el nombre del libro.<br>";
-    }
+// Calcular el número total de páginas
+$total_paginas = ceil($total_noticias / $noticias_por_pagina);
 
-    // Ruta donde se guardará la imagen en el servidor
-    $ruta_imagen = "media/";
-    $nombre_imagen = uniqid() . '_' . $_FILES['imagen_libro']['name'];
-    $ruta_imagen_completa = $ruta_imagen . $nombre_imagen;
+// Obtener el número de página actual
+$pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+$pagina_actual = min($pagina_actual, $total_paginas); // Asegurar que la página actual no supere el número total de páginas
 
-    // Validar si se subió correctamente la imagen
-    if (move_uploaded_file($_FILES['imagen_libro']['tmp_name'], $ruta_imagen_completa)) {
-        // Preparar la consulta para insertar el libro en la tabla 'libros'
-        $sql_insert_libro = "INSERT INTO libros (paginas, editorial, tema, ano_publicacion, sinopsis, imagen_libro, nombre_libro) VALUES (?, ?, ?, ?, ?, ?, ?);";
-        $stmt_insert_libro = mysqli_prepare($conn, $sql_insert_libro);
+// Calcular el offset para la consulta SQL
+$offset = ($pagina_actual - 1) * $noticias_por_pagina;
 
-        // Vincular los parámetros a la consulta preparada
-        mysqli_stmt_bind_param($stmt_insert_libro, "sssssss", $paginas, $editorial, $tema, $anio_publicacion, $sinopsis, $nombre_imagen, $nombre_libro);
-
-        // Ejecutar la consulta preparada
-        if (mysqli_stmt_execute($stmt_insert_libro)) {
-            // Obtener el ID del libro insertado
-            $id_libro = mysqli_insert_id($conn);
-
-            // Insertar los autores en la tabla de autores y la relación en la tabla autor_libro
-            foreach ($autores as $nombre_autor) {
-                // Verificar si el autor ya existe en la tabla de autores
-                $sql_autor_existente = "SELECT id_autor FROM autores WHERE nombre_autor = ?";
-                $stmt_autor_existente = mysqli_prepare($conn, $sql_autor_existente);
-                mysqli_stmt_bind_param($stmt_autor_existente, "s", $nombre_autor);
-                mysqli_stmt_execute($stmt_autor_existente);
-                mysqli_stmt_store_result($stmt_autor_existente);
-
-                if (mysqli_stmt_num_rows($stmt_autor_existente) > 0) {
-                    // Si el autor ya existe, obtener su ID
-                    mysqli_stmt_bind_result($stmt_autor_existente, $id_autor);
-                    mysqli_stmt_fetch($stmt_autor_existente);
-                } else {
-                    // Si el autor no existe, insertarlo en la tabla de autores y obtener su ID
-                    $sql_insert_autor = "INSERT INTO autores (nombre_autor) VALUES (?)";
-                    $stmt_insert_autor = mysqli_prepare($conn, $sql_insert_autor);
-                    mysqli_stmt_bind_param($stmt_insert_autor, "s", $nombre_autor);
-                    mysqli_stmt_execute($stmt_insert_autor);
-                    $id_autor = mysqli_insert_id($conn); // Obtener el ID del autor insertado
-                }
-
-                // Insertar la relación entre el autor y el libro en la tabla 'autor_libro'
-                $sql_insert_autor_libro = "INSERT INTO autor_libro (id_autor, id_libro) VALUES (?, ?)";
-                $stmt_insert_autor_libro = mysqli_prepare($conn, $sql_insert_autor_libro);
-                mysqli_stmt_bind_param($stmt_insert_autor_libro, "ii", $id_autor, $id_libro);
-                mysqli_stmt_execute($stmt_insert_autor_libro);
-            }
-
-            // Insertar ejemplares
-            for ($i = 0; $i < $num_ejemplares; $i++) {
-                $sql_insert_ejemplar = "INSERT INTO ejemplares (id_libro) VALUES (?)";
-                $stmt_insert_ejemplar = mysqli_prepare($conn, $sql_insert_ejemplar);
-                mysqli_stmt_bind_param($stmt_insert_ejemplar, "i", $id_libro);
-                mysqli_stmt_execute($stmt_insert_ejemplar);
-            }
-
-            // Consulta para recuperar el nombre del libro insertado
-            $sql_select_nombre_libro = "SELECT nombre_libro FROM libros WHERE id_libro = ?";
-            $stmt_select_nombre_libro = mysqli_prepare($conn, $sql_select_nombre_libro);
-            mysqli_stmt_bind_param($stmt_select_nombre_libro, "i", $id_libro);
-            mysqli_stmt_execute($stmt_select_nombre_libro);
-            mysqli_stmt_bind_result($stmt_select_nombre_libro, $nombre_libro_insertado);
-            mysqli_stmt_fetch($stmt_select_nombre_libro);
-
-            // Mensaje de éxito con el nombre del libro insertado
-            echo "Libro insertado correctamente en la base de datos con el nombre: " . $nombre_libro_insertado . "<br>";
-            // Redireccionar a la página de inicio u otra página
-            // header("Location: inicio.php");
-            exit();
-        } else {
-            $error_message = "Error al añadir el libro: " . mysqli_error($conn);
-        }
-    } else {
-        $error_message = "Error al subir la imagen.";
-    }
-    
-    // Segundo echo de comprobación
-    echo "Después de la ejecución del código.";
-}
+// Consulta para obtener las noticias de la página actual
+$sql_noticias = "SELECT * FROM noticias ORDER BY fecha_pub DESC LIMIT $noticias_por_pagina OFFSET $offset";
+$resultado_noticias = mysqli_query($conn, $sql_noticias);
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración de la biblioteca del IES Antonio Machado</title>
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <!-- Bootstrap Icon -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <title>Biblioteca IES Antonio Machado</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="administración.css">
+    <link rel="stylesheet" href="prueba.css">
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Biblioteca IES Antonio Machado</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-house-door"></i>
-                            Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="añadirlibro.php"><i class="bi bi-book"></i>
-                            Añadir libros</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-people"></i>
-                            Gestionar usuarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-ui-checks"></i>
-                            Gestionar peticiones</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="añadirnoticia.php"><i class="bi bi-newspaper"></i>
-                            Escribir noticia</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="vernoticia.php"><i class="bi bi-eye"></i>
-                            Ver noticia</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-info-square"></i>
-                            Enviar aviso</a>
-                    </li>
-                </ul>
+    <nav class="navbar-top">
+        <ul class="navbar-top-nav">
+            <li class="nav-item">
+                <h1>Biblioteca del IES Antonio Machado</h1>
+            </li>
+        </ul>
+    </nav>
+    <nav class="navbar">
+        <ul class="navbar-nav">
+            <li class="logo">
+                <a href="#" class="nav-link">
+                    <img src="media/machadologocontorno.png" alt="logomachado">
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="home.html" class="nav-link-active" aria-current="page">
+                    <img src="media/home.png" alt="casa">
+                    <span class="link-text">Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="reglas.html" class="nav-link">
+                    <img src="media/reglas.png" alt="reglas">
+                    <span class="link-text">Reglas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <img src="media/librolupa.png" alt="buscar">
+                    <span class="link-text">Buscar libro</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <img src="media/libroi.png" alt="libros pedidos">
+                    <span class="link-text">Libros pedidos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <img src="media/user.png" alt="perfil">
+                    <span class="link-text">Perfil</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <div class="container">
+            <!-- Contenido de noticias -->
+            <?php while ($fila = mysqli_fetch_assoc($resultado_noticias)): ?>
+                <div class="card">
+                    <div class="card-content">
+                        <h2 style="text-align: center;"><?php echo $fila['titulo']; ?></h2>
+                        <p class="fecha-publicacion" style="text-align: center;">Publicado el <?php echo $fila['fecha_pub']; ?></p>
+                        <?php if ($fila['imagen_noticia']): ?>
+                            <div class="noticia-image" style="text-align: center;">
+                                <img src="media/<?php echo $fila['imagen_noticia']; ?>" alt="Imagen de la noticia" style="max-width: 100%; height: auto;">
+                            </div>
+                        <?php endif; ?>
+                        <p><?php echo $fila['contenido']; ?></p>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+                <!-- Controles de paginación -->
+            <div class="pagination">
+                <?php if ($total_paginas > 1): ?>
+                    <?php if ($pagina_actual > 1): ?>
+                        <a href="?pagina=<?php echo $pagina_actual - 1; ?>" class="anterior">Anterior</a>
+                    <?php endif; ?>
+                    <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                        <a <?php echo ($i == $pagina_actual) ? 'class="active"' : ''; ?> href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    <?php endfor; ?>
+                    <?php if ($pagina_actual < $total_paginas): ?>
+                        <a href="?pagina=<?php echo $pagina_actual + 1; ?>" class="siguiente">Siguiente</a>
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
-    </div>
-</nav>
+            <style>
+.card-content p {
+    margin-bottom: 0;
+    font-size: 18px;
+    text-align: left;
+}
 
-<!-- Formulario de libros -->
-<div class="container mt-5">
-    <h2>Añadir Libro</h2>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
-        <label for="nombre_libro">Título:</label><br>
-        <input type="text" id="nombre_libro" name="nombre_libro" required><br><br>
+.noticia {
+    display: flex;
+    margin-top: 20px;
+    width: calc(98vw - 6.3rem);
+}
 
-        <label for="editorial">Editorial:</label><br>
-        <input type="text" id="editorial" name="editorial" required><br><br>
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
 
-        <label for="tema">Tema:</label><br>
-        <input type="text" id="tema" name="tema" required><br><br>
+.pagination a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-right: 5px;
+    border: 1px solid #007bff;
+    border-radius: 3px;
+    color: #007bff;
+    text-decoration: none;
+}
 
-        <label for="paginas">Páginas:</label><br>
-        <input type="number" id="paginas" name="paginas" min="1" required><br><br>
+.pagination a.active {
+    background-color: #007bff;
+    color: #fff;
+}
 
-        <label for="año_publicacion">Año de publicación:</label><br>
-        <input type="number" id="año_publicacion" name="año_publicacion" placeholder="AAAA" pattern="[0-9]{4}" required><br><br>
+.pagination a.anterior, .pagination a.siguiente {
+    width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
+    padding-left: 10px;
+    padding-right: 10px;
+}
 
-        <label for="sinopsis">Sinopsis:</label><br>
-        <textarea id="sinopsis" name="sinopsis" rows="4" style="width: 800px;" required></textarea><br><br>
-
-        <label for="autores">Autores:</label><br>
-        <div id="autores">
-            <div class="autor">
-                <input type="text" name="autores[]" style="width: 800px;" required>
-                <button type="button" onclick="eliminarAutor(this)">Eliminar</button><br><br>
-            </div>
+.noticia-content {
+    flex: 3;
+    padding-right: 20px; /* Ajusta el espaciado entre la imagen y el texto */
+}
+            </style>
         </div>
-        <button type="button" onclick="agregarAutor()">Agregar Autor</button><br><br>
-
-        <label for="imagen_libro">Imagen del Libro:</label><br>
-        <input type="file" id="imagen_libro" name="imagen_libro" accept="image/*" required><br><br>
-
-        <label for="num_ejemplares">Número de Ejemplares:</label><br>
-        <input type="number" id="num_ejemplares" name="num_ejemplares" min="1" required><br><br>
-
-        <input type="submit" value="Añadir Libro">
-    </form>
-</div>
-
-<script>
-    function agregarAutor() {
-        var divAutores = document.getElementById("autores");
-        var nuevoAutor = document.createElement("div");
-        nuevoAutor.className = "autor";
-        nuevoAutor.innerHTML = '<input type="text" name="autores[]" style="width: 800px;" required><button type="button" onclick="eliminarAutor(this)">Eliminar</button><br><br>';
-        divAutores.appendChild(nuevoAutor);
-    }
-
-    function eliminarAutor(elemento) {
-        elemento.parentNode.remove();
-    }
-</script>
-
+    </main>
 </body>
 </html>
+
+<?php
+// Liberar resultados y cerrar la conexión
+mysqli_free_result($resultado_total_noticias);
+mysqli_free_result($resultado_noticias);
+mysqli_close($conn);
+?>

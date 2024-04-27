@@ -32,7 +32,7 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca IES Antonio Machado</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="prueba.css">
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
@@ -47,37 +47,37 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
     <nav class="navbar">
         <ul class="navbar-nav">
             <li class="logo">
-                <a href="#" class="nav-link">
-                    <img src="media/machadologocontorno.png" alt="logomachado">
+                <a href="#" class="nav-link" aria-label="Ir a la página de inicio">
+                    <img src="media/machadologocontorno.png" alt="Logotipo del IES Antonio Machado">
                 </a>
             </li>
             <li class="nav-item">
-                <a href="home.html" class="nav-link-active" aria-current="page">
-                    <img src="media/home.png" alt="casa">
+                <a href="home.html" class="nav-link-active" aria-current="page" aria-label="Ir a la página de inicio">
+                    <img src="media/home.png" alt="Ícono de casa">
                     <span class="link-text">Home</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="reglas.html" class="nav-link">
-                    <img src="media/reglas.png" alt="reglas">
+                <a href="reglas.html" class="nav-link" aria-label="Ir a la página de reglas">
+                    <img src="media/reglas.png" alt="Ícono de reglas">
                     <span class="link-text">Reglas</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <img src="media/librolupa.png" alt="buscar">
+                <a href="#" class="nav-link" aria-label="Buscar libro">
+                    <img src="media/librolupa.png" alt="Ícono de lupa">
                     <span class="link-text">Buscar libro</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <img src="media/libroi.png" alt="libros pedidos">
+                <a href="#" class="nav-link" aria-label="Ir a libros pedidos">
+                    <img src="media/libroi.png" alt="Ícono de libros pedidos">
                     <span class="link-text">Libros pedidos</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <img src="media/user.png" alt="perfil">
+                <a href="#" class="nav-link" aria-label="Ir a perfil">
+                    <img src="media/user.png" alt="Ícono de perfil">
                     <span class="link-text">Perfil</span>
                 </a>
             </li>
@@ -86,24 +86,14 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
     <main>
         <div class="container">
             <!-- Contenido de noticias -->
-<style>
-.card-content p {
-    margin-bottom: 0;
-    text-align: left;
-}
-.card-content li {
-    margin-bottom: 0;
-    text-align: left;
-}
-</style>
             <?php while ($fila = mysqli_fetch_assoc($resultado_noticias)): ?>
                 <div class="card">
                     <div class="card-content">
-                        <h2><?php echo $fila['titulo']; ?></h2>
-                        <p class="fecha-publicacion">Publicado el <?php echo $fila['fecha_pub']; ?></p>
+                        <h2 style="text-align: center;"><?php echo $fila['titulo']; ?></h2>
+                        <p class="fecha-publicacion" style="text-align: center;">Publicado el <?php echo $fila['fecha_pub']; ?></p>
                         <?php if ($fila['imagen_noticia']): ?>
-                            <div class="noticia-image">
-                                <img src="media/<?php echo $fila['imagen_noticia']; ?>" alt="Imagen de la noticia">
+                            <div class="noticia-image" style="text-align: center;">
+                                <img src="media/<?php echo $fila['imagen_noticia']; ?>" alt="Imagen de la noticia" style="max-width: 100%; height: auto;">
                             </div>
                         <?php endif; ?>
                         <p><?php echo $fila['contenido']; ?></p>
@@ -111,9 +101,33 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
                 </div>
             <?php endwhile; ?>
                 <!-- Controles de paginación -->
-<style>
+            <div class="pagination">
+                <?php if ($total_paginas > 1): ?>
+                    <?php if ($pagina_actual > 1): ?>
+                        <a href="?pagina=<?php echo $pagina_actual - 1; ?>" class="anterior">Anterior</a>
+                    <?php endif; ?>
+                    <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                        <a <?php echo ($i == $pagina_actual) ? 'class="active"' : ''; ?> href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    <?php endfor; ?>
+                    <?php if ($pagina_actual < $total_paginas): ?>
+                        <a href="?pagina=<?php echo $pagina_actual + 1; ?>" class="siguiente">Siguiente</a>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+            <style>
+.card-content p {
+    margin-bottom: 0;
+    font-size: 18px;
+    text-align: left;
+}
 
-            .pagination {
+.noticia {
+    display: flex;
+    margin-top: 20px;
+    width: calc(98vw - 6.3rem);
+}
+
+.pagination {
     text-align: center;
     margin-top: 20px;
 }
@@ -125,36 +139,28 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
     line-height: 30px;
     text-align: center;
     margin-right: 5px;
-    border: 1px solid #007bff;
+    border: 1px solid #3a5a40;
     border-radius: 3px;
-    color: #007bff;
+    color: #3a5a40;
     text-decoration: none;
 }
 
 .pagination a.active {
-    background-color: #007bff;
+    background-color: #3a5a40;
     color: #fff;
 }
 
 .pagination a.anterior, .pagination a.siguiente {
     width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
-</style>
-<div class="pagination">
-    <?php if ($total_paginas > 1): ?>
-        <?php if ($pagina_actual > 1): ?>
-            <a href="?pagina=<?php echo $pagina_actual - 1; ?>" class="anterior">Anterior</a>
-        <?php endif; ?>
-        <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-            <a <?php echo ($i == $pagina_actual) ? 'class="active"' : ''; ?> href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-        <?php endfor; ?>
-        <?php if ($pagina_actual < $total_paginas): ?>
-            <a href="?pagina=<?php echo $pagina_actual + 1; ?>" class="siguiente">Siguiente</a>
-        <?php endif; ?>
-    <?php endif; ?>
-</div>
+
+.noticia-content {
+    flex: 3;
+    padding-right: 20px; /* Ajusta el espaciado entre la imagen y el texto */
+}
+            </style>
         </div>
     </main>
 </body>
