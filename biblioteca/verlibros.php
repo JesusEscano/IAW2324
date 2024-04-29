@@ -36,8 +36,8 @@
         <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-house-door"></i>
-                            Home</a>
+                        <a class="nav-link" href="home.php"><i class="bi bi-house-door"></i>
+                            Vista pública</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="añadirlibro.php"><i class="bi bi-book"></i>
@@ -48,11 +48,15 @@
                             Ver libros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-people"></i>
+                        <a class="nav-link" href="verejemplares.php"><i class="bi bi-journal-bookmark"></i>
+                            Ver ejemplares</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="verusuarios.php"><i class="bi bi-people"></i>
                             Gestionar usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-ui-checks"></i>
+                        <a class="nav-link" href="verpeticiones.php"><i class="bi bi-ui-checks"></i>
                             Gestionar peticiones</a>
                     </li>
                     <li class="nav-item">
@@ -64,7 +68,7 @@
                             Ver noticia</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-info-square"></i>
+                        <a class="nav-link" href="avisos.php"><i class="bi bi-info-square"></i>
                             Enviar aviso</a>
                     </li>
                 </ul>

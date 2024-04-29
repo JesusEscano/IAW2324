@@ -51,9 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         mysqli_stmt_execute($stmt_insert_autor_libro);
                     }
 
-                    // Insertar ejemplares
-                    for ($i = 0; $i < $num_ejemplares; $i++) {
-                        $sql_insert_ejemplar = "INSERT INTO ejemplares (id_libro) VALUES (?)";
+                        // Insertar ejemplares
+                        for ($i = 0; $i < $num_ejemplares; $i++) {
+                        $sql_insert_ejemplar = "INSERT INTO ejemplares (id_libro, estado) VALUES (?, 'Disponible')"; // Estado por defecto: Disponible
                         $stmt_insert_ejemplar = mysqli_prepare($conn, $sql_insert_ejemplar);
                         mysqli_stmt_bind_param($stmt_insert_ejemplar, "i", $id_libro);
                         mysqli_stmt_execute($stmt_insert_ejemplar);
@@ -110,8 +110,8 @@ if (isset($error_message)) {
         <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-house-door"></i>
-                            Home</a>
+                        <a class="nav-link" href="home.php"><i class="bi bi-house-door"></i>
+                            Vista pública</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="añadirlibro.php"><i class="bi bi-book"></i>
@@ -122,11 +122,15 @@ if (isset($error_message)) {
                             Ver libros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-people"></i>
+                        <a class="nav-link" href="verejemplares.php"><i class="bi bi-journal-bookmark"></i>
+                            Ver ejemplares</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="verusuarios.php"><i class="bi bi-people"></i>
                             Gestionar usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-ui-checks"></i>
+                        <a class="nav-link" href="verpeticiones.php"><i class="bi bi-ui-checks"></i>
                             Gestionar peticiones</a>
                     </li>
                     <li class="nav-item">
@@ -138,7 +142,7 @@ if (isset($error_message)) {
                             Ver noticia</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-info-square"></i>
+                        <a class="nav-link" href="avisos.php"><i class="bi bi-info-square"></i>
                             Enviar aviso</a>
                     </li>
                 </ul>
