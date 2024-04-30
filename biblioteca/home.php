@@ -1,5 +1,5 @@
 <?php
-include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos
+include_once 'bd.php'; // Archivo de conexión a la base de datos
 
 // Configuración para paginación
 $noticias_por_pagina = 2; // Número de noticias por página
@@ -23,6 +23,20 @@ $offset = ($pagina_actual - 1) * $noticias_por_pagina;
 // Consulta para obtener las noticias de la página actual
 $sql_noticias = "SELECT * FROM noticias ORDER BY fecha_pub DESC LIMIT $noticias_por_pagina OFFSET $offset";
 $resultado_noticias = mysqli_query($conn, $sql_noticias);
+
+// Consulta para obtener el aviso activo
+$sql_aviso = "SELECT * FROM avisos WHERE activo = 1 ORDER BY fecha_activacion DESC LIMIT 1";
+$resultado_aviso = mysqli_query($conn, $sql_aviso);
+
+// Verificar si hay algún aviso activo
+if (mysqli_num_rows($resultado_aviso) > 0) {
+    $fila_aviso = mysqli_fetch_assoc($resultado_aviso);
+    $hay_aviso = true;
+    $texto_aviso = $fila_aviso['texto'];
+} else {
+    $hay_aviso = false;
+    $texto_aviso = "";
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +49,8 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
     <link rel="stylesheet" href="prueba.css">
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 <body>
     <nav class="navbar-top">
@@ -85,6 +101,37 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
     </nav>
     <main>
         <div class="container">
+        <!-- Mostrar aviso si hay uno -->
+        <style>
+        /* Estilos para la tarjeta de aviso */
+        .aviso {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff3cd;
+            border: 2px solid #721c24;
+            border-radius: .25rem;
+        }
+        /* Estilos para el icono de aviso */
+        .aviso-icon {
+            font-size: 24px;
+            text-align: center;
+            color: #721c24;
+        }
+        /* Estilos para el texto del aviso */
+        .aviso-dice {
+            font-size: 18px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        </style>
+            <?php if ($hay_aviso): ?>
+            <div class="aviso">
+            <div class="aviso-icon">
+            <i class="bi bi-info-circle"></i>
+            </div>
+            <p class="aviso-dice"><?php echo $texto_aviso; ?></p>
+            </div>
+            <?php endif; ?>
             <!-- Contenido de noticias -->
             <?php while ($fila = mysqli_fetch_assoc($resultado_noticias)): ?>
                 <div class="card">
