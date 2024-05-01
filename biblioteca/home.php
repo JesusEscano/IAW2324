@@ -53,6 +53,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 <body>
+    <!-- El nombre de la biblioteca, es fijo arriba -->
     <nav class="navbar-top">
         <ul class="navbar-top-nav">
             <li class="nav-item">
@@ -60,6 +61,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
             </li>
         </ul>
     </nav>
+    <!-- La barra de navegación lateral (o inferior si la pantalla es pequeña) -->
     <nav class="navbar">
         <ul class="navbar-nav">
             <li class="logo">
@@ -68,7 +70,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                 </a>
             </li>
             <li class="nav-item">
-                <a href="home.html" class="nav-link-active" aria-current="page" aria-label="Ir a la página de inicio">
+                <a href="home.php" class="nav-link-active" aria-current="page" aria-label="Ir a la página de inicio">
                     <img src="media/home.png" alt="Ícono de casa">
                     <span class="link-text">Home</span>
                 </a>
@@ -80,7 +82,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" aria-label="Buscar libro">
+                <a href="FE_buscarlibro.php" class="nav-link" aria-label="Buscar libro">
                     <img src="media/librolupa.png" alt="Ícono de lupa">
                     <span class="link-text">Buscar libro</span>
                 </a>
