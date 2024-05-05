@@ -1,39 +1,6 @@
 <?php
 include_once 'bd.php'; // Archivo de conexión a la base de datos
 
-// Configuración para paginación
-$libros_por_pagina = 10; // Número de libros por página
-
-// Obtener el número total de libros
-$sql_total_libros = "SELECT COUNT(*) AS total FROM libros";
-$resultado_total_libros = mysqli_query($conn, $sql_total_libros);
-$fila_total_libros = mysqli_fetch_assoc($resultado_total_libros);
-$total_libros = $fila_total_libros['total'];
-
-// Calcular el número total de páginas
-$total_paginas = ceil($total_libros / $libros_por_pagina);
-
-// Obtener el número de página actual
-$pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-$pagina_actual = min($pagina_actual, $total_paginas); // Asegurar que la página actual no supere el número total de páginas
-
-// Calcular el offset para la consulta SQL
-$offset = ($pagina_actual - 1) * $libros_por_pagina;
-
-// Consulta para obtener los libros de la página actual
-$sql_libros = "SELECT libros.id_libro, nombre_libro, 
-               GROUP_CONCAT(DISTINCT nombre_autor SEPARATOR ', ') AS autores, 
-               (SELECT COUNT(*) FROM ejemplares WHERE ejemplares.id_libro = libros.id_libro AND ejemplares.estado = 'Disponible') AS ejemplares_disponibles, 
-               imagen_libro 
-               FROM libros 
-               INNER JOIN autor_libro ON libros.id_libro = autor_libro.id_libro 
-               INNER JOIN autores ON autor_libro.id_autor = autores.id_autor 
-               GROUP BY libros.id_libro, nombre_libro, imagen_libro 
-               ORDER BY nombre_libro ASC 
-               LIMIT $offset, $libros_por_pagina";
-
-$resultado_libros = mysqli_query($conn, $sql_libros);
-
 // Consulta para obtener el aviso activo
 $sql_aviso = "SELECT * FROM avisos WHERE activo = 1 ORDER BY fecha_activacion DESC LIMIT 1";
 $resultado_aviso = mysqli_query($conn, $sql_aviso);
@@ -65,7 +32,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         .imagen-libro {
-            max-width: 100px; /* Ancho máximo de 100px */
+            max-width: 8vw; /* Ancho máximo de 8vw */
         }
         /* Centrar el contenido de las celdas de la tabla */
         table {
@@ -98,6 +65,60 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
         }
         #buscar:hover {
             background-color: #0056b3;
+        }
+        #buscador {
+            margin-bottom: 20px;
+            display: flex;
+        }
+        #busqueda {
+            flex: 1;
+            margin-right: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+        #buscar {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3a5a40;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #buscar:hover {
+            background-color: #5ab87a;
+        }
+        .pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-right: 5px;
+    border: 1px solid #3a5a40;
+    border-radius: 3px;
+    color: #3a5a40;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #3a5a40;
+    color: #fff;
+}
+
+.pagination a.anterior, .pagination a.siguiente {
+    width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.pagination a:hover {
+            background-color: #5ab87a;
         }
     </style>
 </head>
@@ -161,78 +182,19 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                 <p class="aviso-dice"><?php echo $texto_aviso; ?></p>
             </div>
             <?php endif; ?>
-            <!-- Buscador -->
-            <style>
-        #buscador {
-            margin-bottom: 20px;
-            display: flex;
-        }
-        #busqueda {
-            flex: 1;
-            margin-right: 10px;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-        }
-        #buscar {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        #buscar:hover {
-            background-color: #0056b3;
-        }
-            </style>
             <!-- Campo de búsqueda -->
             <div id="buscador">
-                <input type="text" class="form-control" placeholder="Buscar por título o autor. Toca la imagen para seleccionar." id="busqueda" aria-label="Buscar" aria-describedby="button-addon2">
+                <input type="text" class="form-control" placeholder="Buscar por título o autor." id="busqueda" aria-label="Buscar" aria-describedby="button-addon2">
                 <button class="btn btn-primary" type="button" id="buscar">Buscar</button>
             </div>
             <!-- Contenido de libros -->
             <div id="libros">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Imagen</th>
-                            <th>Título</th>
-                            <th>Autor</th>
-                            <th>Ejemplares Disponibles</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($fila = mysqli_fetch_assoc($resultado_libros)): ?>
-                            <tr>
-                                <td><?php echo $fila['imagen_libro'] ? '<img src="media/' . $fila['imagen_libro'] . '" class="imagen-libro" alt="Imagen del libro">' : ''; ?></td>
-                                <td><?php echo $fila['nombre_libro']; ?></td>
-                                <td><?php echo $fila['autores']; ?></td>
-                                <td><?php echo $fila['ejemplares_disponibles']; ?></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            </div>
-            <!-- Controles de paginación -->
-            <div class="pagination">
-                <?php if ($total_paginas > 1): ?>
-                    <?php if ($pagina_actual > 1): ?>
-                        <a href="?pagina=<?php echo $pagina_actual - 1; ?>" class="anterior">Anterior</a>
-                    <?php endif; ?>
-                    <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-                        <a <?php echo ($i == $pagina_actual) ? 'class="active"' : ''; ?> href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    <?php endfor; ?>
-                    <?php if ($pagina_actual < $total_paginas): ?>
-                        <a href="?pagina=<?php echo $pagina_actual + 1; ?>" class="siguiente">Siguiente</a>
-                    <?php endif; ?>
-                <?php endif; ?>
+                <?php include_once 'FE_todos_libros.php'; ?>
             </div>
         </div>
     </main>
-        <!-- Script para realizar la búsqueda con AJAX -->
-        <script>
+    <!-- Script para realizar la búsqueda con AJAX -->
+    <script>
         $(document).ready(function(){
             // Función para realizar la búsqueda de libros
             function buscarLibros(busqueda) {
@@ -261,14 +223,14 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                     $('#libros').html(''); // Limpiar los resultados si el campo está vacío
                 }
             });
+            
         });
     </script>
 </body>
 </html>
 
 <?php
-// Liberar resultados y cerrar la conexión
-mysqli_free_result($resultado_total_libros);
-mysqli_free_result($resultado_libros);
+// Cerrar la conexión
+mysqli_free_result($resultado_aviso);
 mysqli_close($conn);
 ?>
