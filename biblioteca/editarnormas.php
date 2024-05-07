@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="administración.css">
     <!-- Enlace al CSS de Quill -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- Enlace al JS de Quill -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <!-- JS de Bootstrap -->
@@ -60,11 +62,11 @@
                             Ver noticia</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="editarnormas.php"><i class="bi bi-card-checklist"></i>
+                        <a class="nav-link active" aria-current="page" href="editarnormas.php"><i class="bi bi-card-checklist"></i>
                             Normas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="avisos.php"><i class="bi bi-info-square"></i>
+                        <a class="nav-link" href="avisos.php"><i class="bi bi-info-square"></i>
                             Enviar aviso</a>
                     </li>
                 </ul>
@@ -72,115 +74,96 @@
     </div>
 </nav>
 
-
-<!-- Formulario de Avisos -->
+<!-- Contenedor del editor Quill -->
 <div class="container mt-5">
-    <h2>Enviar Aviso</h2>
+    <h2>Reglas que se muestran</h2>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-        <label for="contenido">Contenido:</label><br>
-        <textarea id="contenido" name="contenido" style="width: 100%; height: 200px;" required></textarea><br><br>
-        
-        <label for="fecha_activacion">Fecha de activación:</label><br>
-        <input type="date" id="fecha_activacion" name="fecha_activacion" required><br><br>
-        
-        <input type="submit" name="enviar_aviso" value="Enviar Aviso">
+        <!-- Campo oculto para almacenar el contenido HTML del editor -->
+        <input type="hidden" id="contenido" name="contenido">
+        <!-- Contenedor del editor Quill -->
+        <div id="editor-container" style="height: 300px;">
+            <?php
+            include_once 'bd.php'; // Archivo de conexión a la base de datos
+
+            // Obtener el contenido de la columna "reglas" desde la base de datos
+            $sql = "SELECT reglas FROM reglas";
+            $result = mysqli_query($conn, $sql);
+
+            if (mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                echo $row['reglas'];
+            }
+            ?>
+        </div>
+        <br>
+        <!-- Botón para guardar -->
+        <button type="submit" class="btn btn-primary">Guardar Reglas</button>
     </form>
+    <!-- Mensaje de éxito o error -->
+    <div id="mensaje" class="mt-3 text-center">
+        <?php
+        if (isset($error_message)) {
+            echo "<div class='alert alert-danger' role='alert'>$error_message</div>";
+        } elseif (isset($success_message)) {
+            echo "<div class='alert alert-success' role='alert'>$success_message</div>";
+        }
+        ?>
+    </div>
 </div>
 
-<!-- Subir avisos a Base de Datos -->
+<!-- PHP para guardar el contenido en la base de datos -->
 <?php
 include_once 'bd.php'; // Archivo de conexión a la base de datos
 
 // Verificar si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recibir los datos del formulario
+    // Recibir el contenido HTML del editor
     $contenido = $_POST['contenido'];
-    $fecha_activacion = $_POST['fecha_activacion'];
 
-    // Validar los datos recibidos 
-    if (empty($contenido) || empty($fecha_activacion)) {
+    // Validar el contenido recibido 
+    if (empty($contenido)) {
         $error_message = "Por favor, completa todos los campos.";
     } else {
-        // Preparar la consulta para insertar el aviso en la tabla 'avisos'
-        $sql = "INSERT INTO avisos (texto, fecha_activacion, activo) VALUES (?, ?, 1)";
+        // Preparar la consulta para actualizar el contenido en la tabla 'reglas'
+        $sql = "UPDATE reglas SET reglas = ?";
         $stmt = mysqli_prepare($conn, $sql);
 
-        // Vincular los parámetros a la consulta preparada
-        mysqli_stmt_bind_param($stmt, "ss", $contenido, $fecha_activacion);
+        // Vincular el contenido al parámetro de la consulta preparada
+        mysqli_stmt_bind_param($stmt, "s", $contenido);
 
         // Ejecutar la consulta preparada
-        if (mysqli_stmt_execute($stmt)) {
-            // Mensaje de éxito
-            echo "Aviso enviado correctamente.";
+            if (mysqli_stmt_execute($stmt)) {
+        // Mensaje de éxito
+            echo "Reglas actualizadas correctamente.";
         } else {
-            $error_message = "Error al enviar el aviso: " . mysqli_error($conn);
+            $error_message = "Error al actualizar las reglas: " . mysqli_error($conn);
         }
     }
 }
 ?>
-<!-- Estilos para la lista de Avisos -->
-<style>
-    /* Centrar verticalmente el contenido de las celdas */
-    .table td,
-    .table th {
-        vertical-align: middle;
-    }
 
-    /* Asegurar que el contenido de las columnas "Activación", "Estado" y "Acciones" se muestre en una línea */
-    .table td:not(:first-child),
-    .table th:not(:first-child) {
-        white-space: nowrap;
-    }
+<!-- Script JavaScript para la inicialización del editor Quill -->
+<script>
+    // Inicialización del editor
+    var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'align': [] }],  
+                ['link', 'image', 'video']
+            ]
+        }
+    });
 
-    /* Permitir que el contenido de la columna "Aviso" se divida en múltiples líneas */
-    .table td:first-child,
-    .table th:first-child {
-        white-space: normal;
-    }
-</style>
-<!-- Lista de Avisos -->
-<div class="container mt-5">
-    <h2>Lista de Avisos</h2>
-    <table class="table table-striped" style='color: black; background-color: #f5f5dc;'>
-        <thead>
-            <tr>
-                <th>Aviso</th>
-                <th>Activación</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-<!-- Aquí se mostrarán los avisos desde la base de datos -->
-            
-            <?php
-            include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
-
-            // Consulta SQL para obtener los avisos
-            $sql = "SELECT * FROM avisos";
-            $result = mysqli_query($conn, $sql);
-
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>" . $row['texto'] . "</td>";
-                    echo "<td>" . $row['fecha_activacion'] . "</td>";
-                    echo "<td>" . ($row['activo'] ? 'Activo' : 'Inactivo') . "</td>";
-                    echo "<td>";
-                    echo "<a href='editar_aviso.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Editar</a>";
-                    echo "<a href='activar_aviso.php?id=" . $row['id'] . "' class='btn btn-success btn-sm'>" . ($row['activo'] ? 'Desactivar' : 'Activar') . "</a>";
-                    echo "</td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='4'>No hay avisos.</td></tr>";
-            }
-
-            mysqli_close($conn);
-            ?>
-        </tbody>
-    </table>
-</div>
+    // Obtener el contenido HTML del editor y asignarlo al campo oculto
+    $('form').on('submit', function() {
+        var contenidoHTML = quill.root.innerHTML;
+        $('#contenido').val(contenidoHTML);
+    });
+</script>
 
 </body>
 </html>

@@ -49,8 +49,8 @@ if(mysqli_num_rows($resultado_libros) > 0) {
 
     while($fila = mysqli_fetch_assoc($resultado_libros)) {
         echo '<tr>';
-        echo '<td>' . ($fila['imagen_libro'] ? '<img src="media/' . $fila['imagen_libro'] . '" class="imagen-libro" alt="Imagen del libro">' : '') . '</td>';
-        echo '<td>' . $fila['nombre_libro'] . '</td>';
+        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . ($fila['imagen_libro'] ? '<img src="media/' . $fila['imagen_libro'] . '" class="imagen-libro" alt="Imagen del libro">' : '') . '</a></td>';
+        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . $fila['nombre_libro'] . '</td>';
         echo '<td class="ellipsis" data-original-text="' . htmlspecialchars($fila['autores']) . '">' . htmlspecialchars($fila['autores']) . '</td>';
         echo '<td>' . $fila['ejemplares_disponibles'] . '</td>';
         echo '</tr>';

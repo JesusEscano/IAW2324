@@ -43,6 +43,11 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
             text-align: center; 
             padding: 5px; 
         }
+        /* Estilo para los enlaces dentro de la tabla */
+        table a {
+        text-decoration: none; /* Quitar que se vea como enlace */
+        color: inherit; /* Que se mantenga en negro, por si acaso */
+        }
         #buscador {
             margin-bottom: 20px;
             display: flex;
@@ -146,7 +151,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                 </a>
             </li>
             <li class="nav-item">
-                <a href="reglas.html" class="nav-link" aria-label="Ir a la página de reglas">
+                <a href="normas.php" class="nav-link" aria-label="Ir a la página de reglas">
                     <img src="media/reglas.png" alt="Ícono de reglas">
                     <span class="link-text">Reglas</span>
                 </a>
@@ -173,15 +178,6 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
     </nav>
     <main>
         <div class="container">
-            <!-- Mostrar aviso si hay uno -->
-            <?php if ($hay_aviso): ?>
-            <div class="aviso">
-                <div class="aviso-icon">
-                    <i class="bi bi-info-circle"></i>
-                </div>
-                <p class="aviso-dice"><?php echo $texto_aviso; ?></p>
-            </div>
-            <?php endif; ?>
             <!-- Campo de búsqueda -->
             <div id="buscador">
                 <input type="text" class="form-control" placeholder="Buscar por título o autor." id="busqueda" aria-label="Buscar" aria-describedby="button-addon2">

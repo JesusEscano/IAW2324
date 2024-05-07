@@ -67,6 +67,10 @@
                             Ver noticia</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="editarnormas.php"><i class="bi bi-card-checklist"></i>
+                            Normas</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="avisos.php"><i class="bi bi-info-square"></i>
                             Enviar aviso</a>
                     </li>

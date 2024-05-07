@@ -76,7 +76,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                 </a>
             </li>
             <li class="nav-item">
-                <a href="reglas.html" class="nav-link" aria-label="Ir a la página de reglas">
+                <a href="normas.php" class="nav-link" aria-label="Ir a la página de reglas">
                     <img src="media/reglas.png" alt="Ícono de reglas">
                     <span class="link-text">Reglas</span>
                 </a>

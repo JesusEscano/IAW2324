@@ -281,6 +281,9 @@ main {
         padding: 0;
         width: 100vw;
     }
+    .container {
+        margin-bottom: 10px; /* Valor base del margen inferior */
+    }
     
     .navbar {
         top: 0;
