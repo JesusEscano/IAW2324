@@ -1,6 +1,6 @@
 <?php
-include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos
-
+include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos, cámbialo si lo mueves
+// Este es el código para mostrar todos los libros en la lista
 // Consulta SQL para obtener todos los libros con la ruta de la imagen del libro
 $sql = "SELECT libros.id_libro, nombre_libro, GROUP_CONCAT(nombre_autor SEPARATOR ', ') AS autores, ano_publicacion, imagen_libro FROM libros 
         INNER JOIN autor_libro ON libros.id_libro = autor_libro.id_libro 

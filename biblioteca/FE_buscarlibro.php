@@ -1,6 +1,6 @@
 <?php
-include_once 'bd.php'; // Archivo de conexión a la base de datos
-
+include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
+//Esto es FE porque Frontend y lo que no tiene _ es origen, los que tienen _ en su nombre son para cargarlo todo y luego cargar las búsquedas
 // Consulta para obtener el aviso activo
 $sql_aviso = "SELECT * FROM avisos WHERE activo = 1 ORDER BY fecha_activacion DESC LIMIT 1";
 $resultado_aviso = mysqli_query($conn, $sql_aviso);
@@ -32,7 +32,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         .imagen-libro {
-            max-width: 8vw; /* Ancho máximo de 8vw */
+            max-width: 8vw; /* Ancho máximo de 8vw, ~ 100 px */
         }
         /* Centrar el contenido de las celdas de la tabla */
         table {
@@ -48,6 +48,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
         text-decoration: none; /* Quitar que se vea como enlace */
         color: inherit; /* Que se mantenga en negro, por si acaso */
         }
+        /* Estilo botones y navegación */
         #buscador {
             margin-bottom: 20px;
             display: flex;
@@ -95,34 +96,35 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
             background-color: #5ab87a;
         }
         .pagination {
-    text-align: center;
-    margin-top: 20px;
-}
+        text-align: center;
+        margin-top: 20px;
+        }
 
-.pagination a {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    margin-right: 5px;
-    border: 1px solid #3a5a40;
-    border-radius: 3px;
-    color: #3a5a40;
-    text-decoration: none;
-}
+        .pagination a {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        margin-right: 5px;
+        border: 1px solid #3a5a40;
+        border-radius: 3px;
+        color: #3a5a40;
+        text-decoration: none;
+        }
 
-.pagination a.active {
-    background-color: #3a5a40;
-    color: #fff;
-}
+        .pagination a.active {
+        background-color: #3a5a40;
+        color: #fff;
+        }
 
-.pagination a.anterior, .pagination a.siguiente {
-    width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
-    padding-left: 10px;
-    padding-right: 10px;
-}
-.pagination a:hover {
+        .pagination a.anterior, .pagination a.siguiente {
+        width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
+        padding-left: 10px;
+        padding-right: 10px;
+        }
+
+        .pagination a:hover {
             background-color: #5ab87a;
         }
     </style>
@@ -183,7 +185,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                 <input type="text" class="form-control" placeholder="Buscar por título o autor." id="busqueda" aria-label="Buscar" aria-describedby="button-addon2">
                 <button class="btn btn-primary" type="button" id="buscar">Buscar</button>
             </div>
-            <!-- Contenido de libros -->
+            <!-- Contenido de libros, carga esto cuando entra en la página -->
             <div id="libros">
                 <?php include_once 'FE_todos_libros.php'; ?>
             </div>
@@ -216,7 +218,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                 if(busqueda != '') {
                     buscarLibros(busqueda); // Realizar la búsqueda si el campo no está vacío
                 } else {
-                    $('#libros').html(''); // Limpiar los resultados si el campo está vacío
+                    
                 }
             });
             

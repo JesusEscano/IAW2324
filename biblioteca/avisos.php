@@ -89,7 +89,7 @@
 
 <!-- Subir avisos a Base de Datos -->
 <?php
-include_once 'bd.php'; // Archivo de conexión a la base de datos
+include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
 
 // Verificar si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

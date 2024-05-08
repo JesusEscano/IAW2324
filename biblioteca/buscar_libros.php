@@ -1,10 +1,10 @@
 <?php
-// Conexión a la base de datos (incluye este archivo según sea necesario)
+// Archivo de conexión a la base de datos, cambiar en entrega
 include_once 'bd.php';
 
 // Verificar si se recibió el parámetro de búsqueda
 if(isset($_POST['busqueda'])) {
-    // Limpiar y escapar el texto de búsqueda para evitar inyección SQL
+    // Limpiar y escapar el texto de búsqueda para evitar la inyección SQL
     $busqueda = mysqli_real_escape_string($conn, $_POST['busqueda']);
 
     // Consulta SQL para buscar libros por título o autor

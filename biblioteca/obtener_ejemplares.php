@@ -1,6 +1,6 @@
 <?php
-include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos
-
+include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos, cámbialo si lo mueves
+// Este es el código para actualizar la lista de ejemplares al realizar una búsqueda
 // Verificar si se envió la solicitud de edición de estado
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_ejemplar']) && isset($_POST['nuevoEstado'])) {
     $id_ejemplar = intval($_POST['id_ejemplar']);
@@ -13,11 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_ejemplar']) && isse
     if (mysqli_stmt_execute($stmt)) {
         // Enviar una respuesta al cliente
         echo "success";
-        exit(); // Terminar el script
+        exit(); 
     } else {
         // Enviar un mensaje de error al cliente
         echo "error";
-        exit(); // Terminar el script
+        exit(); 
     }
 }
 
@@ -32,11 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_libro'])) {
     if (mysqli_stmt_execute($stmt)) {
         // Enviar una respuesta al cliente
         echo "success";
-        exit(); // Terminar el script
+        exit(); 
     } else {
         // Enviar un mensaje de error al cliente
         echo "error";
-        exit(); // Terminar el script
+        exit(); 
     }
 }
 

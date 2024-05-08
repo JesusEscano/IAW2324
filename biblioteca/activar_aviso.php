@@ -5,7 +5,7 @@ include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en en
 if (isset($_GET['id'])) {
     $aviso_id = $_GET['id'];
 
-    // Consulta SQL para obtener el aviso específico por su ID
+    // Consulta SQL para obtener el aviso específico por ID
     $sql = "SELECT * FROM avisos WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
 
@@ -37,7 +37,7 @@ if (isset($_GET['id'])) {
         header("Location: avisos.php");
         exit();
     } else {
-        // Si no se encuentra el aviso, redireccionar a la página de avisos.php
+        // Redireccionar de nuevo si algo falla página de avisos.php
         header("Location: avisos.php");
         exit();
     }

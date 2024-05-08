@@ -32,6 +32,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <!-- La navbar que se mueve al lateral o abajo, cambia los enlaces si los mueves -->
         <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
@@ -130,7 +131,7 @@ $(document).ready(function(){
     // Función para cargar todos los ejemplares
     function cargarEjemplares() {
         $.ajax({
-            url: "obtener_ejemplares.php", // Ruta al script PHP que obtiene los ejemplares
+            url: "obtener_ejemplares.php", // Ruta al script PHP que obtiene los ejemplares, cambia esto si lo pones en otro lado
             method: "GET",
             success: function(data) {
                 $("#tabla-ejemplares").html(data); // Mostrar los ejemplares en la tabla
@@ -143,7 +144,7 @@ $(document).ready(function(){
         var busqueda = $("#busqueda").val().trim(); // Obtener el texto de búsqueda
         if(busqueda != "") {
             $.ajax({
-                url: "buscar_ejemplares.php", // Ruta al script PHP que busca los ejemplares
+                url: "buscar_ejemplares.php", // Ruta al script PHP que busca los ejemplares, cambia esto si lo pones en otro lado
                 method: "POST",
                 data: {busqueda: busqueda}, // Enviar el texto de búsqueda al servidor
                 success: function(data) {

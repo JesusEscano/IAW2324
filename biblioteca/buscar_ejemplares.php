@@ -1,5 +1,5 @@
 <?php
-include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos
+include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
 
 // Verificar si se recibió el parámetro de búsqueda
 if(isset($_POST['busqueda'])) {
@@ -63,11 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_ejemplar']) && isse
     if (mysqli_stmt_execute($stmt)) {
         // Enviar una respuesta al cliente
         echo "success";
-        exit(); // Terminar el script
+        exit(); 
     } else {
         // Enviar un mensaje de error al cliente
         echo "error";
-        exit(); // Terminar el script
+        exit(); 
     }
 }
 
@@ -82,11 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_libro'])) {
     if (mysqli_stmt_execute($stmt)) {
         // Enviar una respuesta al cliente
         echo "success";
-        exit(); // Terminar el script
+        exit(); 
     } else {
         // Enviar un mensaje de error al cliente
         echo "error";
-        exit(); // Terminar el script
+        exit(); 
     }
 }
 

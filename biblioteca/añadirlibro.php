@@ -1,7 +1,7 @@
 <?php
 include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
 
-// Iniciar sesión
+// Iniciar sesión, esto se hará en todas cuando tengamos usuarios
 session_start();
 
 // Verificar si se envió el formulario
@@ -22,9 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $nombre_imagen = uniqid() . '_' . basename($_FILES['imagen_libro']['name']);
         $ruta_imagen_completa = $ruta_imagen . $nombre_imagen;
 
-        // Validar tipo de archivo
+        // Validar tipo de archivo para que solo valgan estos formatos
         $permitidos = array("image/jpeg", "image/png", "image/gif");
-        if (in_array($_FILES['imagen_libro']['type'], $permitidos) && $_FILES['imagen_libro']['size'] <= 5000000) { // 5MB
+        if (in_array($_FILES['imagen_libro']['type'], $permitidos) && $_FILES['imagen_libro']['size'] <= 5000000) { // 5MB Máximo, revisar cuánto ponemos
             if (move_uploaded_file($_FILES['imagen_libro']['tmp_name'], $ruta_imagen_completa)) {
                 // Consulta para insertar el libro
                 $sql_insert_libro = "INSERT INTO libros (paginas, editorial, tema, ano_publicacion, sinopsis, imagen_libro, nombre_libro) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -58,7 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         mysqli_stmt_bind_param($stmt_insert_ejemplar, "i", $id_libro);
                         mysqli_stmt_execute($stmt_insert_ejemplar);
                     }
-
+                        
+                    // He aprovechado para meter el mensaje en sesión para que se vean los diferentes mensajes al recargar
                     $_SESSION['success_message'] = "Libro añadido correctamente.";
                     header("Location: añadirlibro.php");
                     exit();
@@ -96,17 +97,19 @@ if (isset($error_message)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- Bootstrap Icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <!-- CSS -->
+    <!-- CSS, ojo que tú igual lo mueves a otro lado y hay que cambiar la ruta -->
     <link rel="stylesheet" href="administración.css">
 </head>
 <body>
-
+<!-- Barra de navegación -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
+        <!-- El nombre, no enlaza con nada -->
         <a class="navbar-brand" href="#">Biblioteca IES Antonio Machado</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <!-- Los enlaces de la barra -->
         <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
@@ -195,6 +198,7 @@ if (isset($error_message)) {
     </form>
 </div>
 
+<!-- Script para añadir más autores a cada libro -->
 <script>
     function agregarAutor() {
         var divAutores = document.getElementById("autores");
@@ -203,7 +207,7 @@ if (isset($error_message)) {
         nuevoAutor.innerHTML = '<input type="text" name="autores[]" style="width: 800px;" required><button type="button" onclick="eliminarAutor(this)">Eliminar</button><br><br>';
         divAutores.appendChild(nuevoAutor);
     }
-
+    // Script para borrar autores
     function eliminarAutor(elemento) {
         elemento.parentNode.remove();
     }

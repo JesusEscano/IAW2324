@@ -25,7 +25,7 @@
             </li>
         </ul>
     </nav>
-    <!-- La barra de navegación lateral (o inferior si la pantalla es pequeña) -->
+    <!-- La barra de navegación lateral (o inferior si la pantalla es pequeña, cambiar enlaces si mueves a diferentes carpetas) -->
     <nav class="navbar">
         <ul class="navbar-nav">
             <li class="logo">
@@ -69,7 +69,7 @@
         <div class="container">
             <!-- Contenido de reglas -->
             <?php
-            // Establecer la conexión a la base de datos
+            // Establecer la conexión a la base de datos, cambia este enlace si lo mueves
             include_once 'bd.php';
 
             // Consulta SQL para obtener el contenido de la columna "reglas"

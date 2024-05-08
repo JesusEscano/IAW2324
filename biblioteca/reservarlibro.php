@@ -37,7 +37,7 @@
         }
         /* Estilo para dejar espacio en la parte inferior */
         .container {
-            margin-bottom: 80px; /* Valor base del margen inferior */
+            margin-bottom: 80px; 
         }
     </style>
 </head>
@@ -50,7 +50,7 @@
             </li>
         </ul>
     </nav>
-    <!-- La barra de navegación lateral (o inferior si la pantalla es pequeña) -->
+    <!-- La barra de navegación lateral (o inferior si la pantalla es pequeña), cambia los enlaces si los mueves -->
     <nav class="navbar">
         <ul class="navbar-nav">
             <li class="logo">
@@ -93,7 +93,7 @@
     <main>
         <div class="container">
             <?php
-            include_once 'bd.php'; // Archivo de conexión a la base de datos
+            include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar por el bueno
 
             // Verificar si se proporcionó un ID de libro
             $id_libro = isset($_GET['id']) ? $_GET['id'] : null;

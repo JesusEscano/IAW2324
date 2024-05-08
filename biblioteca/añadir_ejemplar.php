@@ -1,5 +1,5 @@
 <?php
-include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos
+include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
 
 // Verificar si se envió el ID del libro
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_libro'])) {
@@ -12,17 +12,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_libro'])) {
     if (mysqli_stmt_execute($stmt)) {
         // Redirigir de vuelta a la página principal
         header("Location: verejemplares.php");
-        exit(); // Terminar el script
+        exit(); 
     } else {
         // Si hay un error, mostrar mensaje y redirigir a la página principal
         echo "Error al añadir ejemplar";
         header("Location: verejemplares.php");
-        exit(); // Terminar el script
+        exit(); 
     }
 } else {
     // Si no se recibió el ID del libro, redirigir a la página principal
     header("Location: verejemplares.php");
-    exit(); // Terminar el script
+    exit(); 
 }
 
 mysqli_close($conn);

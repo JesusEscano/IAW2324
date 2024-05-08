@@ -4,7 +4,7 @@ include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en en
 // Iniciar sesión
 session_start();
 
-// Inicializar la variable $id_libro
+// Inicializar la variable $id_libro para poder editarlo
 $id_libro = null;
 
 // Verificar si se recibió el ID del libro a editar desde la URL
@@ -156,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         unset($_SESSION['error_message']);
     }
     ?>
-
+    <!-- Formulario de edición, tienen echo de los datos actuales del libro para que no se modifique nada sin verlo -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
         <label for="nombre_libro">Título:</label><br>
         <input type="text" id="nombre_libro" name="nombre_libro" style="width: 800px;" value="<?php echo $libro['nombre_libro']; ?>" required><br><br>

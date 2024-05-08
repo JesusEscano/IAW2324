@@ -1,8 +1,8 @@
 <?php
-include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos
+include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar por el bueno
 
 // Configuración para paginación
-$noticias_por_pagina = 2; // Número de noticias por página
+$noticias_por_pagina = 2; // Número de noticias por página, pon más si quieres
 
 // Obtener el número total de noticias
 $sql_total_noticias = "SELECT COUNT(*) AS total FROM noticias";
@@ -44,6 +44,7 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
             </li>
         </ul>
     </nav>
+    <!-- Barra de navegación, probablemente moverás todos los enlaces a otros lugares, así que revisa la lista -->
     <nav class="navbar">
         <ul class="navbar-nav">
             <li class="logo">
@@ -114,6 +115,7 @@ $resultado_noticias = mysqli_query($conn, $sql_noticias);
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
+            <!-- CSS perrillero que he colado aquí porque me cansaba de esperar a Tinkerhost -->
             <style>
 .card-content p {
     margin-bottom: 0;

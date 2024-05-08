@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="administración.css">
 </head>
 <body>
-<?php include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos ?>
+<?php include_once 'bd.php'; // Incluye el archivo de conexión a la base de datos, cambiar ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Biblioteca IES Antonio Machado</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <!-- La barra de navegación, ojo con los enlaces -->
         <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">

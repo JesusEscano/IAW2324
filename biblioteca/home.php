@@ -1,5 +1,5 @@
 <?php
-include_once 'bd.php'; // Archivo de conexión a la base de datos
+include_once 'bd.php'; // Archivo de conexión a la base de datos, seguramente en otro lado en la versión definitiva
 
 // Configuración para paginación
 $noticias_por_pagina = 2; // Número de noticias por página
@@ -17,7 +17,7 @@ $total_paginas = ceil($total_noticias / $noticias_por_pagina);
 $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 $pagina_actual = min($pagina_actual, $total_paginas); // Asegurar que la página actual no supere el número total de páginas
 
-// Calcular el offset para la consulta SQL
+// Calcular el offset para la consulta SQL (que no se note que lo miré en internet)
 $offset = ($pagina_actual - 1) * $noticias_por_pagina;
 
 // Consulta para obtener las noticias de la página actual
@@ -46,7 +46,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca IES Antonio Machado</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="prueba.css">
+    <link rel="stylesheet" href="home.css">
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
     <!-- Bootstrap Icon -->
@@ -105,6 +105,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
         <div class="container">
         <!-- Mostrar aviso si hay uno -->
         <style>
+        /* Esto está aquí porque Tinkerhost hay veces que da porculo para cargar los CSS y en línea se los come */
         /* Estilos para la tarjeta de aviso */
         .aviso {
             margin-bottom: 20px;
@@ -125,7 +126,67 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
             text-align: center;
             margin-top: 10px;
         }
+        /* Valor base del margen inferior, que la barra se pone abajo y puede tapar cosas */
+        .container {
+            margin-bottom: 80px;
+        }
+
+        /* Reiteración o modificaciones del CSS cuando no cargaba el del enlace y ya no recuerdo si son redundantes o no, así que se quedan */
+        .card-content p {
+        margin-bottom: 0;
+        font-size: 18px;
+        text-align: left;
+        }
+        
+        .card-content li {
+        margin-bottom: 0;
+        font-size: 18px;
+        text-align: left;
+        }
+
+        /* Adaptación del ancho de las noticias adaptado al menú lateral */
+        .noticia {
+        display: flex;
+        margin-top: 20px;
+        width: calc(98vw - 6.3rem);
+        }
+
+        /* Esto es para el menú de paginación, lo de los numeritos para pasar a otra página */
+        .pagination {
+        text-align: center;
+        margin-top: 20px;
+        }
+
+        .pagination a {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        margin-right: 5px;
+        border: 1px solid #3a5a40;
+        border-radius: 3px;
+        color: #3a5a40;
+        text-decoration: none;
+        }
+
+        .pagination a.active {
+        background-color: #3a5a40;
+        color: #fff;
+        }
+
+        .pagination a.anterior, .pagination a.siguiente {
+        width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
+        padding-left: 10px;
+        padding-right: 10px;
+        }
+
+        .noticia-content {
+        flex: 3;
+        padding-right: 20px; /* Ajuste del espaciado entre la imagen y el texto */
+}       
         </style>
+            <!-- Primero del todo mostrar el aviso -->
             <?php if ($hay_aviso): ?>
             <div class="aviso">
             <div class="aviso-icon">
@@ -139,13 +200,13 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                 <div class="card">
                     <div class="card-content">
                         <h2 style="text-align: center;"><?php echo $fila['titulo']; ?></h2>
-                        <p class="fecha-publicacion" style="text-align: center;">Publicado el <?php echo $fila['fecha_pub']; ?></p>
+                        <p class="fecha-publicacion" style="text-align: center;">Publicado el <?php echo date('d/m/Y', strtotime($fila['fecha_pub'])); ?></p>
                         <?php if ($fila['imagen_noticia']): ?>
                             <div class="noticia-image" style="text-align: center;">
                                 <img src="media/<?php echo $fila['imagen_noticia']; ?>" alt="Imagen de la noticia" style="max-width: 100%; height: auto;">
                             </div>
                         <?php endif; ?>
-                        <p><?php echo $fila['contenido']; ?></p>
+                        <p style='text-align: left;'><?php echo $fila['contenido']; ?></p>
                     </div>
                 </div>
             <?php endwhile; ?>
@@ -163,52 +224,9 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
+            <!-- Controles de paginación -->
             <style>
-.card-content p {
-    margin-bottom: 0;
-    font-size: 18px;
-    text-align: left;
-}
 
-.noticia {
-    display: flex;
-    margin-top: 20px;
-    width: calc(98vw - 6.3rem);
-}
-
-.pagination {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.pagination a {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    margin-right: 5px;
-    border: 1px solid #3a5a40;
-    border-radius: 3px;
-    color: #3a5a40;
-    text-decoration: none;
-}
-
-.pagination a.active {
-    background-color: #3a5a40;
-    color: #fff;
-}
-
-.pagination a.anterior, .pagination a.siguiente {
-    width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.noticia-content {
-    flex: 3;
-    padding-right: 20px; /* Ajusta el espaciado entre la imagen y el texto */
-}
             </style>
         </div>
     </main>
