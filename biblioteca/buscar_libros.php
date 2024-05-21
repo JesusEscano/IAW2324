@@ -1,45 +1,65 @@
 <?php
-// Archivo de conexión a la base de datos, cambiar en entrega
-include_once 'bd.php';
+include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos
 
-// Verificar si se recibió el parámetro de búsqueda
-if(isset($_POST['busqueda'])) {
-    // Limpiar y escapar el texto de búsqueda para evitar la inyección SQL
-    $busqueda = mysqli_real_escape_string($conn, $_POST['busqueda']);
+$busqueda = isset($_POST['busqueda']) ? $conn->real_escape_string($_POST['busqueda']) : "";
+$pagina = isset($_POST['pagina']) ? (int)$_POST['pagina'] : 1;
+$libros_por_pagina = 10;
+$offset = ($pagina - 1) * $libros_por_pagina;
 
-    // Consulta SQL para buscar libros por título o autor
-    $sql = "SELECT libros.id_libro, libros.nombre_libro, autores.nombre_autor, libros.ano_publicacion, libros.imagen_libro 
-            FROM libros
-            INNER JOIN autor_libro ON libros.id_libro = autor_libro.id_libro
-            INNER JOIN autores ON autor_libro.id_autor = autores.id_autor
-            WHERE libros.nombre_libro LIKE '%$busqueda%' OR autores.nombre_autor LIKE '%$busqueda%'
-            GROUP BY libros.id_libro";
+// Obtener el total de libros que coinciden con la búsqueda
+$sql_total = "SELECT COUNT(*) as total FROM libros 
+              INNER JOIN autor_libro ON libros.id_libro = autor_libro.id_libro 
+              INNER JOIN autores ON autor_libro.id_autor = autores.id_autor 
+              WHERE nombre_libro LIKE '%$busqueda%' OR nombre_autor LIKE '%$busqueda%'";
+$resultado_total = mysqli_query($conn, $sql_total);
+$fila_total = mysqli_fetch_assoc($resultado_total);
+$total_libros = $fila_total['total'];
+$total_paginas = ceil($total_libros / $libros_por_pagina);
 
-    // Ejecutar la consulta
-    $result = mysqli_query($conn, $sql);
+// Obtener los libros que coinciden con la búsqueda en la página actual
+$sql = "SELECT libros.id_libro, nombre_libro, GROUP_CONCAT(nombre_autor SEPARATOR ', ') AS autores, ano_publicacion, imagen_libro 
+        FROM libros 
+        INNER JOIN autor_libro ON libros.id_libro = autor_libro.id_libro 
+        INNER JOIN autores ON autor_libro.id_autor = autores.id_autor 
+        WHERE nombre_libro LIKE '%$busqueda%' OR nombre_autor LIKE '%$busqueda%'
+        GROUP BY libros.id_libro
+        ORDER BY nombre_libro ASC 
+        LIMIT $offset, $libros_por_pagina";
 
-    // Verificar si se encontraron resultados
-    if(mysqli_num_rows($result) > 0) {
-        // Mostrar resultados en formato de tabla
-        while($row = mysqli_fetch_assoc($result)) {
-            echo "<tr>";
-            echo "<td><img src='media/{$row['imagen_libro']}' class='imagen-libro'></td>";
-            echo "<td>{$row['nombre_libro']}</td>";
-            echo "<td>{$row['nombre_autor']}</td>";
-            echo "<td>{$row['ano_publicacion']}</td>";
-            echo "<td><a href='editarlibro.php?id=" . $row['id_libro'] . "' class='btn btn-primary'>Editar</a></td>";
-            echo "</tr>";
-        }
-    } else {
-        // Mostrar un mensaje si no se encontraron resultados
-        echo "<tr><td colspan='5'>No se encontraron resultados</td></tr>";
+$resultado = mysqli_query($conn, $sql);
+
+$libros = "";
+if (mysqli_num_rows($resultado) > 0) {
+    while ($fila = mysqli_fetch_assoc($resultado)) {
+        $libros .= "<tr>";
+        $libros .= "<td><img src='media/" . $fila['imagen_libro'] . "' alt='Imagen de libro' class='imagen-libro'></td>";
+        $libros .= "<td>" . $fila['nombre_libro'] . "</td>";
+        $libros .= "<td>" . $fila['autores'] . "</td>";
+        $libros .= "<td>" . $fila['ano_publicacion'] . "</td>";
+        $libros .= "<td><a href='editarlibro.php?id=" . $fila['id_libro'] . "' class='btn btn-primary'>Editar</a></td>";
+        $libros .= "</tr>";
     }
-
-    // Liberar el resultado y cerrar la conexión
-    mysqli_free_result($result);
-    mysqli_close($conn);
 } else {
-    // Si no se recibió el parámetro de búsqueda, mostrar un mensaje de error
-    echo "<tr><td colspan='5'>Error: Parámetro de búsqueda no recibido</td></tr>";
+    $libros .= "<tr><td colspan='5'>No se encontraron libros</td></tr>";
 }
+
+// Generar los controles de paginación solo si hay más de una página de resultados
+$pagination = '';
+if ($total_paginas > 1) {
+    $pagination .= '<div class="pagination">';
+    if ($pagina > 1) {
+        $pagination .= '<a href="#" class="anterior" data-page="' . ($pagina - 1) . '">Anterior</a>';
+    }
+    for ($i = 1; $i <= $total_paginas; $i++) {
+        $pagination .= '<a href="#" ' . (($i == $pagina) ? 'class="active"' : '') . ' data-page="' . $i . '">' . $i . '</a>';
+    }
+    if ($pagina < $total_paginas) {
+        $pagination .= '<a href="#" class="siguiente" data-page="' . ($pagina + 1) . '">Siguiente</a>';
+    }
+    $pagination .= '</div>';
+}
+
+echo json_encode(['libros' => $libros, 'pagination' => $pagination]);
+
+mysqli_close($conn);
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
 //Esto es FE porque Frontend y lo que no tiene _ es origen, los que tienen _ en su nombre son para cargarlo todo y luego cargar las búsquedas
 // Consulta para obtener el aviso activo

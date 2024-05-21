@@ -1,4 +1,5 @@
 <?php
+
 include_once 'bd.php'; // Archivo de conexión a la base de datos, seguramente en otro lado en la versión definitiva
 
 // Configuración para paginación
