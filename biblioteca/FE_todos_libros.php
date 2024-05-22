@@ -24,7 +24,7 @@ $offset = ($pagina_actual - 1) * $libros_por_pagina;
 $sql_libros = "SELECT libros.id_libro, nombre_libro, 
                GROUP_CONCAT(DISTINCT nombre_autor SEPARATOR ', ') AS autores, 
                (SELECT COUNT(*) FROM ejemplares WHERE ejemplares.id_libro = libros.id_libro AND ejemplares.estado = 'Disponible') AS ejemplares_disponibles, 
-               imagen_libro 
+               imagen_libro, tema 
                FROM libros 
                INNER JOIN autor_libro ON libros.id_libro = autor_libro.id_libro 
                INNER JOIN autores ON autor_libro.id_autor = autores.id_autor 
@@ -42,7 +42,8 @@ if(mysqli_num_rows($resultado_libros) > 0) {
     echo '<th>Imagen</th>';
     echo '<th>Título</th>';
     echo '<th>Autor</th>';
-    echo '<th>Ejemplares Disponibles</th>';
+    echo '<th>Tema</th>';
+    echo '<th>Disponibles</th>';
     echo '</tr>';
     echo '</thead>';
     echo '<tbody>';
@@ -52,6 +53,7 @@ if(mysqli_num_rows($resultado_libros) > 0) {
         echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . ($fila['imagen_libro'] ? '<img src="media/' . $fila['imagen_libro'] . '" class="imagen-libro" alt="Imagen del libro">' : '') . '</a></td>';
         echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . $fila['nombre_libro'] . '</td>';
         echo '<td class="ellipsis" data-original-text="' . htmlspecialchars($fila['autores']) . '">' . htmlspecialchars($fila['autores']) . '</td>';
+        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . $fila['tema'] . '</td>';
         echo '<td>' . $fila['ejemplares_disponibles'] . '</td>';
         echo '</tr>';
     }

@@ -24,7 +24,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca IES Antonio Machado</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="prueba.css">
+    <link rel="stylesheet" href="home.css">
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
     <!-- Bootstrap Icon -->

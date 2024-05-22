@@ -230,6 +230,10 @@ main {
         width: 100vw;
     }
 
+    table {
+        font-size: 11px; /* Un poco chico, pero si le añades más columnas es lo que hay */
+    }
+
     .card {
         width: 100%;
     }

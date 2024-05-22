@@ -11,14 +11,14 @@ $busqueda = isset($_POST['busqueda']) ? $_POST['busqueda'] : '';
 $sql_libros = "SELECT libros.id_libro, nombre_libro, 
                GROUP_CONCAT(DISTINCT nombre_autor SEPARATOR ', ') AS autores, 
                (SELECT COUNT(*) FROM ejemplares WHERE ejemplares.id_libro = libros.id_libro AND ejemplares.estado = 'Disponible') AS ejemplares_disponibles, 
-               imagen_libro 
+               imagen_libro, tema 
                FROM libros 
                INNER JOIN autor_libro ON libros.id_libro = autor_libro.id_libro 
                INNER JOIN autores ON autor_libro.id_autor = autores.id_autor ";
 
 // Si hay una cadena de búsqueda, agregar condiciones a la consulta SQL
 if (!empty($busqueda)) {
-    $sql_libros .= "WHERE nombre_libro LIKE '%$busqueda%' OR nombre_autor LIKE '%$busqueda%' ";
+    $sql_libros .= "WHERE nombre_libro LIKE '%$busqueda%' OR nombre_autor LIKE '%$busqueda%' OR tema LIKE '%$busqueda%' ";
 } else {
     // Si no hay una cadena de búsqueda, incluir todos los libros
     include_once 'FE_todos_libros.php';
@@ -42,7 +42,7 @@ $pagina_actual = min($pagina_actual, $total_paginas); // Asegurar que la página
 $offset = ($pagina_actual - 1) * $libros_por_pagina;
 
 // Consulta para obtener los libros de la página actual, considerando la cadena de búsqueda y la paginación
-$sql_libros .= "GROUP BY libros.id_libro, nombre_libro, imagen_libro 
+$sql_libros .= "GROUP BY libros.id_libro, nombre_libro, imagen_libro, tema 
                 ORDER BY nombre_libro ASC 
                 LIMIT $offset, $libros_por_pagina";
 
@@ -57,7 +57,8 @@ if(mysqli_num_rows($resultado_libros) > 0) {
     echo '<th>Imagen</th>';
     echo '<th>Título</th>';
     echo '<th>Autor</th>';
-    echo '<th>Ejemplares Disponibles</th>';
+    echo '<th>Tema</th>';
+    echo '<th>Disponibles</th>';
     echo '</tr>';
     echo '</thead>';
     echo '<tbody>';
@@ -66,8 +67,9 @@ if(mysqli_num_rows($resultado_libros) > 0) {
     while($fila = mysqli_fetch_assoc($resultado_libros)) {
         echo '<tr>';
         echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . ($fila['imagen_libro'] ? '<img src="media/' . $fila['imagen_libro'] . '" class="imagen-libro" alt="Imagen del libro">' : '') . '</a></td>';
-        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . $fila['nombre_libro'] . '</td>';
+        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . $fila['nombre_libro'] . '</a></td>';
         echo '<td>' . $fila['autores'] . '</td>';
+        echo '<td>' . $fila['tema'] . '</td>';
         echo '<td>' . $fila['ejemplares_disponibles'] . '</td>';
         echo '</tr>';
     }
