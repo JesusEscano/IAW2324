@@ -36,3 +36,42 @@ body {
     color: #FFFFFF; /* Cambiar el color del texto de los botones activos a blanco */
     background-color: #000000; /* Cambiar el color de fondo de los botones activos a negro */
 }
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-right: 5px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #000;
+    color: #fff;
+}
+
+.pagination a.anterior,
+.pagination a.siguiente {
+    width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.pagination a:hover {
+    background-color: #5ab87a;
+}
+
+.pagination .disabled {
+    pointer-events: none; /* Deshabilitar los enlaces desactivados */
+    color: #ccc; /* Color de texto para los enlaces desactivados */
+}

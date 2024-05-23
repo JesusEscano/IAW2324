@@ -183,7 +183,7 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
         <div class="container">
             <!-- Campo de búsqueda -->
             <div id="buscador">
-                <input type="text" class="form-control" placeholder="Buscar por título o autor." id="busqueda" aria-label="Buscar" aria-describedby="button-addon2">
+                <input type="text" class="form-control" placeholder="Buscar por título, autor o tema." id="busqueda" aria-label="Buscar" aria-describedby="button-addon2">
                 <button class="btn btn-primary" type="button" id="buscar">Buscar</button>
             </div>
             <!-- Contenido de libros, carga esto cuando entra en la página -->
