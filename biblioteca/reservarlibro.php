@@ -93,8 +93,17 @@
     <main>
         <div class="container">
             <?php
-            include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar por el bueno
+            include_once 'bd.php'; // Archivo de conexión a la base de datos
 
+            session_start();
+
+            // Verificar si el usuario está autenticado
+            if (!isset($_SESSION['id_usuario'])) {
+                // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+                header("Location: index.php");
+                exit();
+            }
+            
             // Verificar si se proporcionó un ID de libro
             $id_libro = isset($_GET['id']) ? $_GET['id'] : null;
 
@@ -117,7 +126,7 @@
                     echo '<img src="media/' . $fila['imagen_libro'] . '" alt="Imagen del libro" style="max-height: 45vh;">';
                     echo '</div>';
                     echo '<div style="margin: 0 auto; text-align: center; max-width: 600px;">'; // Contenedor centrado
-                    echo '<button id="reservar">Reservar</button>';
+                    echo '<button id="reservar" data-id-libro="' . $id_libro . '">Reservar</button>';
                     echo '<p><strong>Título:</strong> <span>' . $fila['nombre_libro'] . '</span></p>';
                     echo '<p><strong>Autor(es):</strong> ' . $fila['autores'] . '</p>';
                     echo '<p><strong>Editorial:</strong> ' . $fila['editorial'] . '</p>';
@@ -143,15 +152,23 @@
         </div>
     </main>
 
-    <!-- Script para cambiar el color del botón al hacer hover -->
+    <!-- Script para manejar la reserva del libro -->
     <script>
         $(document).ready(function(){
-            $('#reservar').on('mouseover', function() {
-                $(this).css('background-color', '#5ab87a');
-            }).on('mouseout', function() {
-                $(this).css('background-color', '#3a5a40');
+            $('#reservar').on('click', function() {
+                var idLibro = $(this).data('id-libro');
+                $.ajax({
+                    url: 'reservar.php',
+                    type: 'POST',
+                    data: { id_libro: idLibro },
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
+                        alert('Error al intentar reservar el libro');
+                    }
+                });
             });
-
         });
     </script>
 </body>

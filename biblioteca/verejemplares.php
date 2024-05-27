@@ -24,12 +24,10 @@
             color: black;
             background-color: #f5f5dc;
         }
-                /* Estilo opcional para la paginación */
-                .pagination {
+        .pagination {
             text-align: center;
             margin-top: 20px;
         }
-
         .pagination a {
             display: inline-block;
             width: 30px;
@@ -42,18 +40,15 @@
             color: #fff;
             text-decoration: none;
         }
-
         .pagination a.active {
             background-color: #000;
             color: #fff;
         }
-
         .pagination a.anterior, .pagination a.siguiente {
-            width: auto; /* Ancho automático para "Anterior" y "Siguiente" */
+            width: auto;
             padding-left: 10px;
             padding-right: 10px;
         }
-
         .pagination a:hover {
             background-color: #5ab87a;
         }
@@ -174,40 +169,62 @@ $(document).ready(function(){
             success: function(data) {
                 $("#tabla-ejemplares").html(data.ejemplares);
                 $("#pagination-controls").html(data.pagination);
+                attachPaginationEvents();
+                attachEditEvents(); // Adjuntar eventos para los botones de editar
             }
         });
     }
 
     // Función para buscar ejemplares por título o autor
     function buscarEjemplares(pagina = 1) {
-    var busqueda = $("#busqueda").val().trim();
-    if (busqueda !== "") {
-        $.ajax({
-            url: "buscar_ejemplares.php",
-            method: "POST", // Cambiar a POST
-            data: {busqueda: busqueda, pagina: pagina},
-            dataType: "json",
-            success: function(data) {
-                $("#tabla-ejemplares").html(data.ejemplares);
-                $("#pagination-controls").html(data.pagination);
-            }
-        });
-    } else {
-        cargarEjemplares();
-    }
+        var busqueda = $("#busqueda").val().trim();
+        if (busqueda !== "") {
+            $.ajax({
+                url: "buscar_ejemplares.php",
+                method: "POST", // Cambiar a POST
+                data: {busqueda: busqueda, pagina: pagina},
+                dataType: "json",
+                success: function(data) {
+                    $("#tabla-ejemplares").html(data.ejemplares);
+                    $("#pagination-controls").html(data.pagination);
+                    attachPaginationEvents();
+                    attachEditEvents(); // Adjuntar eventos para los botones de editar
+                }
+            });
+        } else {
+            cargarEjemplares(pagina);
+        }
     }
 
     // Función para manejar los clics en los enlaces de paginación
-    $(document).on("click", ".pagination a", function(e){
-        e.preventDefault();
-        var page = $(this).data("page");
-        var busqueda = $("#busqueda").val().trim();
-        if (busqueda !== "") {
-            buscarEjemplares(page);
-        } else {
-            cargarEjemplares(page);
-        }
-    });
+    function attachPaginationEvents() {
+        $(".pagination a").click(function(e){
+            e.preventDefault();
+            var page = $(this).data("page");
+            var busqueda = $("#busqueda").val().trim();
+            if (busqueda !== "") {
+                buscarEjemplares(page);
+            } else {
+                cargarEjemplares(page);
+            }
+        });
+    }
+
+    // Función para manejar los clics en los botones de editar
+    function attachEditEvents() {
+        $(".editar-btn").click(function(e){
+            e.preventDefault();
+            var id = $(this).data("id");
+            window.location.href = "editar_estanteria.php?id=" + id; // Redirigir a la página de edición
+        });
+    }
+});
+
+// Función para cargar los ejemplares al hacer clic en los enlaces de paginación
+$(document).on("click", ".pagination a", function(e) {
+    e.preventDefault();
+    var page = $(this).data("page");
+    cargarEjemplares(page);
 });
 </script>
 
