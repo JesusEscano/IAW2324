@@ -2,6 +2,16 @@
 
 include_once 'bd.php'; // Archivo de conexión a la base de datos, seguramente en otro lado en la versión definitiva
 
+session_start();
+
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['id_usuario'])) {
+    // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+    header("Location: index.php");
+    exit();
+}
+
+
 // Configuración para paginación
 $noticias_por_pagina = 2; // Número de noticias por página
 

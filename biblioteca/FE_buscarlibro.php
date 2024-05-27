@@ -1,6 +1,17 @@
 <?php
 
 include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
+
+session_start();
+
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['id_usuario'])) {
+    // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+    header("Location: index.php");
+    exit();
+}
+
+
 //Esto es FE porque Frontend y lo que no tiene _ es origen, los que tienen _ en su nombre son para cargarlo todo y luego cargar las búsquedas
 // Consulta para obtener el aviso activo
 $sql_aviso = "SELECT * FROM avisos WHERE activo = 1 ORDER BY fecha_activacion DESC LIMIT 1";

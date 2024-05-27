@@ -34,6 +34,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+// Cómo hacer que al login haga que las cosas que se pasaron de fecha se actualicen
+        // Obtener la fecha actual
+        $fecha_actual = date('Y-m-d');
+
+        // Actualizar los registros donde la fecha máxima de reserva ha pasado
+        $sql_update = "UPDATE alquiler 
+                       SET situacion = 'Disponible' 
+                       WHERE fecha_maxima_reserva < '$fecha_actual' AND situacion = 'Reservado'";
+
+        if ($conn->query($sql_update) === TRUE) {
+            // Registros actualizados correctamente (puedes registrar esta acción si lo deseas)
+            error_log("Reservas actualizadas correctamente el " . date('Y-m-d H:i:s'));
+        } else {
+            // Error actualizando registros (puedes registrar este error si lo deseas)
+            error_log("Error actualizando reservas: " . $conn->error);}
+
 
 // Cerrar la conexión
 mysqli_close($conn);

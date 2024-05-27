@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validar y mover la imagen del libro subida
     if (isset($_FILES['imagen_libro']) && $_FILES['imagen_libro']['size'] > 0) {
         $ruta_imagen = "media/";
-        $nombre_imagen = uniqid() . '_' . basename($_FILES['imagen_libro']['name']);
+        $nombre_imagen = basename($_FILES['imagen_libro']['name']);
         $ruta_imagen_completa = $ruta_imagen . $nombre_imagen;
 
         // Validar tipo de archivo para que solo valgan estos formatos

@@ -1,7 +1,7 @@
 <?php
-include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
+include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos, cambia si lo mueves
 
-// Verificar si se envió el ID del libro
+// Verificar si se recibió el ID del libro para agregar ejemplar
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_libro'])) {
     $id_libro = intval($_GET['id_libro']);
 

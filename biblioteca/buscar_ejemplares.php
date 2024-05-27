@@ -30,7 +30,7 @@ if(isset($_POST['busqueda'])) {
     $total_paginas = ceil($total_filas / $ejemplares_por_pagina);
 
     // Consulta SQL para buscar ejemplares por título, autor o estado
-    $sql = "SELECT ejemplares.id_ejemplar, libros.id_libro, libros.nombre_libro, GROUP_CONCAT(autores.nombre_autor SEPARATOR ', ') AS autores, ejemplares.estado, ejemplares.estanteria
+    $sql = "SELECT ejemplares.id_ejemplar, ejemplares.estanteria, libros.id_libro, libros.nombre_libro, GROUP_CONCAT(autores.nombre_autor SEPARATOR ', ') AS autores, ejemplares.estado
             FROM ejemplares
             INNER JOIN libros ON ejemplares.id_libro = libros.id_libro
             INNER JOIN autor_libro ON libros.id_libro = autor_libro.id_libro 
@@ -54,21 +54,16 @@ if(isset($_POST['busqueda'])) {
             $ejemplares .= "<td>" . $fila['nombre_libro'] . "</td>";
             $ejemplares .= "<td>" . $fila['autores'] . "</td>";
             $ejemplares .= "<td>" . $fila['estanteria'] . "</td>"; // Nueva columna de estantería
-            // Desplegable para seleccionar el estado
-            $ejemplares .= "<td style='min-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>";
-            $ejemplares .= "<select class='form-select text-" . ($fila['estado'] == 'Disponible' ? 'success' : ($fila['estado'] == 'Alquilado' ? 'danger' : 'secondary')) . "' id='estado_ejemplar_" . $fila['id_ejemplar'] . "'>";
-            $ejemplares .= "<option value='Disponible'" . ($fila['estado'] == 'Disponible' ? ' selected' : '') . ">Disponible</option>";
-            $ejemplares .= "<option value='Alquilado'" . ($fila['estado'] == 'Alquilado' ? ' selected' : '') . ">Alquilado</option>";
-            $ejemplares .= "<option value='Retirado'" . ($fila['estado'] == 'Retirado' ? ' selected' : '') . ">Retirado</option>";
-            $ejemplares .= "</select>";
-            $ejemplares .= "</td>";
+            $ejemplares .= "<td>" . $fila['estado'] . "</td>"; // Columna de estado
             // Contenedor para los botones de acción
             $ejemplares .= "<td>";
             $ejemplares .= "<div class='d-flex'>";
-            // Botón para editar el estado
-            $ejemplares .= "<button class='btn btn-primary me-1' onclick='editarEstado(" . $fila['id_ejemplar'] . ")'>Editar</button>";
-            // Botón para añadir otro ejemplar del mismo libro
-            $ejemplares .= "<a class='bi bi-plus-square-fill ms-1' style='font-size: 2rem;' href='añadir_ejemplar.php?id_libro=" . $fila['id_libro'] . "'></a>";
+            // Botón para agregar otra copia del mismo ejemplar
+            $ejemplares .= "<a href='add_ejemplarB.php?id_libro=" . $fila['id_libro'] . "' class='btn btn-success me-1'>+</a>";
+            // Botón para editar el ejemplar
+            $ejemplares .= "<a href='editar_ejemplar.php?id_ejemplar=" . $fila['id_ejemplar'] . "' class='btn btn-primary me-1'>Editar</a>";
+            // Botón para eliminar el ejemplar
+            $ejemplares .= "<a href='eliminar_ejemplar.php?id_ejemplar_eliminar=" . $fila['id_ejemplar'] . "' class='btn btn-danger'>-</a>";
             $ejemplares .= "</div>";
             $ejemplares .= "</td>";
             $ejemplares .= "</tr>";

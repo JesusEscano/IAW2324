@@ -1,39 +1,20 @@
 <?php
-include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos, cámbialo si lo mueves
+include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos, cambia si lo mueves
 
 // Definir variables para la paginación
 $ejemplares_por_pagina = 10;
-$pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+$pagina_actual = isset($_POST['pagina']) ? $_POST['pagina'] : 1;
 
 // Este es el código para actualizar la lista de ejemplares al realizar una búsqueda
-// Verificar si se envió la solicitud de edición de estado
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_ejemplar']) && isset($_POST['nuevoEstado'])) {
+// Verificar si se envió la solicitud de edición de estantería
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_ejemplar']) && isset($_POST['nuevaEstanteria'])) {
     $id_ejemplar = intval($_POST['id_ejemplar']);
-    $nuevoEstado = $_POST['nuevoEstado'];
+    $nuevaEstanteria = $_POST['nuevaEstanteria'];
 
-    // Actualizar el estado del ejemplar en la base de datos
-    $sql_update_estado = "UPDATE ejemplares SET estado = ? WHERE id_ejemplar = ?";
-    $stmt = mysqli_prepare($conn, $sql_update_estado);
-    mysqli_stmt_bind_param($stmt, "si", $nuevoEstado, $id_ejemplar);
-    if (mysqli_stmt_execute($stmt)) {
-        // Enviar una respuesta al cliente
-        echo "success";
-        exit(); 
-    } else {
-        // Enviar un mensaje de error al cliente
-        echo "error";
-        exit(); 
-    }
-}
-
-// Verificar si se envió la solicitud de añadir otro ejemplar
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_libro'])) {
-    $id_libro = intval($_POST['id_libro']);
-
-    // Insertar otro ejemplar del mismo libro en la base de datos
-    $sql_insert_ejemplar = "INSERT INTO ejemplares (id_libro, estado) VALUES (?, 'Disponible')";
-    $stmt = mysqli_prepare($conn, $sql_insert_ejemplar);
-    mysqli_stmt_bind_param($stmt, "i", $id_libro);
+    // Actualizar la estantería del ejemplar en la base de datos
+    $sql_update_estanteria = "UPDATE ejemplares SET estanteria = ? WHERE id_ejemplar = ?";
+    $stmt = mysqli_prepare($conn, $sql_update_estanteria);
+    mysqli_stmt_bind_param($stmt, "si", $nuevaEstanteria, $id_ejemplar);
     if (mysqli_stmt_execute($stmt)) {
         // Enviar una respuesta al cliente
         echo "success";
@@ -78,25 +59,23 @@ if (mysqli_num_rows($resultado) > 0) {
         $ejemplares .= "<td>" . $fila['id_ejemplar'] . "</td>";
         $ejemplares .= "<td>" . $fila['nombre_libro'] . "</td>";
         $ejemplares .= "<td>" . $fila['autores'] . "</td>";
-        $ejemplares .= "<td>" . $fila['estanteria'] . "</td>";
-        // Desplegable para seleccionar el estado
-        $ejemplares .= "<td style='min-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>";
-        $ejemplares .= "<select class='form-select text-" . ($fila['estado'] == 'Disponible' ? 'success' : ($fila['estado'] == 'Alquilado' ? 'danger' : 'secondary')) . "' id='estado_ejemplar_" . $fila['id_ejemplar'] . "'>";
-        $ejemplares .= "<option value='Disponible'" . ($fila['estado'] == 'Disponible' ? ' selected' : '') . ">Disponible</option>";
-        $ejemplares .= "<option value='Alquilado'" . ($fila['estado'] == 'Alquilado' ? ' selected' : '') . ">Alquilado</option>";
-        $ejemplares .= "<option value='Retirado'" . ($fila['estado'] == 'Retirado' ? ' selected' : '') . ">Retirado</option>";
-        $ejemplares .= "</select>";
-        $ejemplares .= "</td>";
-        // Botón para editar el estado
-        $ejemplares .= "<td style='min-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;'>";
-        $ejemplares .= "<button class='btn btn-primary' onclick='editarEstado(" . $fila['id_ejemplar'] . ")'>Editar</button>";
-        // Botón para añadir otro ejemplar del mismo libro
-        $ejemplares .= "<a class='bi bi-plus-square-fill ms-1' style='font-size: 2rem;' href='añadir_ejemplar.php?id_libro=" . $fila['id_libro'] . "'></a>";
+        $ejemplares .= "<td>" . $fila['estanteria'] . "</td>"; // Nueva columna de estantería
+        $ejemplares .= "<td>" . $fila['estado'] . "</td>"; // Columna de estado
+        // Contenedor para los botones de acción
+        $ejemplares .= "<td>";
+        $ejemplares .= "<div class='d-flex'>";
+        // Botón para agregar otra copia del mismo ejemplar
+        $ejemplares .= "<a href='add_ejemplar.php?id_ejemplar_agregar=" . $fila['id_ejemplar'] . "' class='btn btn-success me-1'>+</a>";
+        // Botón para editar el ejemplar
+        $ejemplares .= "<a href='editar_ejemplar.php?id_ejemplar=" . $fila['id_ejemplar'] . "' class='btn btn-primary me-1'>Editar</a>";
+        // Botón para eliminar el ejemplar
+        $ejemplares .= "<a href='eliminar_ejemplar.php?id_ejemplar_eliminar=" . $fila['id_ejemplar'] . "' class='btn btn-danger'>-</a>";
+        $ejemplares .= "</div>";
         $ejemplares .= "</td>";
         $ejemplares .= "</tr>";
     }
 } else {
-    $ejemplares = "<tr><td colspan='5'>No se encontraron ejemplares</td></tr>";
+    $ejemplares = "<tr><td colspan='6'>No se encontraron ejemplares</td></tr>";
 }
 
 // Generar los controles de paginación
