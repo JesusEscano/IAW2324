@@ -127,6 +127,8 @@ $(document).ready(function(){
     cargarLibrosAlquilados();
     cargarLibrosDevueltos();
 
+    setInterval(cargarLibrosReservados, 3000);
+
     // Función para cargar todos los libros reservados
     function cargarLibrosReservados() {
         $.ajax({
