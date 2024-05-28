@@ -49,11 +49,11 @@ if(mysqli_num_rows($resultado_libros) > 0) {
     echo '<tbody>';
 
     while($fila = mysqli_fetch_assoc($resultado_libros)) {
-        echo '<tr>';
-        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . ($fila['imagen_libro'] ? '<img src="media/' . $fila['imagen_libro'] . '" class="imagen-libro" alt="Imagen del libro">' : '') . '</a></td>';
-        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . $fila['nombre_libro'] . '</td>';
+        echo '<tr class="clickable-row" data-href="reservarlibro.php?id=' . $fila['id_libro'] . '">';
+        echo '<td>' . ($fila['imagen_libro'] ? '<img src="media/' . $fila['imagen_libro'] . '" class="imagen-libro" alt="Imagen del libro">' : '') . '</td>';
+        echo '<td>' . $fila['nombre_libro'] . '</td>';
         echo '<td class="ellipsis" data-original-text="' . htmlspecialchars($fila['autores']) . '">' . htmlspecialchars($fila['autores']) . '</td>';
-        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . $fila['tema'] . '</td>';
+        echo '<td>' . $fila['tema'] . '</td>';
         echo '<td>' . $fila['ejemplares_disponibles'] . '</td>';
         echo '</tr>';
     }
@@ -89,6 +89,13 @@ mysqli_close($conn);
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        var rows = document.querySelectorAll('.clickable-row');
+        rows.forEach(function(row) {
+            row.addEventListener('click', function() {
+                window.location = row.getAttribute('data-href');
+            });
+        });
+
         if (window.innerWidth <= 700) { // Ejecutar solo en pantallas pequeñas
             var ellipsisCells = document.querySelectorAll('.ellipsis');
             ellipsisCells.forEach(function(cell) {
@@ -96,7 +103,8 @@ mysqli_close($conn);
                 var originalText = cell.getAttribute('data-original-text');
                 if (text.length > 20) {
                     cell.innerText = text.substring(0, 20) + '...';
-                    cell.addEventListener('click', function() {
+                    cell.addEventListener('click', function(event) {
+                        event.stopPropagation(); // Evitar la redirección al hacer clic en el texto truncado
                         var temp = cell.innerText;
                         cell.innerText = originalText;
                         originalText = temp;

@@ -60,6 +60,11 @@ if (mysqli_num_rows($resultado_aviso) > 0) {
         text-decoration: none; /* Quitar que se vea como enlace */
         color: inherit; /* Que se mantenga en negro, por si acaso */
         }
+        /* Estilo para la fila clicable */
+        .clickable-row:hover {
+        background-color: #a3b18a; 
+        cursor: pointer;
+        }
         /* Estilo botones y navegación */
         #buscador {
             margin-bottom: 20px;

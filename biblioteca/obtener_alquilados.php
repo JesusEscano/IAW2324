@@ -15,7 +15,8 @@ $sql_alquilados = "SELECT
                   INNER JOIN usuarios ON alquiler.id_usuario = usuarios.id_usuario
                   WHERE alquiler.situacion = 'Alquilado'
                   AND alquiler.fecha_alquiler IS NOT NULL
-                  AND alquiler.fecha_max_alquiler IS NOT NULL";
+                  AND alquiler.fecha_max_alquiler IS NOT NULL
+                  AND alquiler.fecha_devolucion IS NULL";
 
 $resultado_alquilados = mysqli_query($conn, $sql_alquilados);
 

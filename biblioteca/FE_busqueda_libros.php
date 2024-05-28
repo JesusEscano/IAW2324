@@ -65,12 +65,13 @@ if(mysqli_num_rows($resultado_libros) > 0) {
     
     // Generar las filas de la tabla con los resultados de la búsqueda
     while($fila = mysqli_fetch_assoc($resultado_libros)) {
-        echo '<tr>';
-        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . ($fila['imagen_libro'] ? '<img src="media/' . $fila['imagen_libro'] . '" class="imagen-libro" alt="Imagen del libro">' : '') . '</a></td>';
-        echo '<td><a href="reservarlibro.php?id=' . $fila['id_libro'] . '">' . $fila['nombre_libro'] . '</a></td>';
-        echo '<td>' . $fila['autores'] . '</td>';
-        echo '<td>' . $fila['tema'] . '</td>';
-        echo '<td>' . $fila['ejemplares_disponibles'] . '</td>';
+        $href = 'reservarlibro.php?id=' . $fila['id_libro'];
+        echo '<tr class="clickable-row" data-href="' . $href . '">';
+        echo '<td>' . ($fila['imagen_libro'] ? '<a href="' . $href . '"><img src="media/' . $fila['imagen_libro'] . '" class="imagen-libro" alt="Imagen del libro"></a>' : '') . '</td>';
+        echo '<td><a href="' . $href . '">' . $fila['nombre_libro'] . '</a></td>';
+        echo '<td class="ellipsis" data-original-text="' . htmlspecialchars($fila['autores']) . '"><a href="' . $href . '">' . htmlspecialchars($fila['autores']) . '</a></td>';
+        echo '<td><a href="' . $href . '">' . $fila['tema'] . '</a></td>';
+        echo '<td><a href="' . $href . '">' . $fila['ejemplares_disponibles'] . '</a></td>';
         echo '</tr>';
     }
     
@@ -102,3 +103,14 @@ if ($total_paginas > 1) {
 }
 echo '</div>';
 ?>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var rows = document.querySelectorAll('.clickable-row');
+        rows.forEach(function(row) {
+            row.addEventListener('click', function() {
+                window.location = row.getAttribute('data-href');
+            });
+        });
+    })
+</script>

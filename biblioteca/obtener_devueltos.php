@@ -11,7 +11,9 @@ $sql_devueltos = "SELECT
                   INNER JOIN ejemplares ON alquiler.id_ejemplar = ejemplares.id_ejemplar
                   INNER JOIN libros ON ejemplares.id_libro = libros.id_libro
                   WHERE alquiler.situacion = 'Devuelto'
-                  AND alquiler.fecha_devolucion IS NOT NULL";
+                  AND alquiler.fecha_devolucion IS NOT NULL
+                  ORDER BY alquiler.fecha_devolucion DESC
+                  LIMIT 1";
 
 $resultado_devueltos = mysqli_query($conn, $sql_devueltos);
 
