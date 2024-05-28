@@ -62,8 +62,6 @@ if(isset($_POST['busqueda'])) {
             $ejemplares .= "<a href='add_ejemplarB.php?id_libro=" . $fila['id_libro'] . "' class='btn btn-success me-1'>+</a>";
             // Botón para editar el ejemplar
             $ejemplares .= "<a href='editar_ejemplar.php?id_ejemplar=" . $fila['id_ejemplar'] . "' class='btn btn-primary me-1'>Editar</a>";
-            // Botón para eliminar el ejemplar
-            $ejemplares .= "<a href='eliminar_ejemplar.php?id_ejemplar_eliminar=" . $fila['id_ejemplar'] . "' class='btn btn-danger'>-</a>";
             $ejemplares .= "</div>";
             $ejemplares .= "</td>";
             $ejemplares .= "</tr>";

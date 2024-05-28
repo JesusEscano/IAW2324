@@ -3,6 +3,7 @@ include_once 'bd.php'; // Archivo de conexión a la base de datos
 
 // Consulta para obtener todos los libros alquilados
 $sql_alquilados = "SELECT 
+                      alquiler.id_alquiler, 
                       libros.nombre_libro, 
                       ejemplares.id_ejemplar, 
                       usuarios.nombre_usuario, 
