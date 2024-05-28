@@ -114,7 +114,7 @@
     <!-- Buscador -->
     <div class="input-group mb-3" id="buscador">
         <input type="text" class="form-control" placeholder="Buscar por título, autor o estado" id="busqueda" aria-label="Buscar" aria-describedby="button-addon2">
-        <button class="btn btn-primary" type="button" id="buscar">Buscar</button>
+        <button class="btn btn-primary" title="Buscar ejemplar" type="button" id="buscar">Buscar</button>
     </div>
     <!-- Tabla de ejemplares -->
     <table class="table">
