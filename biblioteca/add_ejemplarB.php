@@ -2,13 +2,13 @@
 include_once 'bd.php'; // Incluir el archivo de conexión a la base de datos, cambia si lo mueves
 
 // Verificar si se recibió el ID del libro para agregar ejemplar
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_libro'])) {
-    $id_libro = intval($_GET['id_libro']);
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_ejemplar_agregar'])) {
+    $id_ejemplar = intval($_GET['id_ejemplar_agregar']);
 
     // Insertar otro ejemplar del mismo libro en la base de datos
-    $sql_insert_ejemplar = "INSERT INTO ejemplares (id_libro, estado) VALUES (?, 'Disponible')";
+    $sql_insert_ejemplar = "INSERT INTO ejemplares (id_libro, estado) SELECT id_libro, estado FROM ejemplares WHERE id_ejemplar = ?";
     $stmt = mysqli_prepare($conn, $sql_insert_ejemplar);
-    mysqli_stmt_bind_param($stmt, "i", $id_libro);
+    mysqli_stmt_bind_param($stmt, "i", $id_ejemplar);
     if (mysqli_stmt_execute($stmt)) {
         // Redirigir de vuelta a la página principal
         header("Location: verejemplares.php");
