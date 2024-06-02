@@ -63,7 +63,7 @@
 </nav>
 
 <div class="container mt-5">
-    <h2>Histórico de Alquileres <a href="verpeticiones.php" class="btn btn-secondary ms-3"><i class="bi bi-arrow-left"></i> Regresar</a></h2>
+    <h2>Histórico de Alquileres <a href="verpeticiones.php" class="btn btn-info ms-3"><i class="bi bi-arrow-left"></i> Regresar</a></h2>
 
     <!-- Buscador -->
     <div class="input-group mb-3">
@@ -77,7 +77,7 @@
             <tr>
                 <th>Nombre del Libro</th>
                 <th>ID del Ejemplar</th>
-                <th>Nombre del Usuario</th>
+                <th>Usuario</th>
                 <th>Fecha de Alquiler</th>
                 <th>Fecha de Devolución</th>
             </tr>
@@ -104,7 +104,7 @@ $(document).ready(function(){
                     htmlHistorico += '<tr>';
                     htmlHistorico += '<td>' + alquiler.nombre_libro + '</td>';
                     htmlHistorico += '<td>' + alquiler.id_ejemplar + '</td>';
-                    htmlHistorico += '<td>' + alquiler.nombre_usuario + '</td>';
+                    htmlHistorico += '<td>' + alquiler.correo + '</td>';
                     htmlHistorico += '<td>' + alquiler.fecha_alquiler + '</td>';
                     htmlHistorico += '<td>' + alquiler.fecha_devolucion + '</td>';
                     htmlHistorico += '</tr>';

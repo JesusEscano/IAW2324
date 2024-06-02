@@ -8,7 +8,7 @@ $busqueda = isset($_GET['busqueda']) ? mysqli_real_escape_string($conn, $_GET['b
 $sql_historico = "SELECT 
                     libros.nombre_libro, 
                     ejemplares.id_ejemplar, 
-                    usuarios.nombre_usuario, 
+                    usuarios.correo, 
                     alquiler.fecha_alquiler, 
                     alquiler.fecha_devolucion
                   FROM alquiler
@@ -16,7 +16,7 @@ $sql_historico = "SELECT
                   INNER JOIN libros ON ejemplares.id_libro = libros.id_libro
                   INNER JOIN usuarios ON alquiler.id_usuario = usuarios.id_usuario
                   WHERE (libros.nombre_libro LIKE '%$busqueda%' 
-                  OR usuarios.nombre_usuario LIKE '%$busqueda%')
+                  OR usuarios.correo LIKE '%$busqueda%')
                   ORDER BY alquiler.fecha_devolucion DESC";
 
 $resultado_historico = mysqli_query($conn, $sql_historico);

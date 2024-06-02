@@ -64,6 +64,11 @@
 
 <div class="container mt-5">
     <h2>Libros Reservados</h2>
+    
+    <!-- Buscador por usuario -->
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="busqueda-reservados" placeholder="Buscar por usuario">
+    </div>
 
     <!-- Tabla de libros reservados -->
     <table class="table">
@@ -83,6 +88,11 @@
     </table>
 
     <h2>Libros Alquilados</h2>
+    
+    <!-- Buscador por usuario -->
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="busqueda-alquilados" placeholder="Buscar por usuario">
+    </div>
 
     <!-- Tabla de libros alquilados -->
     <table class="table">
@@ -118,6 +128,11 @@
             <!-- Aquí se mostrarán los libros devueltos -->
         </tbody>
     </table>
+    
+    <!-- Botón para acceder a historico.php -->
+    <div class="text-center mt-4">
+        <a href="historico.php" class="btn btn-info"><i class="bi bi-clock-history"></i> Ver Historial</a>
+    </div>
 </div>
 
 <script>
@@ -127,6 +142,7 @@ $(document).ready(function(){
     cargarLibrosAlquilados();
     cargarLibrosDevueltos();
 
+    // Intervalo para actualizar los libros reservados cada 3 segundos
     setInterval(cargarLibrosReservados, 3000);
 
     // Función para cargar todos los libros reservados
@@ -272,6 +288,22 @@ $(document).ready(function(){
             error: function(xhr, status, error) {
                 console.error(xhr.responseText); // Si hay un error, mostramos el mensaje de error en la consola
             }
+        });
+    });
+
+    // Función para filtrar resultados por usuario en los libros reservados
+    $('#busqueda-reservados').on('input', function() {
+        var busqueda = $(this).val().toLowerCase();
+        $("#tabla-libros-reservados tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(busqueda) > -1)
+        });
+    });
+
+    // Función para filtrar resultados por usuario en los libros alquilados
+    $('#busqueda-alquilados').on('input', function() {
+        var busqueda = $(this).val().toLowerCase();
+        $("#tabla-libros-alquilados tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(busqueda) > -1)
         });
     });
 });
