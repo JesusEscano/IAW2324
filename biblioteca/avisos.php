@@ -72,7 +72,6 @@
     </div>
 </nav>
 
-
 <!-- Formulario de Avisos -->
 <div class="container mt-5">
     <h2>Enviar Aviso</h2>
@@ -85,17 +84,28 @@
         
         <input type="submit" name="enviar_aviso" value="Enviar Aviso">
     </form>
+    <?php if(isset($error_message)): ?>
+        <div class="alert alert-danger mt-3"><?php echo htmlspecialchars($error_message); ?></div>
+    <?php endif; ?>
 </div>
 
 <!-- Subir avisos a Base de Datos -->
 <?php
-include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
+include_once 'bd.php'; // Archivo de conexión a la base de datos
 
 // Verificar si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recibir los datos del formulario
     $contenido = $_POST['contenido'];
     $fecha_activacion = $_POST['fecha_activacion'];
+
+    // Saneamiento de entrada: eliminar etiquetas HTML
+    $contenido = strip_tags($contenido);
+
+    // Validar la fecha (formato YYYY-MM-DD)
+    if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $fecha_activacion)) {
+        $error_message = "La fecha de activación no es válida.";
+    }
 
     // Validar los datos recibidos 
     if (empty($contenido) || empty($fecha_activacion)) {
@@ -111,33 +121,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Ejecutar la consulta preparada
         if (mysqli_stmt_execute($stmt)) {
             // Mensaje de éxito
-            echo "Aviso enviado correctamente.";
+            echo "<div class='alert alert-success mt-3'>Aviso enviado correctamente.</div>";
         } else {
             $error_message = "Error al enviar el aviso: " . mysqli_error($conn);
         }
     }
 }
 ?>
+
 <!-- Estilos para la lista de Avisos -->
 <style>
-    /* Centrar verticalmente el contenido de las celdas */
-    .table td,
-    .table th {
+    .table td, .table th {
         vertical-align: middle;
     }
-
-    /* Asegurar que el contenido de las columnas "Activación", "Estado" y "Acciones" se muestre en una línea */
-    .table td:not(:first-child),
-    .table th:not(:first-child) {
+    .table td:not(:first-child), .table th:not(:first-child) {
         white-space: nowrap;
     }
-
-    /* Permitir que el contenido de la columna "Aviso" se divida en múltiples líneas */
-    .table td:first-child,
-    .table th:first-child {
+    .table td:first-child, .table th:first-child {
         white-space: normal;
     }
 </style>
+
 <!-- Lista de Avisos -->
 <div class="container mt-5">
     <h2>Lista de Avisos</h2>
@@ -151,11 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tr>
         </thead>
         <tbody>
-<!-- Aquí se mostrarán los avisos desde la base de datos -->
-            
             <?php
-            include_once 'bd.php'; // Archivo de conexión a la base de datos, cambiar en entrega
-
             // Consulta SQL para obtener los avisos
             $sql = "SELECT * FROM avisos";
             $result = mysqli_query($conn, $sql);
@@ -163,12 +163,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>";
-                    echo "<td>" . $row['texto'] . "</td>";
-                    echo "<td>" . $row['fecha_activacion'] . "</td>";
+                    echo "<td>" . htmlspecialchars($row['texto']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['fecha_activacion']) . "</td>";
                     echo "<td>" . ($row['activo'] ? 'Activo' : 'Inactivo') . "</td>";
                     echo "<td>";
-                    echo "<a href='editar_aviso.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>Editar</a>";
-                    echo "<a href='activar_aviso.php?id=" . $row['id'] . "' class='btn btn-success btn-sm'>" . ($row['activo'] ? 'Desactivar' : 'Activar') . "</a>";
+                    echo "<a href='editar_aviso.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-primary btn-sm'>Editar</a> ";
+                    echo "<a href='activar_aviso.php?id=" . htmlspecialchars($row['id']) . "' class='btn btn-success btn-sm'>" . ($row['activo'] ? 'Desactivar' : 'Activar') . "</a>";
                     echo "</td>";
                     echo "</tr>";
                 }
