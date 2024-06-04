@@ -36,10 +36,10 @@ if(isset($_GET['id_ejemplar'])) {
 }
 
 // Verificar si se envió el formulario para actualizar los datos del ejemplar
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
-    $nueva_estanteria = $_POST['nueva_estanteria'];
-    $nuevo_estado = $_POST['nuevo_estado'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtener los datos del formulario y sanitizar las entradas
+    $nueva_estanteria = htmlspecialchars($_POST['nueva_estanteria']);
+    $nuevo_estado = htmlspecialchars($_POST['nuevo_estado']);
 
     // Consulta SQL para actualizar los datos del ejemplar
     $sql_update = "UPDATE ejemplares SET estanteria = ?, estado = ? WHERE id_ejemplar = ?";
@@ -49,7 +49,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ejecutar la consulta SQL
     if(mysqli_stmt_execute($stmt)) {
         // Mostrar un mensaje de éxito y redirigir después de 3 segundos
-        echo '<script>alert("Los cambios se han aplicado correctamente."); setTimeout(function(){ window.location.href = "verejemplares.php"; }, 3000);</script>';
+        echo '<script>alert("Los cambios se han aplicado correctamente."); setTimeout(function(){ window.location.href = "verejemplares.php"; }, 1000);</script>';
         exit();
     } else {
         // Mostrar un mensaje de error si la consulta falla
