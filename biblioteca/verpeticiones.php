@@ -87,7 +87,7 @@
         </tbody>
     </table>
 
-    <h2>Libros Alquilados</h2>
+    <h2>Libros Alquilados  <a href="alquiler_manual.php" class="btn btn-primary ms-3"><i class="bi bi-pencil-square"></i> Alquiler manual</a></h2>
     
     <!-- Buscador por usuario -->
     <div class="input-group mb-3">

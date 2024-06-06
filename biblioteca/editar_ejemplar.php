@@ -85,15 +85,13 @@ mysqli_close($conn);
             <div class="mb-3">
                 <label for="estado" class="form-label">Estado:</label>
                 <select class="form-select" id="estado" name="nuevo_estado">
-                    <option value="Disponible" <?php if($estado == 'Disponible') echo 'selected'; ?>>Disponible</option>
-                    <option value="Alquilado" <?php if($estado == 'Alquilado') echo 'selected'; ?>>Alquilado</option>
+                    <option value="Disponible" <?php if($estado == 'Disponible') echo 'selected'; elseif($estado != 'Retirado') echo 'disabled'; ?>>Disponible</option>
                     <option value="Retirado" <?php if($estado == 'Retirado') echo 'selected'; ?>>Retirado</option>
-</select>
-</div>
-<button type="submit" class="btn btn-primary">Aplicar Cambios</button>
-<a href="verejemplares.php" class="btn btn-secondary">Cancelar</a>
-</form>
-</div>
-
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Aplicar Cambios</button>
+            <a href="verejemplares.php" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
 </body>
 </html>
